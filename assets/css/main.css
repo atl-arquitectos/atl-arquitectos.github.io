@@ -3894,5 +3894,8 @@
 			#cta {
 				padding: 2.5em 1em 3em 1em;
 			}
-
+.atl {
+    font-weight: 700;
+    color: inherit;
+}
 	}
