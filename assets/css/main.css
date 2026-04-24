@@ -3904,3 +3904,8 @@
     letter-spacing: 2px;
 }
 	}
+body, #page-wrapper {
+
+    background-color: #d9d9d9 !important; /* Un gris muy tenue y elegante */
+
+}
