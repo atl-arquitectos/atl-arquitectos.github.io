@@ -5,6 +5,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,900" rel="stylesheet" />
+
+    <style>
+        /* Estilos para el contraste del logo en header y banner */
+        .logo-atl {
+            text-decoration: none;
+            text-transform: uppercase;
+            border-bottom: none !important;
+        }
+        .logo-atl .black {
+            font-weight: 900;
+            color: #ffffff;
+        }
+        .logo-atl .light {
+            font-weight: 200;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+        /* Ajuste de tamaño específico para el banner */
+        #banner h2 .logo-atl {
+            font-size: 1em; /* Hereda el tamaño del H2 del banner */
+        }
+    </style>
 
         <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png.">
 		<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
@@ -16,7 +41,11 @@
     <div id="page-wrapper">
 
         <header id="header" class="alt">
-            <h1><a href="index.html">ATL</a> arquitectos</h1>
+            <h1>
+                <a href="index.html" class="logo-atl">
+                    <span class="black">ATL</span><span class="light">arquitectos</span>
+                </a>
+            </h1>
             <nav id="nav">
                 <ul>
                     <li><a href="index.html">Home</a></li>
@@ -47,7 +76,11 @@
         </header>
 
         <section id="banner">
-            <h2><a href="#">ATL</a> arquitectos</h2>
+            <h2>
+                <span class="logo-atl">
+                    <span class="black">ATL</span> <span class="light">arquitectos</span>
+                </span>
+            </h2>
             <p>Donde las ideas se vuelven realidad</p>
             <ul class="actions special">
                 <li>
