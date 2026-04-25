@@ -13,31 +13,28 @@
     <link rel="manifest" href="images/site.webmanifest">
 
     <style>
-        /* Gris oscuro para las cajas especiales (Sustituye al salmón) */
-        .features article, #main > .box.special, section.box.special {
-            background-color: #242424 !important;
-            border: 1px solid #333;
-            color: #ffffff;
+        /* Mantenemos el estilo limpio y solo cambiamos los cuadros que eran salmón */
+        .features section {
+            background-color: #2e2e2e !important; /* Gris Oxford Oscuro */
+            color: #ffffff !important;
+            border-radius: 8px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* Ajuste de color para iconos y títulos */
-        .features article h3, .box.special h2 {
+        .features section h3, .features section p {
             color: #ffffff !important;
         }
 
-        /* Color de fondo del CTA (Call to Action) para que sea un gris más profundo */
-        #cta {
-            background-color: #1a1a1a !important;
+        /* Ajuste de los iconos para que resalten en el fondo oscuro */
+        .features section .icon.major {
+            background-color: #444444 !important;
+            color: #ffffff !important;
+            box-shadow: inset 0 0 0 2px #555555 !important;
         }
 
-        /* Botón primario con un tono más arquitectónico */
-        input[type="submit"].fit, .button.primary {
-            background-color: #444 !important;
-            box-shadow: none !important;
-        }
-        
-        input[type="submit"].fit:hover, .button.primary:hover {
-            background-color: #666 !important;
+        /* Mantenemos la sección principal y el CTA en sus colores originales (Blanco/Gris claro) */
+        .box.special {
+            background: #ffffff;
         }
     </style>
 </head>
@@ -72,109 +69,11 @@
 
         <section id="banner">
             <h2>ATL arquitectos</h2>
-            <p>Arquitectura residencial y comercial de alta gama</p>
+            <p>Donde las ideas se vuelven realidad</p>
             <ul class="actions special">
-                <li><a href="https://wa.me/525529108306" class="button primary icon brands fa-whatsapp"> WhatsApp</a></li>
-                <li><a href="mailto:Proyecto@ATL-arquitectos.com" class="button icon solid fa-envelope"> E-mail</a></li>
+                <li><a href="https://wa.me/525529108306" class="button primary">WhatsApp</a></li>
+                <li><a href="mailto:Proyecto@ATL-arquitectos.com" class="button">E-mail</a></li>
             </ul>
         </section>
 
         <main id="main" class="container">
-
-            <section class="box special">
-                <header class="major">
-                    <h2>Diseño con visión contemporánea</h2>
-                    <p>Fusionamos más de 8 años de trayectoria técnica con soluciones innovadoras.<br />
-                    Creamos espacios que trascienden lo convencional.</p>
-                </header>
-                <span class="image featured"><img src="images/pic01.jpg" alt="ATL Arquitectos Banner" /></span>
-            </section>
-
-            <section class="box special features">
-                <div class="features-row">
-                    <section>
-                        <span class="icon solid major fa-home accent2"></span>
-                        <h3>Arquitectura Residencial</h3>
-                        <p>Diseño de casas habitación personalizadas, optimizando luz natural y funcionalidad.</p>
-                    </section>
-                    <section>
-                        <span class="icon solid major fa-glass-martini-alt accent3"></span>
-                        <h3>Diseño Comercial</h3>
-                        <p>Especialistas en bares y terrazas que elevan la identidad visual de tu negocio.</p>
-                    </section>
-                </div>
-                <div class="features-row">
-                    <section>
-                        <span class="icon solid major fa-tools accent4"></span>
-                        <h3>Construcción</h3>
-                        <p>Ejecución integral de obra con precisión técnica y supervisión constante.</p>
-                    </section>
-                    <section>
-                        <span class="icon solid major fa-sync-alt accent5"></span>
-                        <h3>Remodelación</h3>
-                        <p>Transformación de espacios existentes integrando materiales modernos y lujo.</p>
-                    </section>
-                </div>
-            </section>
-
-            <div class="row">
-                <div class="col-6 col-12-narrower">
-                    <article class="box special">
-                        <span class="image featured"><img src="images/pic02.jpg" alt="Proyecto Residencial" /></span>
-                        <h3>Innovación Residencial</h3>
-                        <p>Residencia contemporánea con enfoque en materiales pétreos y calidez.</p>
-                        <ul class="actions special">
-                            <li><a href="#" class="button alt">Ver proyecto</a></li>
-                        </ul>
-                    </article>
-                </div>
-                <div class="col-6 col-12-narrower">
-                    <article class="box special">
-                        <span class="image featured"><img src="images/pic03.jpg" alt="Proyecto Comercial" /></span>
-                        <h3>Espacios Comerciales</h3>
-                        <p>Interiorismo y terraza de alta gama para proyectos de entretenimiento.</p>
-                        <ul class="actions special">
-                            <li><a href="#" class="button alt">Ver proyecto</a></li>
-                        </ul>
-                    </article>
-                </div>
-            </div>
-        </main>
-
-        <section id="cta">
-            <h2>Cuéntanos tu idea</h2>
-            <p>Estamos listos para materializar tu próximo proyecto residencial o comercial.</p>
-            <form action="mailto:proyectos@atl-arquitectos.com" method="post" enctype="text/plain">
-                <div class="row gtr-50 gtr-uniform">
-                    <div class="col-8 col-12-mobilep">
-                        <input type="email" name="email" id="email" placeholder="Tu correo electrónico" />
-                    </div>
-                    <div class="col-4 col-12-mobilep">
-                        <input type="submit" value="Suscribirme" class="fit" />
-                    </div>
-                </div>
-            </form>
-        </section>
-
-        <footer id="footer">
-            <ul class="icons">
-                <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-            </ul>
-            <ul class="copyright">
-                <li>&copy; 2026 ATL Arquitectos. Todos los derechos reservados.</li>
-                <li>Arquitectura | Construcción | Diseño</li>
-            </ul>
-        </footer>
-
-    </div>
-
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dropotron.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-</body>
-</html>
