@@ -12,22 +12,24 @@
         /* Estilos para el contraste del logo en header y banner */
         .logo-atl {
             text-decoration: none;
-            text-transform: uppercase;
             border-bottom: none !important;
         }
         .logo-atl .black {
             font-weight: 900;
+            text-transform: uppercase; /* ATL siempre en mayúsculas */
             color: #ffffff;
         }
         .logo-atl .light {
             font-weight: 200;
+            text-transform: none !important; /* Fuerza a que se quede en minúsculas */
             letter-spacing: 0.05em;
             color: #ffffff;
             opacity: 0.9;
+            margin-left: 5px;
         }
         /* Ajuste de tamaño específico para el banner */
         #banner h2 .logo-atl {
-            font-size: 1em; /* Hereda el tamaño del H2 del banner */
+            font-size: 1em; 
         }
     </style>
 
