@@ -13,8 +13,9 @@ nav a{color:#fff;margin-left:20px;text-decoration:none;font-size:14px}
 .hero{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.9)),url('https://images.unsplash.com/photo-1503387762-592deb58ef4e') center/cover}
 .hero h2{font-size:42px;max-width:700px}
 .section{padding:80px 40px;text-align:center}
-.projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;padding:40px}
-.card{background:#1a1a1a;padding:20px;border-radius:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;padding:40px}
+.block{background:rgba(255,255,255,0.05);padding:30px;border-radius:10px;backdrop-filter:blur(8px)}
+.block.large{grid-column:span 2;text-align:center}
 footer{text-align:center;padding:20px;font-size:12px;opacity:.6}
 </style>
 </head>
@@ -31,17 +32,30 @@ footer{text-align:center;padding:20px;font-size:12px;opacity:.6}
 <section class="hero">
 <div>
 <h2>Diseñamos lo posible. Construimos lo extraordinario.</h2>
-<p>Arquitectura contemporánea, funcional y elegante.</p>
+<p>Arquitectura que maximiza tu inversión.</p>
 </div>
 </section>
-<section class="section">
-<h3>Sobre nosotros</h3>
-<p>Estudio interdisciplinario enfocado en arquitectura, ingeniería y diseño de espacios de alto nivel.</p>
-</section>
-<section class="projects">
-<div class="card"><h4>Residencial</h4><p>Diseño de viviendas modernas.</p></div>
-<div class="card"><h4>Comercial</h4><p>Espacios que impulsan negocios.</p></div>
-<div class="card"><h4>Interiorismo</h4><p>Experiencias espaciales únicas.</p></div>
+<section class="grid">
+<div class="block">
+<h3>Pensamos diferente</h3>
+<p>Analizamos cada decisión desde la ejecución: costos, sistemas constructivos y viabilidad, para reducir errores en obra y mejorar el resultado final.</p>
+</div>
+<div class="block">
+<h3>Diseñamos con intención</h3>
+<p>El diseño responde a presupuesto, uso real y valorización del espacio, evitando soluciones estéticas sin fundamento técnico.</p>
+</div>
+<div class="block">
+<h3>La materia como lenguaje</h3>
+<p>Evaluamos y combinamos materiales existentes y nuevos para optimizar recursos, expresar el proceso constructivo y dar identidad al proyecto.</p>
+</div>
+<div class="block">
+<h3>Cuestionamos lo establecido</h3>
+<p>Replanteamos soluciones convencionales para encontrar alternativas más eficientes en costo, ejecución y desempeño del espacio.</p>
+</div>
+<div class="block large">
+<h3>La belleza de los materiales</h3>
+<p>Transformamos lo existente sin ocultarlo, aprovechando huellas, texturas y procesos para convertir lo que otros descartarían en valor arquitectónico.</p>
+</div>
 </section>
 <footer>© 2026 ATL Arquitectos</footer>
 </body>
