@@ -666,6 +666,11 @@
             .nav-links { display: none; }
             #filosofia, #cifras, #preview { padding: 6rem 2rem; }
             #tecnologia { padding: 6rem 2rem; }
+            #especialidades { padding: 6rem 2rem; }
+            .esp-grid { grid-template-columns: repeat(2, 1fr); }
+            .esp-title { font-size: 2rem; margin-bottom: 2rem; }
+            .esp-img { height: 160px; }
+            .esp-body { padding: 1.5rem; }
             .filosofia-grid { grid-template-columns: 1fr; }
             .tec-grid { grid-template-columns: repeat(3, 1fr); }
             .cifras-grid { grid-template-columns: repeat(2, 1fr); }
@@ -673,6 +678,9 @@
             .preview-item { height: 50vw; }
             footer { flex-direction: column; gap: 2rem; text-align: center; }
             .tec-header { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .esp-grid { grid-template-columns: 1fr; }
         }
 
         /* ── SECTION DOTS ── */
