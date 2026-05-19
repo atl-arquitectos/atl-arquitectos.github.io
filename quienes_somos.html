@@ -1,138 +1,304 @@
 <!DOCTYPE HTML>
 <html lang="es">
 <head>
-    <title>¿Quiénes somos? | ATL Arquitectos</title>
+    <title>Estudio | ATL Arquitectos</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600" rel="stylesheet" />
-    <style>
-        .logo-atl { text-decoration: none; border-bottom: none !important; }
-        .logo-atl .black { font-weight: 600; text-transform: uppercase; color: #ffffff; }
-        .logo-atl .light { font-weight: 200; text-transform: none !important; font-size: 0.85em; letter-spacing: 0.05em; color: #ffffff; opacity: 0.9; margin-left: 5px; }
-        #header h1 a { color: #ffffff; } /* Asegura color en páginas internas */
-    </style>
-
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="manifest" href="images/site.webmanifest">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/atl.css">
+    <style>
+        .estudio-section { padding: 8rem 5rem; max-width: 1400px; margin: 0 auto; }
+        .estudio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+        .estudio-grid.reverse { direction: rtl; }
+        .estudio-grid.reverse > * { direction: ltr; }
+        .estudio-img {
+            width: 100%; aspect-ratio: 4/3;
+            background-size: cover; background-position: center;
+            overflow: hidden; position: relative;
+        }
+        .estudio-img img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 0.8s ease; }
+        .estudio-img:hover img { transform: scale(1.0); }
+        .estudio-text h2 {
+            font-family: var(--font-title);
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 2rem;
+        }
+        .estudio-text p {
+            font-size: 0.82rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.6);
+            line-height: 2;
+            margin-bottom: 1.5rem;
+        }
+        .estudio-text strong { color: var(--white); font-weight: 400; }
+
+        /* Valores */
+        .valores-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); margin-top: 2rem; }
+        .valor { padding: 2.5rem 2rem; background: var(--bg); }
+        .valor h4 {
+            font-family: var(--font-title);
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+            color: var(--lilac);
+        }
+        .valor p { font-size: 0.72rem; font-weight: 300; color: rgba(255,255,255,0.45); line-height: 1.9; }
+
+        /* Equipo */
+        .equipo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(255,255,255,0.06); }
+        .miembro { background: var(--bg); overflow: hidden; }
+        .miembro-img { height: 380px; background-size: cover; background-position: center top; filter: grayscale(20%); transition: filter 0.5s; }
+        .miembro:hover .miembro-img { filter: grayscale(0%); }
+        .miembro-info { padding: 2.5rem; }
+        .miembro-role {
+            font-size: 0.58rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--lilac);
+            margin-bottom: 0.5rem;
+        }
+        .miembro-info h3 {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .miembro-info p { font-size: 0.72rem; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.9; }
+
+        /* Filosofía pilares */
+        .filosofia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); }
+        .pilar { padding: 3.5rem; background: var(--bg); transition: background 0.4s; }
+        .pilar:hover { background: rgba(255,255,255,0.02); }
+        .pilar-num { font-family: var(--font-title); font-size: 4rem; font-weight: 600; color: rgba(255,255,255,0.04); line-height: 1; margin-bottom: 1.5rem; }
+        .pilar h3 { font-family: var(--font-title); font-size: 1.5rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem; }
+        .pilar p { font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.9; }
+
+        /* Separador */
+        .sep { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 0; }
+
+        @media (max-width: 900px) {
+            .estudio-section { padding: 5rem 2rem; }
+            .estudio-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .estudio-grid.reverse { direction: ltr; }
+            .equipo-grid { grid-template-columns: 1fr; }
+            .filosofia-grid { grid-template-columns: 1fr; }
+            .valores-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
-<body class="is-preload">
-    <div id="page-wrapper">
+<body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
 
-        <header id="header">
-            <h1>
-                <a href="index.html" class="logo-atl">
-                    <span class="black">ATL</span><span class="light">arquitectos</span>
-                </a>
-            </h1>
-            <nav id="nav">
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li>
-                        <a href="#" class="icon solid fa-angle-down">Opciones</a>
-                        <ul>
-                            <li><a href="proyectos.html">Proyectos</a></li>
-                            <li><a href="servicios.html">Servicios</a></li>
-                            <li><a href="quienes_somos.html">¿Quiénes somos?</a></li>
-                            <li>
-                                <a href="#">Portafolio</a>
-                                <ul>
-                                    <li><a href="#">Residencial</a></li>
-                                    <li><a href="#">Comercial</a></li>
-                                    <li><a href="#">Industrial</a></li>
-                                    <li><a href="#">Interiorismo</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><a href="mailto:Proyecto@ATL-arquitectos.com?subject=Informacion" class="button primary">Contacto</a></li>
-                </ul>
-            </nav>
-        </header>
+    <!-- NAV -->
+    <nav id="nav">
+        <a href="index.html" class="nav-logo">ATL<span>arquitectos</span></a>
+        <ul class="nav-links">
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="quienes_somos.html" class="active">Estudio</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+        <div class="nav-social">
+            <a href="https://www.instagram.com" target="_blank" title="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="https://www.facebook.com" target="_blank" title="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="mailto:proyectos@atl-arquitectos.com" title="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></a>
+            <a href="https://wa.me/525529108306" target="_blank" title="WhatsApp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+        </div>
+    </nav>
 
-        <section id="main" class="container">
-            <header>
-                <h2>¿Quiénes somos?</h2>
-                <p>La unión de la experiencia técnica y la visión de vanguardia.</p>
-            </header>
-
-            <div class="row">
-                <div class="col-12">
-                    <section class="box">
-                        <h3>El Nacimiento de una Visión</h3>
-                        <p><strong>ATL arquitectos</strong> surge como la consolidación de un camino recorrido. Nos presentamos como una firma renovada, cuya esencia nace de la unión entre la experiencia técnica acumulada y el impulso por redefinir los espacios contemporáneos. Somos un despacho donde la arquitectura es un diálogo constante entre la trayectoria y la innovación.</p>
-                        
-                        <hr />
-
-                        <div class="row">
-                            <div class="col-6 col-12-mobilep">
-                                <h3>Misión</h3>
-                                <p>Transformar ideas en realidades arquitectónicas mediante un proceso de diseño riguroso, cuestionando lo convencional para ofrecer soluciones únicas que mejoren la calidad de vida de quienes las habitan.</p>
-                            </div>
-                            <div class="col-6 col-12-mobilep">
-                                <h3>Valores</h3>
-                                <ul class="alt">
-                                    <li><b>Integridad:</b> Honestidad en cada fase de la obra.</li>
-                                    <li><b>Innovación:</b> Uso estratégico de nuevas tecnologías.</li>
-                                    <li><b>Detalle:</b> Perfección en acabados y proporciones.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <section class="box">
-                        <h3>Filosofía de Trabajo</h3>
-                        <p><span class="image left"><img src="images/pic05.jpg" alt="Filosofía ATL" /></span>Entendemos la arquitectura como un equilibrio perfecto entre la técnica y el arte. Nuestro proceso comienza con un análisis profundo del entorno para asegurar que cada línea tenga un propósito claro.</p>
-                        <p>Nos especializamos en arquitectura de alta gama, donde el uso de materiales como el concreto pulido, la madera natural y las piedras traslúcidas definen nuestra identidad visual. Desde la conceptualización hasta la entrega final, acompañamos a nuestros clientes para asegurar que cada detalle refleje su visión.</p>
-                    </section>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-6 col-12-narrower">
-                    <section class="box special">
-                        <span class="image featured"><img src="images/perfil01.jpg" alt="Director General" /></span>
-                        <h3>Director General & Fundador</h3>
-                        <p>Con <b>8 años de trayectoria independiente</b>, ha liderado proyectos residenciales y comerciales de alta gama. Su enfoque se centra en el rigor técnico y la dirección de obra, transformando la complejidad técnica en espacios de orden y armonía.</p>
-                    </section>
-                </div>
-                <div class="col-6 col-12-narrower">
-                    <section class="box special">
-                        <span class="image featured"><img src="images/perfil02.jpg" alt="Asociada" /></span>
-                        <h3>Asociada & Talento Emergente</h3>
-                        <p>Arquitecta cuya visión de vanguardia nutre las nuevas narrativas del despacho. Especializada en la optimización de arquitectura vernácula, aporta la frescura conceptual necesaria para los desafíos de la nueva era arquitectónica.</p>
-                    </section>
-                </div>
-            </div>
-        </section>
-
-        <footer id="footer">
-            <ul class="icons">
-                <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-            </ul>
-            <ul class="copyright">
-                <li>&copy; 2026 ATL arquitectos. Todos los derechos reservados.</li>
-                <li>Design by: <a href="https://www.instagram.com/onlyvice/">ATL</a></li>
-            </ul>
-        </footer>
-
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+        <div class="page-hero-bg" style="background-image:url('images/banner.jpg')"></div>
+        <div class="page-hero-fade"></div>
+        <div class="page-hero-content">
+            <div class="section-label" style="margin-bottom:1rem;">El estudio</div>
+            <h1>Quiénes<br>Somos</h1>
+            <p>La unión de la experiencia técnica y la visión de vanguardia</p>
+        </div>
+        <div class="page-scroll-hint">
+            <span>Scroll</span>
+            <div class="page-scroll-hint-line"></div>
+        </div>
     </div>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dropotron.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
+    <!-- SECTION DOTS -->
+    <div class="section-dots" id="sectionDots">
+        <div class="section-dot active" data-target="historia" data-label="Historia"></div>
+        <div class="section-dot" data-target="valores" data-label="Valores"></div>
+        <div class="section-dot" data-target="filosofia" data-label="Filosofía"></div>
+        <div class="section-dot" data-target="equipo" data-label="Equipo"></div>
+    </div>
+
+    <!-- HISTORIA -->
+    <section class="estudio-section" id="historia">
+        <div class="section-label reveal">Nuestra historia</div>
+        <div class="estudio-grid">
+            <div class="estudio-text reveal">
+                <h2>El nacimiento<br>de una visión</h2>
+                <p><strong>ATL arquitectos</strong> surge como la consolidación de un camino recorrido. Nos presentamos como una firma renovada, cuya esencia nace de la unión entre la experiencia técnica acumulada y el impulso por redefinir los espacios contemporáneos.</p>
+                <p>Somos un despacho donde la arquitectura es un diálogo constante entre la trayectoria y la innovación. Transformamos ideas en realidades arquitectónicas mediante un proceso de diseño riguroso, cuestionando lo convencional para ofrecer soluciones únicas.</p>
+                <p>Nos especializamos en <strong>arquitectura de alta gama</strong>, donde el uso de materiales como el concreto pulido, la madera natural y las piedras traslúcidas definen nuestra identidad visual.</p>
+            </div>
+            <div class="estudio-img reveal">
+                <img src="images/pic01.jpg" alt="ATL Arquitectos - Historia">
+            </div>
+        </div>
+    </section>
+
+    <hr class="sep">
+
+    <!-- MISIÓN Y VALORES -->
+    <section class="estudio-section" id="valores">
+        <div class="section-label reveal">Misión y valores</div>
+        <div class="estudio-grid reverse">
+            <div class="estudio-text reveal">
+                <h2>Lo que nos<br>mueve</h2>
+                <p>Transformar ideas en realidades arquitectónicas mediante un proceso de diseño riguroso, cuestionando lo convencional para ofrecer soluciones únicas que mejoren la calidad de vida de quienes las habitan.</p>
+                <div class="valores-grid">
+                    <div class="valor reveal">
+                        <h4>Integridad</h4>
+                        <p>Honestidad y transparencia en cada fase del proyecto y la obra.</p>
+                    </div>
+                    <div class="valor reveal">
+                        <h4>Innovación</h4>
+                        <p>Uso estratégico de nuevas tecnologías como ArchiCAD, BIM e IA.</p>
+                    </div>
+                    <div class="valor reveal">
+                        <h4>Detalle</h4>
+                        <p>Perfección en acabados, proporciones y cada elemento del diseño.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="estudio-img reveal">
+                <img src="images/pic05.jpg" alt="Filosofía ATL">
+            </div>
+        </div>
+    </section>
+
+    <hr class="sep">
+
+    <!-- FILOSOFÍA -->
+    <section class="estudio-section" id="filosofia">
+        <div class="section-label reveal">Nuestra filosofía</div>
+        <div class="filosofia-grid">
+            <div class="pilar reveal">
+                <div class="pilar-num">01</div>
+                <h3>Redefiniendo la arquitectura</h3>
+                <p>Estudio centrado en el diseño residencial y comercial de alta gama, donde cada proyecto es una oportunidad única de exploración espacial.</p>
+            </div>
+            <div class="pilar reveal">
+                <div class="pilar-num">02</div>
+                <h3>Pensamos diferente</h3>
+                <p>Consolidamos 8 años de experiencia con una visión nueva e innovadora, desafiando los paradigmas convencionales de la arquitectura contemporánea.</p>
+            </div>
+            <div class="pilar reveal">
+                <div class="pilar-num">03</div>
+                <h3>Diseñamos con intención</h3>
+                <p>Entendemos cada proyecto como un diálogo entre técnica y arte. Cada línea tiene un propósito. Cada material, una historia que contar.</p>
+            </div>
+            <div class="pilar reveal">
+                <div class="pilar-num">04</div>
+                <h3>Cuestionamos lo establecido</h3>
+                <p>Espacios funcionales, estéticos y pensados para quien los vive. Arquitectura que permanece vigente asegurando valor a través del tiempo.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="sep">
+
+    <!-- EQUIPO -->
+    <section class="estudio-section" id="equipo">
+        <div class="section-label reveal">El equipo</div>
+        <div class="equipo-grid">
+            <div class="miembro reveal">
+                <div class="miembro-img" style="background-image:url('images/pic02.jpg')"></div>
+                <div class="miembro-info">
+                    <div class="miembro-role">Director General & Fundador</div>
+                    <h3>Dirección<br>Creativa</h3>
+                    <p>Con <strong>8 años de trayectoria independiente</strong>, ha liderado proyectos residenciales y comerciales de alta gama. Su enfoque se centra en el rigor técnico y la dirección de obra, transformando la complejidad técnica en espacios de orden y armonía.</p>
+                </div>
+            </div>
+            <div class="miembro reveal">
+                <div class="miembro-img" style="background-image:url('images/pic03.jpg')"></div>
+                <div class="miembro-info">
+                    <div class="miembro-role">Asociada & Talento Emergente</div>
+                    <h3>Dirección<br>de Diseño</h3>
+                    <p>Arquitecta cuya visión de vanguardia nutre las nuevas narrativas del despacho. Especializada en la optimización de arquitectura vernácula, aporta la frescura conceptual necesaria para los desafíos de la nueva era arquitectónica.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <a href="index.html" class="footer-logo">ATL<span>arquitectos</span></a>
+        <ul class="footer-links">
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="quienes_somos.html">Estudio</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+        <div class="footer-social">
+            <a href="https://www.instagram.com" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="https://www.facebook.com" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="https://wa.me/525529108306" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+        </div>
+        <p class="footer-copy">© 2026 ATL Arquitectos · proyectos@atl-arquitectos.com · Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX - 3 + 'px';
+            cursor.style.top = e.clientY - 3 + 'px';
+            ring.style.left = e.clientX - 16 + 'px';
+            ring.style.top = e.clientY - 16 + 'px';
+        });
+        document.getElementById('nav').addEventListener('scroll', () => {}, { passive: true });
+        window.addEventListener('scroll', () => {
+            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+        });
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+        // ── SECTION DOTS ──
+        const dots = document.querySelectorAll('.section-dot');
+        const sections = ['historia','valores','filosofia','equipo'].map(id => document.getElementById(id)).filter(Boolean);
+        const dotObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    dots.forEach(d => {
+                        d.classList.toggle('active', d.dataset.target === id);
+                    });
+                }
+            });
+        }, { threshold: 0.4 });
+        sections.forEach(s => dotObs.observe(s));
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const target = document.getElementById(dot.dataset.target);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
 </body>
 </html>

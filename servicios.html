@@ -1,111 +1,338 @@
 <!DOCTYPE HTML>
 <html lang="es">
-	<head>
+<head>
     <title>Servicios | ATL Arquitectos</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-
-    <link rel="apple-touch-icon" sizes="180x180" href="images/icono-touch-de-apple.png">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="manifest" href="images/sitio.manifiesto web">
-    </head>
-	<body class="is-preload">
-		<div id="page-wrapper">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/atl.css">
+    <style>
+        .servicios-wrap { max-width: 1400px; margin: 0 auto; }
 
-			<header id="header">
-					<h1><a href="index.html">ATL</a> arquitectos</h1>
-					<nav id="nav">
-						<ul>
-							<li><a href="index.html">Home</a></li>
-							<li>
-								<a href="#" class="icon solid fa-angle-down">Opciones</a>
-								<ul>
-									<li><a href="proyectos.html">Proyectos</a></li>
-									<li><a href="servicios.html">Servicios</a></li>
-									<li><a href="quienes_somos.html">¿Quiénes somos?</a></li>
-									<li>
-										<a href="#">Portafolio</a>
-										<ul>
-											<li><a href="#">Residencial</a></li>
-											<li><a href="#">Comercial</a></li>
-											<li><a href="#">Industrial</a></li>
-											<li><a href="#">Interiorismo</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							<li><a href="mailto:Proyecto@ATL-arquitectos.com?subject=Informacion" class="button primary">Contacto</a></li>
-						</ul>
-					</nav>
-				</header>
+        /* Servicio grande */
+        .servicio-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-height: 70vh;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .servicio-block.reverse .servicio-img { order: 2; }
+        .servicio-block.reverse .servicio-info { order: 1; }
+        .servicio-img {
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
+        .servicio-img img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transform: scale(1.06);
+            transition: transform 0.9s ease;
+        }
+        .servicio-block:hover .servicio-img img { transform: scale(1.0); }
+        .servicio-info {
+            padding: 6rem 5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--bg);
+        }
+        .servicio-num {
+            font-family: var(--font-title);
+            font-size: 5rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.04);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        .servicio-info h2 {
+            font-family: var(--font-title);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+        }
+        .servicio-info p {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.55);
+            line-height: 2;
+            margin-bottom: 1rem;
+        }
+        .servicio-tag {
+            font-size: 0.58rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 1rem;
+        }
 
-			<section id="main" class="container">
-					<header>
-						<h2>Nuestros Servicios</h2>
-						<p>Especialistas en diseño residencial y espacios comerciales de alto nivel.</p>
-					</header>
+        /* Proceso */
+        .proceso-section { padding: 8rem 5rem; background: rgba(255,255,255,0.015); border-top: 1px solid rgba(255,255,255,0.05); }
+        .proceso-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: rgba(255,255,255,0.06); margin-top: 3rem; }
+        .paso { padding: 3rem 2rem; background: var(--bg); }
+        .paso-num {
+            font-family: var(--font-title);
+            font-size: 3rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.06);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        .paso h4 {
+            font-family: var(--font-title);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+            color: var(--lilac);
+        }
+        .paso p { font-size: 0.68rem; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1.8; }
 
-					<div class="row">
-						<div class="col-6 col-12-narrower">
-							<section class="box special">
-								<span class="icon solid major fa-home accent2"></span>
-								<h3>Arquitectura Residencial</h3>
-								<p>Diseño de casa habitación de lujo. Creamos hogares personalizados que fusionan la funcionalidad con una estética contemporánea, priorizando la iluminación natural y el confort.</p>
-							</section>
-						</div>
+        /* CTA final */
+        .cta-section {
+            padding: 8rem 5rem;
+            text-align: center;
+        }
+        .cta-section h2 {
+            font-family: var(--font-title);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .cta-section p {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 3rem;
+            letter-spacing: 0.05em;
+        }
+        .cta-buttons { display: flex; gap: 1.5rem; justify-content: center; }
 
-						<div class="col-6 col-12-narrower">
-							<section class="box special">
-								<span class="icon solid major fa-glass-cheers accent3"></span>
-								<h3>Terrazas y Rooftops</h3>
-								<p>Expertos en diseño de bares y espacios recreativos. Creamos ambientes sofisticados con estilos tropicales modernos, utilizando acabados en ónix, maderas nobles y concreto pulido.</p>
-							</section>
-						</div>
-					</div>
+        @media (max-width: 900px) {
+            .servicio-block { grid-template-columns: 1fr; }
+            .servicio-block.reverse .servicio-img { order: 0; }
+            .servicio-block.reverse .servicio-info { order: 0; }
+            .servicio-info { padding: 3rem 2rem; }
+            .proceso-section { padding: 5rem 2rem; }
+            .proceso-grid { grid-template-columns: 1fr 1fr; }
+            .cta-section { padding: 5rem 2rem; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
 
-					<div class="row">
-						<div class="col-12">
-							<section class="box">
-								<h3>Nuestro Proceso de Diseño</h3>
-								<p>Cada proyecto residencial o comercial comienza con un análisis profundo de tus necesidades. Nos encargamos desde la conceptualización arquitectónica hasta la definición de acabados técnicos y materiales de alta gama.</p>
-								<hr />
-								<div class="row">
-									<div class="col-6 col-12-mobilep">
-										<h4>Diseño de Interiores</h4>
-										<p>Selección de paletas de colores cálidas (arena, terracota, maderas) y mobiliario a medida para garantizar una armonía total en el espacio.</p>
-									</div>
-									<div class="col-6 col-12-mobilep">
-										<h4>Asesoría Técnica</h4>
-										<p>Especificaciones detalladas para construcción, incluyendo planos técnicos, iluminación indirecta y acabados de lujo.</p>
-									</div>
-								</div>
-							</section>
-						</div>
-					</div>
-				</section>
+    <!-- NAV -->
+    <nav id="nav">
+        <a href="index.html" class="nav-logo">ATL<span>arquitectos</span></a>
+        <ul class="nav-links">
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="servicios.html" class="active">Servicios</a></li>
+            <li><a href="quienes_somos.html">Estudio</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+        <div class="nav-social">
+            <a href="https://www.instagram.com" target="_blank" title="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="https://www.facebook.com" target="_blank" title="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="mailto:proyectos@atl-arquitectos.com" title="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></a>
+            <a href="https://wa.me/525529108306" target="_blank" title="WhatsApp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+        </div>
+    </nav>
 
-			<footer id="footer">
-					<ul class="icons">
-						<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-					</ul>
-					<ul class="copyright">
-						<li>&copy; 2026 ATL arquitectos. Todos los derechos reservados.</li>
-						<li>Design by: <a href="https://www.instagram.com/onlyvice/">ATL</a></li>
-					</ul>
-				</footer>
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+        <div class="page-hero-bg" style="background-image:url('images/pic03.jpg')"></div>
+        <div class="page-hero-fade"></div>
+        <div class="page-hero-content">
+            <div class="section-label" style="margin-bottom:1rem;">Lo que hacemos</div>
+            <h1>Nuestros<br>Servicios</h1>
+            <p>Especialistas en diseño residencial y espacios de alto nivel</p>
+        </div>
+        <div class="page-scroll-hint">
+            <span>Scroll</span>
+            <div class="page-scroll-hint-line"></div>
+        </div>
+    </div>
 
-		</div>
+    <!-- SECTION DOTS -->
+    <div class="section-dots" id="sectionDots">
+        <div class="section-dot active" data-target="residencial" data-label="Residencial"></div>
+        <div class="section-dot" data-target="comercial" data-label="Comercial"></div>
+        <div class="section-dot" data-target="terrazas" data-label="Terrazas"></div>
+        <div class="section-dot" data-target="interiorismo" data-label="Interiorismo"></div>
+        <div class="section-dot" data-target="proceso" data-label="Proceso"></div>
+    </div>
 
-		<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-	</body>
+    <!-- SERVICIOS -->
+    <div class="servicios-wrap">
+
+        <div class="servicio-block reveal" id="residencial">
+            <div class="servicio-img">
+                <img src="images/pic01.jpg" alt="Arquitectura Residencial">
+            </div>
+            <div class="servicio-info">
+                <div class="servicio-num">01</div>
+                <div class="servicio-tag">Residencial</div>
+                <h2>Arquitectura<br>Residencial</h2>
+                <p>Diseño de casa habitación de lujo. Creamos hogares personalizados que fusionan la funcionalidad con una estética contemporánea, priorizando la iluminación natural y el confort en cada espacio.</p>
+                <p>Desde la conceptualización hasta la entrega final, acompañamos a nuestros clientes garantizando que cada detalle refleje su visión.</p>
+                <a href="contacto.html" class="btn-secondary" style="margin-top:2rem; width:fit-content;">Iniciar proyecto →</a>
+            </div>
+        </div>
+
+        <div class="servicio-block reverse reveal" id="comercial">
+            <div class="servicio-img">
+                <img src="images/pic02.jpg" alt="Desarrollo Comercial">
+            </div>
+            <div class="servicio-info">
+                <div class="servicio-num">02</div>
+                <div class="servicio-tag">Comercial</div>
+                <h2>Desarrollo<br>Comercial</h2>
+                <p>Creamos espacios que impulsan tu negocio. Garantizamos que cada metro cuadrado trabaje, asegurando una experiencia única para el cliente y una operatividad que se maximiza de forma continua.</p>
+                <p>Análisis profundo del entorno para maximizar el potencial de la obra, con eficiencia estructural y diseño de vanguardia.</p>
+                <a href="contacto.html" class="btn-secondary" style="margin-top:2rem; width:fit-content;">Iniciar proyecto →</a>
+            </div>
+        </div>
+
+        <div class="servicio-block reveal" id="terrazas">
+            <div class="servicio-img">
+                <img src="images/pic04.jpg" alt="Terrazas y Rooftops">
+            </div>
+            <div class="servicio-info">
+                <div class="servicio-num">03</div>
+                <div class="servicio-tag">Terrazas · Bares · Rooftops</div>
+                <h2>Terrazas y<br>Rooftops</h2>
+                <p>Expertos en diseño de bares y espacios recreativos de alto nivel. Creamos ambientes sofisticados con estilos tropicales modernos, utilizando acabados en ónix, maderas nobles y concreto pulido.</p>
+                <p>Espacios que combinan funcionalidad gastronómica con experiencias visuales únicas.</p>
+                <a href="contacto.html" class="btn-secondary" style="margin-top:2rem; width:fit-content;">Iniciar proyecto →</a>
+            </div>
+        </div>
+
+        <div class="servicio-block reverse reveal" id="interiorismo">
+            <div class="servicio-img">
+                <img src="images/pic05.jpg" alt="Diseño de Interiores">
+            </div>
+            <div class="servicio-info">
+                <div class="servicio-num">04</div>
+                <div class="servicio-tag">Interiorismo</div>
+                <h2>Diseño de<br>Interiores</h2>
+                <p>Selección de paletas de colores cálidas — arena, terracota, maderas — y mobiliario a medida para garantizar una armonía total en el espacio.</p>
+                <p>Especificaciones detalladas para construcción, incluyendo planos técnicos, iluminación indirecta y acabados de lujo que perduran en el tiempo.</p>
+                <a href="contacto.html" class="btn-secondary" style="margin-top:2rem; width:fit-content;">Iniciar proyecto →</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PROCESO -->
+    <section class="proceso-section" id="proceso">
+        <div class="section-label reveal">Cómo trabajamos</div>
+        <h2 class="reveal" style="font-family:var(--font-title);font-size:clamp(2rem,4vw,3rem);font-weight:500;letter-spacing:0.05em;text-transform:uppercase;">Nuestro proceso<br>de diseño</h2>
+        <div class="proceso-grid">
+            <div class="paso reveal">
+                <div class="paso-num">01</div>
+                <h4>Análisis</h4>
+                <p>Briefing profundo, estudio del terreno y contexto para entender las necesidades del cliente.</p>
+            </div>
+            <div class="paso reveal">
+                <div class="paso-num">02</div>
+                <h4>Concepto</h4>
+                <p>Conceptualización y modelado en ArchiCAD con tecnología BIM de precisión.</p>
+            </div>
+            <div class="paso reveal">
+                <div class="paso-num">03</div>
+                <h4>Visualización</h4>
+                <p>Renders fotorrealistas en Twinmotion para ver el proyecto antes de construir.</p>
+            </div>
+            <div class="paso reveal">
+                <div class="paso-num">04</div>
+                <h4>Ajustes</h4>
+                <p>Revisión con el cliente, correcciones y aprobación final de cada detalle.</p>
+            </div>
+            <div class="paso reveal">
+                <div class="paso-num">05</div>
+                <h4>Entrega</h4>
+                <p>Dirección de obra y entrega final garantizando que la realidad supere la idea.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2 class="reveal">¿Tienes un proyecto<br>en mente?</h2>
+        <p class="reveal">Cuéntanos tu visión y la hacemos realidad</p>
+        <div class="cta-buttons reveal">
+            <a href="contacto.html" class="btn-primary">Contáctanos</a>
+            <a href="https://wa.me/525529108306" target="_blank" class="btn-secondary">WhatsApp</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <a href="index.html" class="footer-logo">ATL<span>arquitectos</span></a>
+        <ul class="footer-links">
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="quienes_somos.html">Estudio</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+        <div class="footer-social">
+            <a href="https://www.instagram.com" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="https://www.facebook.com" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="https://wa.me/525529108306" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+        </div>
+        <p class="footer-copy">© 2026 ATL Arquitectos · proyectos@atl-arquitectos.com · Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX - 3 + 'px';
+            cursor.style.top = e.clientY - 3 + 'px';
+            ring.style.left = e.clientX - 16 + 'px';
+            ring.style.top = e.clientY - 16 + 'px';
+        });
+        window.addEventListener('scroll', () => {
+            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+        });
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+        // ── SECTION DOTS ──
+        const dots = document.querySelectorAll('.section-dot');
+        const sections = ['residencial','comercial','terrazas','interiorismo','proceso'].map(id => document.getElementById(id)).filter(Boolean);
+        const dotObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    dots.forEach(d => d.classList.toggle('active', d.dataset.target === entry.target.id));
+                }
+            });
+        }, { threshold: 0.35 });
+        sections.forEach(s => dotObs.observe(s));
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const t = document.getElementById(dot.dataset.target);
+                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
 </html>

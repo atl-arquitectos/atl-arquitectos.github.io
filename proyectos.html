@@ -1,110 +1,644 @@
 <!DOCTYPE HTML>
 <html lang="es">
-	<head>
-    <title>Nuestros Proyectos | ATL Arquitectos</title>
+<head>
+    <title>Proyectos | ATL Arquitectos</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-		<link rel="apple-touch-icon" sizes="180x180" href="images/icono-touch-de-apple.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-		<link rel="shortcut icon" href="images/favicon.ico">
-		<link rel="manifest" href="images/sitio.manifiesto web">
-    </head>
-	<body class="is-preload">
-		<div id="page-wrapper">
+        :root {
+            --bg: #080808;
+            --white: #ffffff;
+            --lilac: #c4b5d4;
+            --amber: #d4845a;
+            --gray: #666666;
+            --font-title: 'Barlow Condensed', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
 
-			<header id="header">
-				<h1><a href="index.html">ATL</a> arquitectos</h1>
-				<nav id="nav">
-					<ul>
-						<li><a href="index.html">Home</a></li>
-						<li>
-							<a href="#" class="icon solid fa-angle-down">Opciones</a>
-							<ul>
-								<li><a href="proyectos.html">Proyectos</a></li>
-								<li><a href="servicios.html">Servicios</a></li>
-								<li><a href="quienes_somos.html">¿Quiénes somos?</a></li>
-								<li>
-									<a href="#">Portafolio</a>
-									<ul>
-										<li><a href="#">Residencial</a></li>
-										<li><a href="#">Comercial</a></li>
-										<li><a href="#">Industrial</a></li>
-										<li><a href="#">Interiorismo</a></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li><a href="mailto:Proyecto@ATL-arquitectos.com?subject=Informacion" class="button primary">Contacto</a></li>
-					</ul>
-				</nav>
-			</header>
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
 
-			<section id="main" class="container">
-				<header>
-					<h2>Nuestros Proyectos</h2>
-					<p>Explora nuestra visión arquitectónica a través de nuestras obras.</p>
-				</header>
+        /* ── CURSOR ── */
+        .cursor {
+            width: 6px; height: 6px;
+            background: var(--white);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+        .cursor-ring {
+            width: 32px; height: 32px;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.12s ease;
+        }
 
-				<div class="box">
-					<span class="image featured">
-						<img src="images/pic01.jpg" alt="Proyectos destacados ATL" />
-					</span>
-					
-					<header class="major">
-						<h3>Arquitectura con Propósito</h3>
-						<p>En ATL arquitectos, cada proyecto es un desafío único. Nos enfocamos en la integración de materiales de alta calidad y diseños que responden a las necesidades contemporáneas de habitabilidad y estética.</p>
-					</header>
-					
-					<hr />
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.5s ease, backdrop-filter 0.5s ease, padding 0.4s ease;
+            border-bottom: 1px solid transparent;
+        }
+        nav.scrolled {
+            background: rgba(8,8,8,0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 1.2rem 3rem;
+        }
+        .nav-logo {
+            font-family: var(--font-title);
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--white);
+            text-decoration: none;
+        }
+        .nav-logo span { font-weight: 200; opacity: 0.75; margin-left: 6px; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            font-size: 0.65rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--white); }
 
-					<div class="row">
-						<div class="col-6 col-12-mobilep">
-							<h3>Visión Técnica</h3>
-							<p>Analizamos cada terreno y contexto para maximizar el potencial de la obra, asegurando eficiencia estructural y diseño de vanguardia.</p>
-						</div>
-						<div class="col-6 col-12-mobilep">
-							<h3>Excelencia en Diseño</h3>
-							<p>Cuidamos cada detalle, desde la conceptualización hasta la ejecución final, garantizando que la realidad supere a la idea inicial.</p>
-						</div>
-					</div>
+        /* ── PROGRESS DOTS ── */
+        .progress-dots {
+            position: fixed;
+            right: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .dot {
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: none;
+            padding: 0;
+        }
+        .dot.active {
+            background: var(--white);
+            transform: scale(2);
+        }
 
-					<hr />
+        /* ── SECCIONES ── */
+        .proyecto {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
 
-					<div class="row">
-						<div class="col-12">
-							<h3>Especialidades</h3>
-							<p>Desde la calidez de la arquitectura residencial hasta la sofisticación de espacios comerciales y recreativos como bares y rooftops.</p>
-							<ul class="actions">
-								<li><a href="servicios.html" class="button alt">Ver Servicios</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</section>
+        /* ── BG CON ZOOM SCROLL ── */
+        .bg-img {
+            position: absolute;
+            inset: -15%;
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
+            transform: scale(1.3);
+        }
 
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-					<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-				</ul>
-				<ul class="copyright">
-					<li>&copy; 2026 ATL arquitectos. Todos los derechos reservados.</li>
-					<li>Design by: <a href="https://www.instagram.com/onlyvice/">ATL</a></li>
-				</ul>
-			</footer>
+        .bg-overlay { position: absolute; inset: 0; }
 
-		</div>
+        /* Overlays por proyecto */
+        #p1 .bg-overlay { background: linear-gradient(to right, rgba(8,8,20,0.88) 0%, rgba(60,40,80,0.25) 55%, rgba(8,8,20,0.5) 100%); }
+        #p2 .bg-overlay { background: linear-gradient(to right, rgba(8,8,20,0.88) 0%, rgba(8,8,20,0.35) 55%, rgba(8,8,20,0.6) 100%); }
+        #p3 .bg-overlay { background: linear-gradient(to right, rgba(8,5,3,0.9)  0%, rgba(40,20,8,0.3)  55%, rgba(8,5,3,0.6)  100%); }
+        #p4 .bg-overlay { background: linear-gradient(to right, rgba(3,8,8,0.88) 0%, rgba(20,40,40,0.3) 55%, rgba(3,8,8,0.6)  100%); }
+        #p5 .bg-overlay { background: linear-gradient(to right, rgba(8,8,8,0.88) 0%, rgba(50,40,30,0.3) 55%, rgba(8,8,8,0.6)  100%); }
 
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.dropotron.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
+        /* ── CONTENIDO ── */
+        .proyecto-content {
+            position: relative;
+            z-index: 10;
+            padding: 0 5rem;
+            max-width: 52%;
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 1s ease 0.2s, transform 1s ease 0.2s;
+        }
+        .proyecto.active .proyecto-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
 
-	</body>
+        .proy-num {
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--lilac);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .proy-num::before {
+            content: '';
+            width: 2.5rem; height: 1px;
+            background: var(--lilac);
+            flex-shrink: 0;
+        }
+
+        .proy-title {
+            font-family: var(--font-title);
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            line-height: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .proy-subtitle {
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 2.5rem;
+        }
+
+        .proy-divider {
+            width: 3rem; height: 1px;
+            background: rgba(255,255,255,0.15);
+            margin-bottom: 2rem;
+        }
+
+        .proy-specs { list-style: none; margin-bottom: 3rem; }
+        .proy-specs li {
+            font-size: 0.62rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            display: flex;
+            gap: 1rem;
+        }
+        .proy-specs li strong {
+            color: rgba(255,255,255,0.8);
+            font-weight: 400;
+            min-width: 6rem;
+        }
+
+        .proy-tech {
+            font-size: 0.55rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .proy-tech::before {
+            content: '◈';
+            font-size: 0.7rem;
+        }
+
+        .proy-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.62rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--white);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+            padding-bottom: 0.4rem;
+            transition: gap 0.3s, border-color 0.3s;
+        }
+        .proy-cta:hover { gap: 1.8rem; border-color: var(--white); }
+        .proy-cta::after { content: '→'; }
+
+        /* ── INFO ESQUINA ── */
+        .top-right {
+            position: absolute;
+            top: 7rem; right: 3rem;
+            z-index: 10;
+            text-align: right;
+            opacity: 0;
+            transition: opacity 1s ease 0.5s;
+        }
+        .proyecto.active .top-right { opacity: 1; }
+        .proy-code {
+            font-size: 0.58rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            color: rgba(255,255,255,0.35);
+            text-transform: uppercase;
+        }
+        .proy-coords {
+            font-size: 0.52rem;
+            font-weight: 200;
+            letter-spacing: 0.12em;
+            color: rgba(255,255,255,0.2);
+            margin-top: 0.4rem;
+        }
+
+        /* ── FOOTER FINAL ── */
+        #fin {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .fin-title {
+            font-family: var(--font-title);
+            font-size: clamp(2rem, 6vw, 5rem);
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        #fin.active .fin-title { opacity: 1; transform: translateY(0); }
+        .fin-sub {
+            font-size: 0.65rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            color: var(--gray);
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 1s ease 0.3s;
+        }
+        #fin.active .fin-sub { opacity: 1; }
+        .fin-buttons {
+            display: flex;
+            gap: 1.5rem;
+            opacity: 0;
+            transition: opacity 1s ease 0.5s;
+        }
+        #fin.active .fin-buttons { opacity: 1; }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2.5rem;
+            background: var(--white);
+            color: var(--bg);
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover { background: var(--lilac); }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2.5rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--white);
+            font-size: 0.65rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: border-color 0.3s;
+        }
+        .btn-secondary:hover { border-color: var(--white); }
+        .fin-copy {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 0.52rem;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.15);
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 1.5rem; }
+            .nav-links { display: none; }
+            .proyecto-content { padding: 0 2rem; max-width: 90%; }
+            .progress-dots { right: 1rem; }
+            .top-right { right: 1.5rem; top: 5.5rem; }
+        }
+
+        /* ── SCROLL HINT (solo primer proyecto) ── */
+        .scroll-hint {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+            animation: hintFadeIn 1s ease 2s forwards;
+        }
+        .scroll-hint span {
+            font-size: 0.45rem;
+            font-weight: 300;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+        }
+        .scroll-hint-line {
+            width: 1px;
+            height: 3rem;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+            animation: hintPulse 2s ease-in-out infinite;
+        }
+        @keyframes hintFadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+            to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.25; transform: scaleY(0.8); }
+            50%       { opacity: 1;    transform: scaleY(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <a href="index.html" class="nav-logo">ATL<span>arquitectos</span></a>
+        <ul class="nav-links">
+            <li><a href="proyectos.html" class="active">Proyectos</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="quienes_somos.html">Estudio</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- DOTS -->
+    <div class="progress-dots" id="dots"></div>
+
+    <!-- PROYECTO 01 -->
+    <section class="proyecto" id="p1">
+        <div class="bg-img" style="background-image:url('images/pic01.jpg')"></div>
+        <div class="bg-overlay"></div>
+        <div class="top-right">
+            <div class="proy-code">IIA — 0013 / Residencial</div>
+            <div class="proy-coords">19°25′N · 99°08′O</div>
+        </div>
+        <div class="proyecto-content">
+            <div class="proy-num">Proyecto 01</div>
+            <h2 class="proy-title">Casa<br>Clásica</h2>
+            <p class="proy-subtitle">Elevación Frontal Nocturna</p>
+            <div class="proy-divider"></div>
+            <ul class="proy-specs">
+                <li><strong>Superficie</strong> 320 m²</li>
+                <li><strong>Ubicación</strong> Ciudad de México</li>
+                <li><strong>Tipo</strong> Residencial</li>
+                <li><strong>Material</strong> Concreto · Piedra · Vidrio</li>
+            </ul>
+            <div class="proy-tech">ArchiCAD BIM · Render Nocturno 3D</div>
+            <a href="contacto.html" class="proy-cta">Solicitar información</a>
+        </div>
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <div class="scroll-hint-line"></div>
+        </div>
+    </section>
+
+    <!-- PROYECTO 02 -->
+    <section class="proyecto" id="p2">
+        <div class="bg-img" style="background-image:url('images/pic02.jpg')"></div>
+        <div class="bg-overlay"></div>
+        <div class="top-right">
+            <div class="proy-code">IIA — 0014 / Interiorismo</div>
+            <div class="proy-coords">19°25′N · 99°08′O</div>
+        </div>
+        <div class="proyecto-content">
+            <div class="proy-num">Proyecto 02</div>
+            <h2 class="proy-title">Sala<br>Comedor</h2>
+            <p class="proy-subtitle">Redefinición Interior · Estilo Japandi</p>
+            <div class="proy-divider"></div>
+            <ul class="proy-specs">
+                <li><strong>Superficie</strong> 85 m²</li>
+                <li><strong>Ubicación</strong> Ciudad de México</li>
+                <li><strong>Tipo</strong> Remodelación Interior</li>
+                <li><strong>Material</strong> Madera · Concreto · Lino</li>
+            </ul>
+            <div class="proy-tech">ArchiCAD BIM · Render Fotorrealista 3D</div>
+            <a href="contacto.html" class="proy-cta">Solicitar información</a>
+        </div>
+    </section>
+
+    <!-- PROYECTO 03 -->
+    <section class="proyecto" id="p3">
+        <div class="bg-img" style="background-image:url('images/pic03.jpg')"></div>
+        <div class="bg-overlay"></div>
+        <div class="top-right">
+            <div class="proy-code">IIA — 0015 / Comercial</div>
+            <div class="proy-coords">20°58′N · 89°37′O</div>
+        </div>
+        <div class="proyecto-content">
+            <div class="proy-num">Proyecto 03</div>
+            <h2 class="proy-title">Núcleo<br>Comercial</h2>
+            <p class="proy-subtitle">Espacio Comercial de Alto Nivel</p>
+            <div class="proy-divider"></div>
+            <ul class="proy-specs">
+                <li><strong>Superficie</strong> 480 m²</li>
+                <li><strong>Ubicación</strong> Mérida, Yucatán</li>
+                <li><strong>Tipo</strong> Comercial</li>
+                <li><strong>Material</strong> Madera · Piedra · Concreto</li>
+            </ul>
+            <div class="proy-tech">ArchiCAD BIM · Visualización 3D</div>
+            <a href="contacto.html" class="proy-cta">Solicitar información</a>
+        </div>
+    </section>
+
+    <!-- PROYECTO 04 -->
+    <section class="proyecto" id="p4">
+        <div class="bg-img" style="background-image:url('images/pic04.jpg')"></div>
+        <div class="bg-overlay"></div>
+        <div class="top-right">
+            <div class="proy-code">IIA — 0016 / Terraza</div>
+            <div class="proy-coords">25°41′N · 100°18′O</div>
+        </div>
+        <div class="proyecto-content">
+            <div class="proy-num">Proyecto 04</div>
+            <h2 class="proy-title">Rooftop<br>Lounge</h2>
+            <p class="proy-subtitle">Terraza · Bar · Espacio Recreativo</p>
+            <div class="proy-divider"></div>
+            <ul class="proy-specs">
+                <li><strong>Superficie</strong> 250 m²</li>
+                <li><strong>Ubicación</strong> Monterrey, N.L.</li>
+                <li><strong>Tipo</strong> Terraza · Bar</li>
+                <li><strong>Material</strong> Ónix · Madera noble · Concreto</li>
+            </ul>
+            <div class="proy-tech">ArchiCAD BIM · Render Ambiental 3D</div>
+            <a href="contacto.html" class="proy-cta">Solicitar información</a>
+        </div>
+    </section>
+
+    <!-- PROYECTO 05 -->
+    <section class="proyecto" id="p5">
+        <div class="bg-img" style="background-image:url('images/pic05.jpg')"></div>
+        <div class="bg-overlay"></div>
+        <div class="top-right">
+            <div class="proy-code">IIA — 0017 / Residencial</div>
+            <div class="proy-coords">19°25′N · 99°08′O</div>
+        </div>
+        <div class="proyecto-content">
+            <div class="proy-num">Proyecto 05</div>
+            <h2 class="proy-title">Casa<br>Contemporánea</h2>
+            <p class="proy-subtitle">Arquitectura Residencial de Alta Gama</p>
+            <div class="proy-divider"></div>
+            <ul class="proy-specs">
+                <li><strong>Superficie</strong> 560 m²</li>
+                <li><strong>Ubicación</strong> Ciudad de México</li>
+                <li><strong>Tipo</strong> Residencial</li>
+                <li><strong>Material</strong> Acero · Vidrio · Madera</li>
+            </ul>
+            <div class="proy-tech">ArchiCAD BIM · Render Fotorrealista 3D</div>
+            <a href="contacto.html" class="proy-cta">Solicitar información</a>
+        </div>
+    </section>
+
+    <!-- FIN -->
+    <section id="fin">
+        <h2 class="fin-title">¿Tienes un<br>proyecto en mente?</h2>
+        <p class="fin-sub">Cuéntanos · Lo hacemos realidad</p>
+        <div class="fin-buttons">
+            <a href="contacto.html" class="btn-primary">Contáctanos</a>
+            <a href="https://wa.me/525529108306" target="_blank" class="btn-secondary">WhatsApp</a>
+        </div>
+        <p class="fin-copy">© 2026 ATL Arquitectos · proyectos@atl-arquitectos.com</p>
+    </section>
+
+    <script>
+        // ── CURSOR ──
+        const cursor = document.getElementById('cursor');
+        const ring   = document.getElementById('cursorRing');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX - 3 + 'px';
+            cursor.style.top  = e.clientY - 3 + 'px';
+            ring.style.left   = e.clientX - 16 + 'px';
+            ring.style.top    = e.clientY - 16 + 'px';
+        });
+
+        // ── NAV GLASS ──
+        const navEl = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            navEl.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // ── SECCIONES ──
+        const proyectos = Array.from(document.querySelectorAll('.proyecto, #fin'));
+        const dotsEl    = document.getElementById('dots');
+
+        // Crear dots
+        proyectos.forEach((_, i) => {
+            const d = document.createElement('button');
+            d.className = 'dot';
+            d.setAttribute('aria-label', 'Ir al proyecto ' + (i + 1));
+            d.addEventListener('click', () => proyectos[i].scrollIntoView({ behavior: 'smooth' }));
+            dotsEl.appendChild(d);
+        });
+        const dots = Array.from(dotsEl.querySelectorAll('.dot'));
+
+        // ── ZOOM SCROLL DRAMÁTICO ──
+        function updateParallax() {
+            const scrollY = window.scrollY;
+            const winH    = window.innerHeight;
+
+            proyectos.forEach((section, i) => {
+                const bg   = section.querySelector('.bg-img');
+                if (!bg) return;
+
+                const rect   = section.getBoundingClientRect();
+                const center = rect.top + rect.height / 2;
+                const prog   = 1 - (center / winH); // -1 a 1
+
+                // Zoom: de 1.3 (lejos) a 1.0 (centrado)
+                const zoom = 1.3 - (Math.max(0, Math.min(1, (winH - rect.top) / winH)) * 0.3);
+                // Parallax vertical
+                const translateY = prog * 60;
+
+                bg.style.transform = `scale(${zoom}) translateY(${translateY}px)`;
+            });
+        }
+
+        // ── INTERSECTION OBSERVER ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    const idx = proyectos.indexOf(entry.target);
+                    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, { threshold: 0.55 });
+
+        proyectos.forEach(s => observer.observe(s));
+
+        // ── SCROLL EVENT ──
+        window.addEventListener('scroll', updateParallax, { passive: true });
+        updateParallax();
+
+        // ── OCULTAR SCROLL HINT al bajar ──
+        const scrollHint = document.querySelector('.scroll-hint');
+        if (scrollHint) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 80) {
+                    scrollHint.style.opacity = '0';
+                    scrollHint.style.transition = 'opacity 0.5s ease';
+                }
+            }, { passive: true });
+        }
+    </script>
+</body>
 </html>
