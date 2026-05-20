@@ -70,7 +70,7 @@ nav.scrolled {
     color: var(--white);
     text-decoration: none;
 }
-.nav-logo span { font-weight: 200; opacity: 0.75; margin-left: 6px; }
+.nav-logo span { font-weight: 200; opacity: 0.75; margin-left: 6px; text-transform: none; }
 .nav-links { display: flex; gap: 2.5rem; list-style: none; }
 .nav-links a {
     font-size: 0.65rem;
