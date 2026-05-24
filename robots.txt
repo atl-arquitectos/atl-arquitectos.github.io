@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /index-backup.html
+Allow: /
+
+Sitemap: https://www.atl-arquitectos.com/sitemap.xml
