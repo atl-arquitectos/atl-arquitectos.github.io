@@ -308,10 +308,10 @@
         #quienes {
             border-top: 1px solid rgba(255,255,255,0.05);
             border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .quienes-wrapper {
             max-width: 1400px;
             margin: 0 auto;
+        }
+        .quienes-wrapper {
             padding: 8rem 5rem;
         }
         .quienes-inner {
@@ -407,10 +407,11 @@
             background: rgba(255,255,255,0.015);
             border-top: 1px solid rgba(255,255,255,0.05);
             border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .tec-inner {
             max-width: 1400px;
             margin: 0 auto;
+        }
+        .tec-inner {
+            max-width: 100%;
         }
         .tec-header {
             display: grid;
@@ -453,7 +454,10 @@
         .tec-icon {
             font-size: 1.8rem;
             margin-bottom: 1rem;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 72px;
         }
         .tec-name {
             font-family: var(--font-title);
@@ -578,8 +582,10 @@
             padding: 8rem 5rem;
             background: rgba(255,255,255,0.015);
             border-top: 1px solid rgba(255,255,255,0.05);
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        .preview-inner { max-width: 1400px; margin: 0 auto; }
+        .preview-inner { max-width: 100%; }
         .preview-header {
             display: flex;
             justify-content: space-between;
@@ -666,19 +672,19 @@
         .footer-links { display: flex; gap: 2rem; list-style: none; }
         .footer-links a {
             font-size: 0.6rem;
-            font-weight: 300;
+            font-weight: 400;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.35);
+            color: rgba(255,255,255,0.60);
             text-decoration: none;
             transition: color 0.3s;
         }
         .footer-links a:hover { color: var(--white); }
         .footer-copy {
             font-size: 0.55rem;
-            font-weight: 300;
+            font-weight: 400;
             letter-spacing: 0.1em;
-            color: rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.50);
         }
 
 
@@ -693,7 +699,7 @@
         }
 
         /* Secciones semi-transparentes para que se vea el 3D */
-        #quienes, #especialidades, #cifras, #tecnologia, #filosofia, #preview, footer, .marquee-band {
+        #quienes, #especialidades, #cifras, #tecnologia, #filosofia, #preview, footer {
             background: rgba(8, 8, 8, 0.78) !important;
         }
 
@@ -717,10 +723,10 @@
         /* ── MARQUEE BAND ── */
         .marquee-band {
             overflow: hidden;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            padding: 1.2rem 0;
-            background: var(--bg);
+            border-top: 1px solid rgba(255,255,255,0.10);
+            border-bottom: 1px solid rgba(255,255,255,0.10);
+            padding: 1.6rem 0;
+            background: #080808;
         }
         .marquee-track {
             display: flex;
@@ -736,10 +742,10 @@
             white-space: nowrap;
             font-family: var(--font-title);
             font-size: 0.65rem;
-            font-weight: 300;
+            font-weight: 400;
             letter-spacing: 0.35em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.50);
         }
         .marquee-dot {
             width: 4px; height: 4px;
@@ -788,6 +794,11 @@
             flex-direction: column;
             gap: 0.75rem;
             align-items: center;
+            background: rgba(8, 8, 8, 0.45);
+            padding: 0.8rem 0.55rem;
+            border-radius: 20px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
         .section-dot {
             width: 5px; height: 5px;
@@ -893,19 +904,23 @@
         <div class="marquee-track">
             <!-- repeated twice for seamless loop -->
             <div class="marquee-item">Arquitectura<span class="marquee-dot"></span></div>
-            <div class="marquee-item">Diseño Contemporáneo<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Diseño<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Innovación<span class="marquee-dot"></span></div>
             <div class="marquee-item">Interiorismo<span class="marquee-dot"></span></div>
             <div class="marquee-item">Construcción<span class="marquee-dot"></span></div>
-            <div class="marquee-item">Ciudad de México<span class="marquee-dot"></span></div>
-            <div class="marquee-item">ATL Arquitectos<span class="marquee-dot"></span></div>
-            <div class="marquee-item">Desde 2018<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Remodelación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Experimentación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Humanismo<span class="marquee-dot"></span></div>
+            <div class="marquee-item">CDMX<span class="marquee-dot"></span></div>
             <div class="marquee-item">Arquitectura<span class="marquee-dot"></span></div>
-            <div class="marquee-item">Diseño Contemporáneo<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Diseño<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Innovación<span class="marquee-dot"></span></div>
             <div class="marquee-item">Interiorismo<span class="marquee-dot"></span></div>
             <div class="marquee-item">Construcción<span class="marquee-dot"></span></div>
-            <div class="marquee-item">Ciudad de México<span class="marquee-dot"></span></div>
-            <div class="marquee-item">ATL Arquitectos<span class="marquee-dot"></span></div>
-            <div class="marquee-item">Desde 2018<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Remodelación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Experimentación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Humanismo<span class="marquee-dot"></span></div>
+            <div class="marquee-item">CDMX<span class="marquee-dot"></span></div>
         </div>
     </div>
 
@@ -914,7 +929,7 @@
         <div class="quienes-wrapper">
             <div class="section-label">Quiénes somos</div>
             <div class="quienes-inner">
-                <p class="quienes-text">ATL arquitectos surge como la consolidación de un camino recorrido. Nos presentamos como una firma renovada, cuya esencia nace de la unión entre la experiencia técnica acumulada y el impulso por redefinir los espacios contemporáneos.</p>
+                <p class="quienes-text">ATL Arquitectos surge como la consolidación de varios caminos recorridos. Nos presentamos como una firma cuya esencia nace de la unión entre la experiencia técnica y la búsqueda de nuevas formas de construir y redefinir los espacios contemporáneos.</p>
                 <a href="quienes_somos.html" class="quienes-link">Conocer más →</a>
             </div>
         </div>
@@ -994,65 +1009,42 @@
                 <p class="tec-desc">Integramos soluciones tecnológicas de alto nivel para garantizar precisión, eficiencia y una visualización exacta de cada proyecto antes de construir. Desde el modelado BIM hasta la inteligencia artificial aplicada al diseño.</p>
             </div>
             <div class="tec-grid">
+                <!-- Rhinoceros -->
+                <div class="tec-item">
+                    <span class="tec-icon">
+                        <img src="assets/img/logos/rhinoceros.png" alt="Rhinoceros" style="width:58px;height:58px;object-fit:contain;">
+                    </span>
+                    <div class="tec-name">Rhinoceros</div>
+                    <div class="tec-sub">Conceptualización y modelado</div>
+                </div>
                 <!-- ArchiCAD -->
                 <div class="tec-item">
                     <span class="tec-icon">
-                        <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 75 L50 25 L80 75" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                            <path d="M33 57 L67 57" stroke="white" stroke-width="7" stroke-linecap="round"/>
-                        </svg>
+                        <img src="assets/img/logos/archicad.png" alt="ArchiCAD" style="width:48px;height:48px;object-fit:contain;">
                     </span>
                     <div class="tec-name">ArchiCAD</div>
                     <div class="tec-sub">Modelado BIM</div>
                 </div>
+                <!-- Visoid AI -->
+                <div class="tec-item">
+                    <span class="tec-icon">
+                        <img src="assets/img/logos/visoid.png" alt="Visoid AI" style="height:30px;width:auto;max-width:130px;object-fit:contain;">
+                    </span>
+                    <div class="tec-name">Visoid AI</div>
+                    <div class="tec-sub">Visualización con IA</div>
+                </div>
                 <!-- Twinmotion -->
                 <div class="tec-item">
                     <span class="tec-icon">
-                        <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="50" cy="50" r="30" stroke="white" stroke-width="6" fill="none"/>
-                            <circle cx="50" cy="50" r="10" fill="white"/>
-                            <path d="M50 20 L50 10 M50 90 L50 80 M20 50 L10 50 M90 50 L80 50" stroke="white" stroke-width="5" stroke-linecap="round"/>
-                            <path d="M29 29 L22 22 M71 29 L78 22 M29 71 L22 78 M71 71 L78 78" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
-                        </svg>
+                        <img src="assets/img/logos/twinmotion.png" alt="Twinmotion" style="width:48px;height:48px;object-fit:contain;">
                     </span>
                     <div class="tec-name">Twinmotion</div>
                     <div class="tec-sub">Render fotorrealista</div>
                 </div>
-                <!-- Claude AI -->
-                <div class="tec-item">
-                    <span class="tec-icon">
-                        <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M28 72 C28 72 34 30 50 26 C66 22 72 72 72 72" stroke="white" stroke-width="6.5" stroke-linecap="round" fill="none"/>
-                            <path d="M37 53 L63 53" stroke="white" stroke-width="6" stroke-linecap="round"/>
-                            <circle cx="38" cy="36" r="4" fill="white" opacity="0.5"/>
-                            <circle cx="62" cy="36" r="4" fill="white" opacity="0.5"/>
-                        </svg>
-                    </span>
-                    <div class="tec-name">Claude AI</div>
-                    <div class="tec-sub">IA aplicada al diseño</div>
-                </div>
-                <!-- Planos BIM -->
-                <div class="tec-item">
-                    <span class="tec-icon">
-                        <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="15" y="15" width="30" height="30" rx="3" stroke="white" stroke-width="5" fill="none"/>
-                            <rect x="55" y="15" width="30" height="30" rx="3" stroke="white" stroke-width="5" fill="none" opacity="0.6"/>
-                            <rect x="15" y="55" width="30" height="30" rx="3" stroke="white" stroke-width="5" fill="none" opacity="0.6"/>
-                            <rect x="55" y="55" width="30" height="30" rx="3" stroke="white" stroke-width="5" fill="none" opacity="0.3"/>
-                        </svg>
-                    </span>
-                    <div class="tec-name">Planos BIM</div>
-                    <div class="tec-sub">Documentación técnica</div>
-                </div>
                 <!-- BIMcloud -->
                 <div class="tec-item">
                     <span class="tec-icon">
-                        <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="50" cy="28" r="10" stroke="white" stroke-width="5" fill="none"/>
-                            <circle cx="22" cy="74" r="10" stroke="white" stroke-width="5" fill="none"/>
-                            <circle cx="78" cy="74" r="10" stroke="white" stroke-width="5" fill="none"/>
-                            <path d="M50 38 L22 64 M50 38 L78 64 M32 74 L68 74" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.45"/>
-                        </svg>
+                        <img src="assets/img/logos/bimcloud.png" alt="BIMcloud" style="width:60px;height:60px;object-fit:contain;">
                     </span>
                     <div class="tec-name">BIMcloud</div>
                     <div class="tec-sub">Coordinación multidisciplinar</div>
