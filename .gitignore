@@ -1,0 +1,9 @@
+# Backups — solo locales, nunca públicos
+index-backup.html
+
+# macOS
+.DS_Store
+assets/.DS_Store
+assets/img/.DS_Store
+assets/img/logos/.DS_Store
+**/.DS_Store
