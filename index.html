@@ -773,6 +773,7 @@
             .esp-body { padding: 1.5rem; }
             .filosofia-grid { grid-template-columns: 1fr; }
             .tec-grid { grid-template-columns: repeat(3, 1fr); }
+            #tecnologia { text-align: center; }
             .cifras-grid { grid-template-columns: repeat(2, 1fr); }
             .preview-grid { grid-template-columns: 1fr; height: auto; }
             .preview-item { height: 50vw; }
@@ -781,6 +782,9 @@
         }
         @media (max-width: 480px) {
             .esp-grid { grid-template-columns: 1fr; }
+            .tec-grid { grid-template-columns: repeat(2, 1fr); }
+            .tec-item { padding: 2rem 1rem; }
+            .tec-icon { height: 60px; }
         }
 
         /* ── SECTION DOTS ── */
@@ -1028,7 +1032,7 @@
                 <!-- Visoid AI -->
                 <div class="tec-item">
                     <span class="tec-icon">
-                        <img src="assets/img/logos/visoid.png" alt="Visoid AI" style="height:30px;width:auto;max-width:130px;object-fit:contain;">
+                        <img src="assets/img/logos/visoid.png" alt="Visoid AI" style="height:28px;width:auto;max-width:min(130px, 80%);object-fit:contain;">
                     </span>
                     <div class="tec-name">Visoid AI</div>
                     <div class="tec-sub">Visualización con IA</div>
