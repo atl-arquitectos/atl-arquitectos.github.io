@@ -847,36 +847,36 @@
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            background: rgba(8, 8, 8, 0.45);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            border: 1px solid rgba(255,255,255,0.10);
-            padding: 0.55rem 1rem;
+            background: rgba(8, 8, 8, 0.70);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.22);
+            padding: 0.6rem 1.1rem;
             border-radius: 20px;
             cursor: pointer;
-            transition: border-color 0.5s ease, background 0.5s ease;
+            transition: border-color 0.4s ease, background 0.4s ease;
             font-family: var(--font-body);
             outline: none;
         }
         .atl-sound-btn:hover {
-            border-color: rgba(255,255,255,0.22);
-            background: rgba(8,8,8,0.6);
+            border-color: rgba(255,255,255,0.45);
+            background: rgba(8,8,8,0.85);
         }
         .atl-sound-dot {
             width: 5px; height: 5px;
             border-radius: 50%;
             background: var(--lilac);
-            opacity: 0.25;
+            opacity: 0.5;
             flex-shrink: 0;
             transition: opacity 0.8s ease, box-shadow 0.8s ease;
         }
         .atl-sound-label {
-            font-size: 0.42rem;
+            font-size: 0.45rem;
             font-weight: 400;
             letter-spacing: 0.28em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.30);
-            transition: color 0.5s ease;
+            color: rgba(255,255,255,0.55);
+            transition: color 0.4s ease;
             white-space: nowrap;
         }
         .atl-sound-btn.atl-sound-on .atl-sound-dot {
@@ -885,16 +885,22 @@
             animation: soundPulse 4s ease-in-out infinite;
         }
         .atl-sound-btn.atl-sound-on .atl-sound-label {
-            color: rgba(196,181,212,0.75);
+            color: rgba(196,181,212,0.90);
         }
         .atl-sound-btn.atl-sound-on {
-            border-color: rgba(196,181,212,0.20);
+            border-color: rgba(196,181,212,0.35);
         }
         @keyframes soundPulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50%       { opacity: 0.5; transform: scale(0.7); }
         }
-        @media (max-width: 900px) { .atl-sound-btn { display: none; } }
+        @media (max-width: 900px) {
+            .atl-sound-btn {
+                bottom: 1.5rem;
+                left: 1.5rem;
+                padding: 0.5rem 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
