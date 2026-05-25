@@ -441,7 +441,7 @@
         }
         .tec-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 1px;
             background: rgba(255,255,255,0.06);
         }
@@ -776,7 +776,7 @@
             .esp-img { height: 160px; }
             .esp-body { padding: 1.5rem; }
             .filosofia-grid { grid-template-columns: 1fr; }
-            .tec-grid { grid-template-columns: repeat(3, 1fr); }
+            .tec-grid { grid-template-columns: repeat(3, 1fr); } /* 2 filas de 3 */
             #tecnologia { text-align: center; }
             .cifras-grid { grid-template-columns: repeat(2, 1fr); }
             .preview-grid { grid-template-columns: 1fr; height: auto; }
@@ -786,9 +786,31 @@
         }
         @media (max-width: 480px) {
             .esp-grid { grid-template-columns: 1fr; }
-            .tec-grid { grid-template-columns: repeat(2, 1fr); }
-            .tec-item { padding: 2rem 1rem; }
+            /* Carrusel horizontal en móvil */
+            .tec-grid {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                background: transparent;
+                gap: 0;
+            }
+            .tec-grid::-webkit-scrollbar { display: none; }
+            .tec-item {
+                flex: 0 0 68vw;
+                scroll-snap-align: start;
+                padding: 2rem 1rem;
+                border-right: 1px solid rgba(255,255,255,0.06);
+                background: var(--bg);
+            }
             .tec-icon { height: 60px; }
+        }
+
+        /* Cursor personalizado: solo en dispositivos con puntero fino (mouse/trackpad) */
+        @media (pointer: coarse) {
+            .cursor, .cursor-ring { display: none !important; }
         }
 
         /* ── SECTION DOTS ── */
@@ -1153,6 +1175,14 @@
                     <div class="tec-name">Twinmotion</div>
                     <div class="tec-sub">Render fotorrealista</div>
                 </div>
+                <!-- Cinema 4D -->
+                <div class="tec-item">
+                    <span class="tec-icon">
+                        <img src="assets/img/logos/cinema4d.svg" alt="Cinema 4D" style="width:46px;height:46px;object-fit:contain;opacity:0.9;">
+                    </span>
+                    <div class="tec-name">Cinema 4D</div>
+                    <div class="tec-sub">Recorridos hyperrealistas</div>
+                </div>
                 <!-- BIMcloud -->
                 <div class="tec-item">
                     <span class="tec-icon">
@@ -1241,15 +1271,29 @@
     </footer>
 
     <script>
-        // ── CURSOR ──
+        // ── CURSOR (solo dispositivos con puntero fino) ──
         const cursor = document.getElementById('cursor');
         const ring   = document.getElementById('cursorRing');
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX - 3 + 'px';
-            cursor.style.top  = e.clientY - 3 + 'px';
-            ring.style.left   = e.clientX - 16 + 'px';
-            ring.style.top    = e.clientY - 16 + 'px';
-        });
+        if (window.matchMedia('(pointer: fine)').matches) {
+            document.addEventListener('mousemove', e => {
+                cursor.style.left = e.clientX - 3 + 'px';
+                cursor.style.top  = e.clientY - 3 + 'px';
+                ring.style.left   = e.clientX - 16 + 'px';
+                ring.style.top    = e.clientY - 16 + 'px';
+            });
+        }
+
+        // ── HERO VIDEO: arranca desde el final en móvil/táctil ──
+        (function() {
+            if (!window.matchMedia('(pointer: coarse)').matches) return;
+            const heroVid = document.querySelector('.hero-bg video');
+            if (!heroVid) return;
+            heroVid.addEventListener('loadedmetadata', function() {
+                if (heroVid.duration && isFinite(heroVid.duration)) {
+                    heroVid.currentTime = heroVid.duration * 0.88;
+                }
+            }, { once: true });
+        })();
 
         // ── NAV GLASS ──
         const navEl = document.getElementById('nav');
