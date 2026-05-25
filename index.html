@@ -561,7 +561,7 @@
             font-family: var(--font-title);
             font-size: 2.5rem;
             font-weight: 600;
-            color: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.35);
             line-height: 1;
             margin-bottom: 0.8rem;
         }
@@ -1320,28 +1320,36 @@
         }, { threshold: 0.2 });
         revealEls.forEach(el => revealObs.observe(el));
 
-        // ── CONTADOR CIFRAS ──
-        function animateCount(el, target, suffix = '') {
+        // ── CONTADOR CIFRAS — se re-anima cada vez que entra al viewport ──
+        let cifraTimers = [];
+        function animateCount(el, target, suffix) {
             let count = 0;
             const step = target / 60;
             const timer = setInterval(() => {
                 count += step;
                 if (count >= target) { count = target; clearInterval(timer); }
-                el.innerHTML = Math.floor(count) + '<span>' + suffix + '</span>';
+                el.innerHTML = Math.floor(count) + (suffix ? '<span>' + suffix + '</span>' : '');
             }, 20);
+            return timer;
         }
+        const cifraData = [
+            { val: 8,   suffix: '+' },
+            { val: 27,  suffix: '+' },
+            { val: 4,   suffix: ''  },
+            { val: 100, suffix: '%' }
+        ];
         const cifraObs = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                    // Cancelar timers previos para no acumular animaciones
+                    cifraTimers.forEach(t => clearInterval(t));
+                    cifraTimers = [];
                     const nums = entry.target.querySelectorAll('.cifra-num');
-                    const data = [
-                        { val: 8,   suffix: '+' },
-                        { val: 27,  suffix: '+' },
-                        { val: 4,   suffix: ''  },
-                        { val: 100, suffix: '%' }
-                    ];
-                    nums.forEach((n, i) => animateCount(n, data[i].val, data[i].suffix));
-                    cifraObs.disconnect();
+                    nums.forEach((n, i) => {
+                        n.innerHTML = '0';
+                        cifraTimers.push(animateCount(n, cifraData[i].val, cifraData[i].suffix));
+                    });
+                    // Sin disconnect → se re-anima cada vez que el usuario pasa por aquí
                 }
             });
         }, { threshold: 0.5 });
