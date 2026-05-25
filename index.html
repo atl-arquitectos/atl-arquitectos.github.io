@@ -894,6 +894,43 @@
             border-color: rgba(196,181,212,0.40);
             box-shadow: 0 4px 28px rgba(196,181,212,0.12);
         }
+        /* Toggle switch */
+        .atl-switch {
+            width: 28px; height: 15px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.15);
+            position: relative;
+            flex-shrink: 0;
+            transition: background 0.35s ease;
+        }
+        .atl-switch::after {
+            content: '';
+            position: absolute;
+            width: 11px; height: 11px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.55);
+            top: 2px; left: 2px;
+            transition: transform 0.35s ease, background 0.35s ease;
+        }
+        .atl-sound-btn.atl-sound-on .atl-switch {
+            background: rgba(196,181,212,0.55);
+        }
+        .atl-sound-btn.atl-sound-on .atl-switch::after {
+            transform: translateX(13px);
+            background: #fff;
+        }
+        .atl-state {
+            font-size: 0.42rem;
+            font-weight: 400;
+            letter-spacing: 0.20em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            transition: color 0.4s ease;
+            min-width: 1.6rem;
+        }
+        .atl-sound-btn.atl-sound-on .atl-state {
+            color: rgba(196,181,212,0.80);
+        }
         @keyframes soundPulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50%       { opacity: 0.45; transform: scale(0.65); }
@@ -2366,12 +2403,14 @@
                     }).catch(function() {});
                     isOn = true;
                     btn.classList.add('atl-sound-on');
-                    lbl.textContent = 'AMBIENT ON';
+                    lbl.textContent = 'AMBIENT';
+                    state.textContent = 'ON';
                 } else {
                     fadeOut(audio, 2500);
                     isOn = false;
                     btn.classList.remove('atl-sound-on');
                     lbl.textContent = 'AMBIENT';
+                    state.textContent = 'OFF';
                 }
             }
 
@@ -2380,9 +2419,12 @@
             btn.setAttribute('aria-label', 'Activar modo ambiental');
             btn.innerHTML =
                 '<span class="atl-sound-dot"></span>' +
-                '<span class="atl-sound-label">AMBIENT</span>';
+                '<span class="atl-sound-label">AMBIENT</span>' +
+                '<span class="atl-switch"></span>' +
+                '<span class="atl-state">OFF</span>';
             document.body.appendChild(btn);
-            const lbl = btn.querySelector('.atl-sound-label');
+            const lbl   = btn.querySelector('.atl-sound-label');
+            const state = btn.querySelector('.atl-state');
 
             // touchstart + preventDefault evita el doble disparo touch→click en móvil
             btn.addEventListener('touchstart', function(e) {
