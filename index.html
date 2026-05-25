@@ -24,6 +24,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600&family=Barlow+Condensed:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <!-- PixiJS v7 + ShockwaveFilter para efecto gota de agua -->
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-filters@5.3.1/dist/browser/pixi-filters.js"></script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -2492,6 +2495,111 @@
             btn.addEventListener('click', toggle);
         })();
 
+        /* ── ATL WATER DROP — PixiJS ShockwaveFilter · ATL = agua en náhuatl ── */
+        (function () {
+            if (typeof PIXI === 'undefined' || !PIXI.filters || !PIXI.filters.ShockwaveFilter) return;
+
+            var video  = document.querySelector('.hero-bg video');
+            var heroBg = document.querySelector('.hero-bg');
+            if (!video || !heroBg) return;
+
+            function init() {
+                var W = window.innerWidth;
+                var H = window.innerHeight;
+
+                /* Aplicación PixiJS — canvas transparente sobre el video */
+                var app = new PIXI.Application({
+                    width: W, height: H,
+                    backgroundAlpha: 0,
+                    antialias: false,
+                    resolution: Math.min(window.devicePixelRatio, 2)
+                });
+                app.view.setAttribute('aria-hidden', 'true');
+                app.view.style.cssText =
+                    'position:absolute;top:0;left:0;width:100%;height:100%;' +
+                    'pointer-events:none;z-index:2;';
+                heroBg.appendChild(app.view);
+
+                /* Ocultar video HTML — PixiJS lo renderiza como textura */
+                video.style.opacity = '0';
+
+                /* Textura de video */
+                var vidTex = PIXI.Texture.from(video);
+                var sprite = new PIXI.Sprite(vidTex);
+                app.stage.addChild(sprite);
+
+                /* Cubrir el canvas (equivalente a object-fit: cover) */
+                function coverSprite() {
+                    var vW = video.videoWidth  || 1920;
+                    var vH = video.videoHeight || 1080;
+                    var appW = app.renderer.width  / app.renderer.resolution;
+                    var appH = app.renderer.height / app.renderer.resolution;
+                    var scale = Math.max(appW / vW, appH / vH);
+                    sprite.scale.set(scale);
+                    sprite.x = (appW - vW * scale) / 2;
+                    sprite.y = (appH - vH * scale) / 2;
+                }
+                coverSprite();
+
+                /* Centro del logo ATL en píxeles dentro del canvas */
+                function getATLCenter() {
+                    var atlEl  = document.querySelector('.atl-clip') ||
+                                 document.querySelector('.hero-title');
+                    var heroEl = document.getElementById('hero');
+                    if (!atlEl || !heroEl) return [W / 2, H * 0.42];
+                    var hR = heroEl.getBoundingClientRect();
+                    var aR = atlEl.getBoundingClientRect();
+                    return [
+                        (aR.left + aR.width  / 2 - hR.left),
+                        (aR.top  + aR.height / 2 - hR.top)
+                    ];
+                }
+
+                /* ShockwaveFilter — onda de choque radial real */
+                var center = getATLCenter();
+                var shock  = new PIXI.filters.ShockwaveFilter(
+                    center,
+                    { amplitude: 38, wavelength: 145, brightness: 1.0, speed: 420, radius: -1 },
+                    -1   // time=-1 → sin efecto al inicio
+                );
+                sprite.filters = [shock];
+
+                /* Ticker de animación */
+                var dropping = false;
+                app.ticker.add(function () {
+                    vidTex.update();   // actualizar frame del video
+                    if (dropping) {
+                        shock.time += app.ticker.deltaMS / 1000;
+                        if (shock.time > 2.8) {        // duración de la onda
+                            dropping   = false;
+                            shock.time = -1;            // apagar efecto
+                            setTimeout(startDrop, 5000); // pausa 5s → siguiente gota
+                        }
+                    }
+                });
+
+                /* Lanzar una gota */
+                function startDrop() {
+                    if (dropping) return;
+                    shock.center = getATLCenter();
+                    shock.time   = 0;
+                    dropping     = true;
+                }
+
+                /* Resize */
+                window.addEventListener('resize', function () {
+                    var nW = window.innerWidth, nH = window.innerHeight;
+                    app.renderer.resize(nW, nH);
+                    coverSprite();
+                }, { passive: true });
+
+                /* Primera gota: 1 segundo tras cargar */
+                setTimeout(startDrop, 1000);
+            }
+
+            if (video.readyState >= 2) { init(); }
+            else { video.addEventListener('loadeddata', init, { once: true }); }
+        })();
 
     </script>
 </body>
