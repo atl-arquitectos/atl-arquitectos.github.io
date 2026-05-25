@@ -140,15 +140,6 @@
             overflow: hidden;
         }
 
-        /* ── ATL RIPPLE — gota de agua (ATL = agua en náhuatl) ── */
-        #atl-ripple {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 6;
-        }
         .hero-bg video {
             position: absolute;
             top: 50%; left: 50%;
@@ -1010,8 +1001,6 @@
         <div class="hero-overlay"></div>
         <div class="hero-fade-top"></div>
         <div class="hero-fade-bottom"></div>
-        <!-- ATL = agua en náhuatl — ripple al cargar -->
-        <canvas id="atl-ripple" aria-hidden="true"></canvas>
         <div class="hero-content">
             <p class="hero-label">Estudio Interdisciplinario</p>
             <h1 class="hero-title">
@@ -2503,70 +2492,68 @@
             btn.addEventListener('click', toggle);
         })();
 
-        /* ── ATL RIPPLE — gota de agua · ATL = agua en náhuatl ── */
+        /* ── ATL WATER TEXT — distorsión líquida al cargar · ATL = agua en náhuatl ── */
         (function() {
-            const canvas = document.getElementById('atl-ripple');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const COLOR = '196,181,212'; // --lilac en RGB
+            // Inyectar filtro SVG feTurbulence + feDisplacementMap
+            var svgNS = 'http://www.w3.org/2000/svg';
+            var svg = document.createElementNS(svgNS, 'svg');
+            svg.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden;');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.innerHTML =
+                '<defs>' +
+                '<filter id="atl-water" x="-30%" y="-30%" width="160%" height="160%">' +
+                '<feTurbulence id="atl-turb" type="turbulence" ' +
+                    'baseFrequency="0.014 0.014" numOctaves="4" seed="7" result="noise"/>' +
+                '<feDisplacementMap id="atl-disp" in="SourceGraphic" in2="noise" ' +
+                    'scale="70" xChannelSelector="R" yChannelSelector="G"/>' +
+                '</filter>' +
+                '</defs>';
+            document.body.appendChild(svg);
 
-            function resize() {
-                canvas.width  = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize, { passive: true });
+            var turb    = document.getElementById('atl-turb');
+            var disp    = document.getElementById('atl-disp');
+            var content = document.querySelector('.hero-content');
+            if (!turb || !disp || !content) return;
 
-            const ripples = [];
+            function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
 
-            // Una gota: genera varios anillos con delay escalonado
-            function drop() {
-                const cx = canvas.width  / 2;
-                const cy = canvas.height / 2;
-                const maxR = Math.hypot(cx, cy) * 0.88;
-                [0, 320, 640, 960].forEach(function(delay, idx) {
-                    setTimeout(function() {
-                        ripples.push({
-                            x: cx, y: cy,
-                            r: 0,
-                            maxR: maxR,
-                            // cada anillo arranca más grande para separarse visualmente
-                            startR: idx * 28,
-                            opacity: 0.55 - idx * 0.08,
-                            speed: 2.2 + idx * 0.25,
-                            width: 1.2 - idx * 0.15
-                        });
-                    }, delay);
-                });
-            }
+            function startWater() {
+                content.style.filter     = 'url(#atl-water)';
+                content.style.willChange = 'filter';
 
-            // Animación
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                for (var i = ripples.length - 1; i >= 0; i--) {
-                    var rp = ripples[i];
-                    rp.r += rp.speed;
-                    // fade proporcional al radio recorrido
-                    var pct = rp.r / rp.maxR;
-                    rp.opacity = Math.max(0, (0.55 - pct * 0.6));
-                    if (rp.r > rp.maxR || rp.opacity <= 0) { ripples.splice(i, 1); continue; }
-                    ctx.beginPath();
-                    ctx.arc(rp.x, rp.y, rp.r + rp.startR, 0, Math.PI * 2);
-                    ctx.strokeStyle = 'rgba(' + COLOR + ',' + rp.opacity + ')';
-                    ctx.lineWidth = Math.max(0.4, rp.width);
-                    ctx.stroke();
+                var startTime = null;
+                var duration  = 3200; // ms — tiempo de asentamiento
+                var maxScale  = 70;
+                var maxFreq   = 0.014;
+
+                function tick(ts) {
+                    if (!startTime) startTime = ts;
+                    var t = Math.min(1, (ts - startTime) / duration);
+                    var e = easeOutQuart(t);
+
+                    // Escala de desplazamiento: 70 → 0
+                    var scale = maxScale * (1 - e);
+                    // Frecuencia de turbulencia desciende suavemente
+                    var freq  = maxFreq * (1 - e * 0.5);
+
+                    disp.setAttribute('scale', scale.toFixed(2));
+                    turb.setAttribute('baseFrequency', freq.toFixed(4) + ' ' + freq.toFixed(4));
+
+                    if (t < 1) {
+                        requestAnimationFrame(tick);
+                    } else {
+                        // Quitar el filtro completamente al terminar
+                        content.style.filter     = '';
+                        content.style.willChange = 'auto';
+                    }
                 }
-                requestAnimationFrame(draw);
+                requestAnimationFrame(tick);
             }
-            draw();
 
-            // Primera gota al cargar (0.8s tras DOMContentLoaded)
+            // Arranca 400ms después de que todo haya cargado
             window.addEventListener('load', function() {
-                setTimeout(drop, 800);
+                setTimeout(startWater, 400);
             });
-
-            // Gota periódica cada 9 segundos
-            setInterval(drop, 9000);
         })();
 
     </script>
