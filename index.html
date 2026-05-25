@@ -2305,14 +2305,14 @@
 
             /* ── PISO URBANO ── */
             // Grid fino: celdas 5u=20m (texturas de calles)
-            const gridFino = new THREE.GridHelper(3000, 600, 0xffffff, 0xffffff);
+            const gridFino = new THREE.GridHelper(3000, 600, 0xc4b5d4, 0xc4b5d4);
             gridFino.material.transparent = true;
             gridFino.material.opacity = 0.05;
             gridFino.position.set(0, 0, -85);
             scene.add(gridFino);
 
             // Grid grueso: celdas 50u=200m (supermanzanas)
-            const gridGrueso = new THREE.GridHelper(3000, 60, 0xffffff, 0xffffff);
+            const gridGrueso = new THREE.GridHelper(3000, 60, 0xc4b5d4, 0xc4b5d4);
             gridGrueso.material.transparent = true;
             gridGrueso.material.opacity = 0.13;
             gridGrueso.position.set(0, 0.1, -85);
@@ -2336,7 +2336,7 @@
                 ];
                 const lg = new THREE.BufferGeometry().setFromPoints(pts);
                 scene.add(new THREE.Line(lg, new THREE.LineBasicMaterial({
-                    color: 0xffffff, transparent: true, opacity: 0.045
+                    color: 0xc4b5d4, transparent: true, opacity: 0.045
                 })));
             });
 
