@@ -2492,9 +2492,15 @@
             btn.addEventListener('click', toggle);
         })();
 
-        /* ── ATL WATER DROP v9 — feDisplacementMap radial + caustic rings ──
-         *  Fisica real: derivada de gaussiana genera push/pull en cada onda
-         *  El video se distorsiona a nivel de pixel, como agua de verdad       */
+        /* ── ATL WATER DROP v10 — WebGL: simulación de ecuación de onda real ──
+         *
+         *  Física idéntica a jquery.ripples (referencia de agua web):
+         *    h_new[x,y] = (h[x-1] + h[x+1] + h[y-1] + h[y+1]) / 2 - h_prev[x,y]
+         *    con amortiguación × 0.989 cada frame
+         *
+         *  Simulación en GPU (WebGL) a 128×128, renderizado a resolución completa.
+         *  El video es textura WebGL → refracción pixel a pixel con luz caustic real.
+         */
         (function () {
             if (window.matchMedia('(pointer: coarse)').matches) return;
 
@@ -2503,205 +2509,210 @@
             var heroEl = document.getElementById('hero');
             if (!video || !heroBg || !heroEl) return;
 
-            /* 1. Canvas overlay para anillos de luz caustic */
-            var OC = document.createElement('canvas');
-            OC.setAttribute('aria-hidden', 'true');
-            OC.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;';
-            heroBg.appendChild(OC);
-            var Octx = OC.getContext('2d');
+            /* ── 1. Canvas WebGL ── */
+            var cv = document.createElement('canvas');
+            cv.setAttribute('aria-hidden', 'true');
+            cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;display:none;';
+            heroBg.appendChild(cv);
 
-            function resizeOC() {
-                OC.width  = heroEl.offsetWidth  || window.innerWidth;
-                OC.height = heroEl.offsetHeight || window.innerHeight;
+            var gl = cv.getContext('webgl', { alpha: false, antialias: false }) ||
+                     cv.getContext('experimental-webgl', { alpha: false, antialias: false });
+            if (!gl || !gl.getExtension('OES_texture_float')) { cv.remove(); return; }
+
+            /* ── 2. Shaders GLSL ── */
+            var VS = 'attribute vec2 a;varying vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0,1);}';
+
+            /* Simulación de onda: lee (R=curr, G=prev), escribe (R=new, G=old_curr) */
+            var SIM_FS = [
+                'precision highp float;',
+                'uniform sampler2D uMap;',
+                'uniform vec2 uSimPx;',
+                'uniform float uDrop;',
+                'uniform vec2 uPos;',
+                'varying vec2 v;',
+                'void main(){',
+                '  float c=texture2D(uMap,v).r;',
+                '  float p=texture2D(uMap,v).g;',
+                '  float l=texture2D(uMap,v-vec2(uSimPx.x,0.)).r;',
+                '  float r=texture2D(uMap,v+vec2(uSimPx.x,0.)).r;',
+                '  float u=texture2D(uMap,v-vec2(0.,uSimPx.y)).r;',
+                '  float d=texture2D(uMap,v+vec2(0.,uSimPx.y)).r;',
+                '  float h=(l+r+u+d)*.5-p;',
+                '  h*=.989;',
+                '  if(uDrop>0.){float ds=length(v-uPos);if(ds<.06)h+=uDrop*(1.-ds/.06);}',
+                '  gl_FragColor=vec4(h,c,0.,1.);',
+                '}'
+            ].join('');
+
+            /* Render: usa el mapa de alturas para refractar el video */
+            var RENDER_FS = [
+                'precision highp float;',
+                'uniform sampler2D uMap,uVid;',
+                'uniform vec2 uSimPx;',
+                'varying vec2 v;',
+                'void main(){',
+                '  float l=texture2D(uMap,v-vec2(uSimPx.x,0.)).r;',
+                '  float r=texture2D(uMap,v+vec2(uSimPx.x,0.)).r;',
+                '  float u=texture2D(uMap,v-vec2(0.,uSimPx.y)).r;',
+                '  float d=texture2D(uMap,v+vec2(0.,uSimPx.y)).r;',
+                '  vec2 off=vec2(l-r,u-d)*.12;',    /* refracción: ±12% de UV = ±pixels */
+                '  vec2 uv=clamp(v+off,0.,1.);',
+                '  vec4 col=texture2D(uVid,uv);',
+                '  float lum=1.+dot(off,off)*18.;', /* caustic: brillo donde converge luz */
+                '  gl_FragColor=vec4(col.rgb*min(lum,2.),1.);',
+                '}'
+            ].join('');
+
+            function mkShader(type, src) {
+                var s = gl.createShader(type);
+                gl.shaderSource(s, src); gl.compileShader(s); return s;
             }
-            resizeOC();
-            window.addEventListener('resize', resizeOC, { passive: true });
+            function mkProg(vs, fs) {
+                var p = gl.createProgram();
+                gl.attachShader(p, mkShader(gl.VERTEX_SHADER, vs));
+                gl.attachShader(p, mkShader(gl.FRAGMENT_SHADER, fs));
+                gl.linkProgram(p); return p;
+            }
+            var pSim = mkProg(VS, SIM_FS), pRen = mkProg(VS, RENDER_FS);
 
-            /* 2. Centro: letra ATL */
-            var CX = 0, CY = 0;
-            function findCenter() {
+            /* ── 3. Quad de pantalla completa ── */
+            var qBuf = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, qBuf);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+
+            function useQuad(prog) {
+                gl.bindBuffer(gl.ARRAY_BUFFER, qBuf);
+                var loc = gl.getAttribLocation(prog, 'a');
+                gl.enableVertexAttribArray(loc);
+                gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+            }
+
+            /* ── 4. Texturas y FBOs para ping-pong de simulación ── */
+            var SIM = 128; /* resolución del mapa de onda (128×128) */
+
+            function mkFBO() {
+                var tex = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, tex);
+                /* RGBA float: R=curr height, G=prev height */
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, SIM, SIM, 0, gl.RGBA, gl.FLOAT, null);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                var fbo = gl.createFramebuffer();
+                gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+                gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+                if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) return null;
+                return { tex: tex, fbo: fbo };
+            }
+
+            var fboA = mkFBO(), fboB = mkFBO();
+            if (!fboA || !fboB) { cv.remove(); return; } /* FBO float no soportado */
+
+            var readFBO = fboA, writeFBO = fboB;
+
+            /* Textura de video */
+            var vidTex = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, vidTex);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+            /* ── 5. Resize ── */
+            var W = 0, H = 0;
+            function resize() {
+                W = heroEl.offsetWidth  || window.innerWidth;
+                H = heroEl.offsetHeight || window.innerHeight;
+                cv.width  = W; cv.height = H;
+                gl.viewport(0, 0, W, H);
+            }
+            resize();
+            window.addEventListener('resize', resize, { passive: true });
+
+            /* ── 6. Un paso de simulación de onda ── */
+            var pendingDrop = null;
+            function simStep() {
+                gl.bindFramebuffer(gl.FRAMEBUFFER, writeFBO.fbo);
+                gl.viewport(0, 0, SIM, SIM);
+                gl.useProgram(pSim);
+                useQuad(pSim);
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, readFBO.tex);
+                gl.uniform1i(gl.getUniformLocation(pSim, 'uMap'), 0);
+                gl.uniform2f(gl.getUniformLocation(pSim, 'uSimPx'), 1.0/SIM, 1.0/SIM);
+                if (pendingDrop) {
+                    gl.uniform1f(gl.getUniformLocation(pSim, 'uDrop'), pendingDrop.s);
+                    gl.uniform2f(gl.getUniformLocation(pSim, 'uPos'), pendingDrop.x, pendingDrop.y);
+                    pendingDrop = null;
+                } else {
+                    gl.uniform1f(gl.getUniformLocation(pSim, 'uDrop'), 0.0);
+                    gl.uniform2f(gl.getUniformLocation(pSim, 'uPos'), 0.0, 0.0);
+                }
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                var tmp = readFBO; readFBO = writeFBO; writeFBO = tmp;
+            }
+
+            /* ── 7. Renderizar video refractado a pantalla ── */
+            function renderToScreen() {
+                /* Subir frame actual del video a GPU */
+                if (video.readyState >= 2) {
+                    gl.bindTexture(gl.TEXTURE_2D, vidTex);
+                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+                    try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video); }
+                    catch(e) {}
+                }
+                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+                gl.viewport(0, 0, W, H);
+                gl.useProgram(pRen);
+                useQuad(pRen);
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, readFBO.tex);
+                gl.uniform1i(gl.getUniformLocation(pRen, 'uMap'), 0);
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, vidTex);
+                gl.uniform1i(gl.getUniformLocation(pRen, 'uVid'), 1);
+                gl.uniform2f(gl.getUniformLocation(pRen, 'uSimPx'), 1.0/SIM, 1.0/SIM);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            }
+
+            /* ── 8. Loop de animación ── */
+            var active = false;
+            function loop() {
+                requestAnimationFrame(loop);
+                if (!active && !pendingDrop) return;
+                simStep();
+                renderToScreen();
+            }
+
+            /* ── 9. Posición del texto ATL en UV [0,1] ── */
+            function getDropUV() {
                 var el = document.querySelector('.atl-clip') || document.querySelector('.hero-title');
-                if (!el) { CX = OC.width / 2; CY = OC.height * 0.42; return; }
+                if (!el) return { x: 0.5, y: 0.5 };
                 var hr = heroEl.getBoundingClientRect();
                 var er = el.getBoundingClientRect();
-                CX = er.left + er.width  / 2 - hr.left;
-                CY = er.top  + er.height / 2 - hr.top;
+                return {
+                    x: (er.left + er.width  * 0.5 - hr.left) / hr.width,
+                    /* Y invertida: WebGL y=0 está abajo, HTML y=0 está arriba */
+                    y: 1.0 - (er.top + er.height * 0.5 - hr.top)  / hr.height
+                };
             }
 
-            /* 3. SVG feDisplacementMap — distorsiona pixeles del video */
-            var NS  = 'http://www.w3.org/2000/svg';
-            var XNS = 'http://www.w3.org/1999/xlink';
-            var svgEl = document.createElementNS(NS, 'svg');
-            svgEl.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;';
-            var defsEl = document.createElementNS(NS, 'defs');
-            var filEl  = document.createElementNS(NS, 'filter');
-            filEl.setAttribute('id', 'atl-drop');
-            filEl.setAttribute('x', '0%');   filEl.setAttribute('y', '0%');
-            filEl.setAttribute('width', '100%'); filEl.setAttribute('height', '100%');
-            filEl.setAttribute('color-interpolation-filters', 'linearRGB');
-            var feiEl = document.createElementNS(NS, 'feImage');
-            feiEl.setAttribute('result', 'dm');
-            feiEl.setAttribute('preserveAspectRatio', 'none');
-            feiEl.setAttribute('x', '0'); feiEl.setAttribute('y', '0');
-            feiEl.setAttribute('width', '100%'); feiEl.setAttribute('height', '100%');
-            var fedEl = document.createElementNS(NS, 'feDisplacementMap');
-            fedEl.setAttribute('in', 'SourceGraphic');
-            fedEl.setAttribute('in2', 'dm');
-            fedEl.setAttribute('scale', '75');
-            fedEl.setAttribute('xChannelSelector', 'R');
-            fedEl.setAttribute('yChannelSelector', 'G');
-            filEl.appendChild(feiEl); filEl.appendChild(fedEl);
-            defsEl.appendChild(filEl); svgEl.appendChild(defsEl);
-            document.body.appendChild(svgEl);
-
-            /* 4. Canvas 128x128 como mapa de desplazamiento */
-            var DM = 128, HALF = DM / 2;
-            var dmc  = document.createElement('canvas');
-            dmc.width = dmc.height = DM;
-            var dctx = dmc.getContext('2d');
-            var idat = dctx.createImageData(DM, DM);
-            var pix  = idat.data;
-
-            for (var j = 0; j < pix.length; j += 4) {
-                pix[j] = 128; pix[j+1] = 128; pix[j+2] = 0; pix[j+3] = 255;
-            }
-            dctx.putImageData(idat, 0, 0);
-            var neu = dmc.toDataURL();
-            feiEl.setAttribute('href', neu);
-            try { feiEl.setAttributeNS(XNS, 'xlink:href', neu); } catch(e) {}
-
-            /* Pre-calcular coords polares (una sola vez) */
-            var dmRad = new Float32Array(DM * DM);
-            var dmAng = new Float32Array(DM * DM);
-            for (var py = 0; py < DM; py++) {
-                for (var px = 0; px < DM; px++) {
-                    var pi = py * DM + px;
-                    var ddx = px - HALF, ddy = py - HALF;
-                    dmRad[pi] = Math.sqrt(ddx * ddx + ddy * ddy);
-                    dmAng[pi] = Math.atan2(ddy, ddx);
-                }
-            }
-
-            /* 5. Fisica de ondas: derivada de gaussiana
-             *   Empuja hacia afuera en el frente, jala hacia atras — como agua real */
-            var DROP_DUR = 3.2;
-            var NR = 5;
-            var SPD = HALF / 1.55;
-            var GAP = HALF * 0.21;
-            var SIG = HALF * 0.068;
-
-            function dispAt(r, t) {
-                var env = Math.sin((t / DROP_DUR) * Math.PI) * Math.exp(-t * 0.75);
-                if (Math.abs(env) < 0.001) return 0;
-                var sum = 0;
-                for (var k = 0; k < NR; k++) {
-                    var r0   = t * SPD - k * GAP;
-                    if (r0 < 0) continue;
-                    var dist = r - r0;
-                    var dg   = (-dist / (SIG * SIG)) * Math.exp(-dist * dist / (2 * SIG * SIG));
-                    var fade = Math.exp(-r / (HALF * 0.88)) * Math.pow(0.62, k);
-                    sum += dg * fade;
-                }
-                return env * sum / 3.5;
-            }
-
-            function updateDM(t) {
-                var n = DM * DM;
-                for (var i = 0; i < n; i++) {
-                    var d = dispAt(dmRad[i], t);
-                    var c = Math.cos(dmAng[i]), s = Math.sin(dmAng[i]);
-                    pix[i * 4]     = 128 + d * c * 122;
-                    pix[i * 4 + 1] = 128 + d * s * 122;
-                }
-                dctx.putImageData(idat, 0, 0);
-                var url = dmc.toDataURL('image/png');
-                feiEl.setAttribute('href', url);
-                try { feiEl.setAttributeNS(XNS, 'xlink:href', url); } catch(e) {}
-            }
-
-            /* 6. Anillos de luz caustic en canvas
-             *   Bright ring en el frente, dark shadow detras + splash inicial */
-            function drawCaustics(t) {
-                var W = OC.width, H = OC.height;
-                Octx.clearRect(0, 0, W, H);
-                var maxR  = Math.hypot(W, H) * 0.62;
-                var spd2  = maxR / 1.55;
-                var gap2  = maxR * 0.195;
-                var env   = Math.sin((t / DROP_DUR) * Math.PI) * Math.exp(-t * 0.75);
-                var absE  = Math.abs(env);
-
-                for (var k = 0; k < NR; k++) {
-                    var r = t * spd2 - k * gap2;
-                    if (r < 1 || r > maxR * 1.05) continue;
-                    var kF    = Math.pow(0.62, k);
-                    var rFade = Math.max(0, 1 - r / maxR);
-                    var alpha = absE * kF * rFade;
-                    if (alpha < 0.015) continue;
-                    var rW = Math.max(1.5, 14 * rFade * absE);
-
-                    /* Shadow oscuro detras del frente */
-                    Octx.beginPath();
-                    Octx.arc(CX, CY, Math.max(1, r - rW * 0.9), 0, Math.PI * 2);
-                    Octx.strokeStyle = 'rgba(0,8,20,' + (alpha * 0.3) + ')';
-                    Octx.lineWidth   = Math.max(1, rW * 0.7);
-                    Octx.stroke();
-
-                    /* Bright highlight en el frente de onda */
-                    Octx.save();
-                    Octx.shadowBlur  = rW * 4;
-                    Octx.shadowColor = 'rgba(190,220,255,' + (alpha * 0.7) + ')';
-                    Octx.beginPath();
-                    Octx.arc(CX, CY, r, 0, Math.PI * 2);
-                    Octx.strokeStyle = 'rgba(210,235,255,' + (alpha * 0.95) + ')';
-                    Octx.lineWidth   = Math.max(0.8, rW * 0.35);
-                    Octx.stroke();
-                    Octx.restore();
-                }
-
-                /* Splash inicial en el centro (primeros 0.35s) */
-                if (t < 0.35) {
-                    var sp = (0.35 - t) / 0.35;
-                    Octx.save();
-                    Octx.shadowBlur  = 22;
-                    Octx.shadowColor = 'rgba(160,210,255,' + (sp * 0.9) + ')';
-                    Octx.beginPath();
-                    Octx.arc(CX, CY, Math.max(0.5, 10 * (t / 0.35)), 0, Math.PI * 2);
-                    Octx.fillStyle = 'rgba(220,240,255,' + (sp * 0.85) + ')';
-                    Octx.fill();
-                    Octx.restore();
-                }
-            }
-
-            /* 7. Loop principal */
-            var active = false, dropT = 0, lastTs = null;
-
-            function loop(ts) {
-                requestAnimationFrame(loop);
-                var dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0;
-                lastTs = ts;
-                if (!active) return;
-                dropT += dt;
-                if (dropT >= DROP_DUR) {
-                    active = false;
-                    video.style.filter = '';
-                    Octx.clearRect(0, 0, OC.width, OC.height);
-                    setTimeout(startDrop, 5000);
-                    return;
-                }
-                updateDM(dropT);
-                drawCaustics(dropT);
-            }
-
-            function startDrop() {
-                if (active) return;
-                findCenter();
+            /* ── 10. Trigger gota ── */
+            function triggerDrop() {
+                var uv = getDropUV();
+                pendingDrop = { x: uv.x, y: uv.y, s: 0.85 };
                 active = true;
-                dropT  = 0;
-                video.style.filter = 'url(#atl-drop)';
+                cv.style.display = 'block';
+                setTimeout(function () {
+                    active = false;
+                    cv.style.display = 'none';
+                    setTimeout(triggerDrop, 5000);
+                }, 3800);
             }
 
             requestAnimationFrame(loop);
-            window.addEventListener('load', function () { setTimeout(startDrop, 1000); });
+            window.addEventListener('load', function () { setTimeout(triggerDrop, 1000); });
         })();
 
     </script>
