@@ -386,7 +386,7 @@
             font-family: var(--font-title);
             font-size: 4rem;
             font-weight: 600;
-            color: rgba(255,255,255,0.18);
+            color: rgba(255,255,255,0.35);
             line-height: 1;
             margin-bottom: 1.5rem;
         }
@@ -2364,23 +2364,27 @@
                 scrollPct = maxScroll > 0 ? Math.min(1, window.scrollY / maxScroll) : 0;
             }, { passive: true });
 
-            /* Drone pull-back: se aleja al ESTE (+x) y sube levemente */
-            let pull = 0;
+            /* Animación: flotado suave + acercamiento por scroll (sin conflicto) */
+            let time = 0;
             function animate() {
                 requestAnimationFrame(animate);
-                pull += 0.035;
-                if (pull > 200) pull = 0;
+                time += 0.007;
 
-                // Scroll: la cámara avanza suavemente hacia la ciudad al bajar la página
-                const sX = scrollPct * 55;   // avanza oeste (acercarse a torres)
-                const sY = scrollPct * 7;    // desciende levemente
-                const sZ = scrollPct * 10;   // ligero desplazamiento en z
+                // Flotado ambiental — movimiento sinusoidal muy sutil, sin alejarse
+                const floatX = Math.sin(time * 0.6) * 4;
+                const floatZ = Math.sin(time * 0.4) * 2.5;
+                const floatY = Math.sin(time * 0.5) * 1.2;
 
-                cX = lerp(cX, 226.1 + pull + mx * 5.0 - sX, 0.022);
-                cY = lerp(cY, 22.0  + pull * 0.02 + my * 2.5 - sY, 0.022);
+                // Scroll: acercamiento hacia la ciudad (mismo sentido que el flotado)
+                const sX = scrollPct * 60;
+                const sY = scrollPct * 7;
+                const sZ = scrollPct * 10;
 
-                camera.position.set(cX, cY, -72.5 - mx * 2.0 + sZ);
-                camera.lookAt(92.7 + mx * 2.5 - sX * 0.3, 10.0 - pull * 0.006 - sY * 0.4, -92.9);
+                cX = lerp(cX, 226.1 + floatX + mx * 5.0 - sX, 0.022);
+                cY = lerp(cY, 22.0  + floatY + my * 2.5 - sY, 0.022);
+
+                camera.position.set(cX, cY, -72.5 + floatZ - mx * 2.0 + sZ);
+                camera.lookAt(92.7 + mx * 2.5 - sX * 0.3, 10.0 - sY * 0.4, -92.9);
 
                 renderer.render(scene, camera);
             }
