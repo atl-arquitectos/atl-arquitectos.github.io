@@ -2302,146 +2302,59 @@
             });
         })();
 
-        /* ── ATL SOUND SYSTEM — Web Audio API ── */
+        /* ── ATL SOUND SYSTEM v2 — Audio real ── */
         (function() {
             'use strict';
+            const SRC = 'assets/audio/ambient.mp3';
+            let audio = null;
+            let isOn  = false;
+            let fadeTimer = null;
 
-            let ctx, master, reverbNode;
-            let ambNodes = [];
-            let isOn = false;
-            let initialized = false;
-            let lastSection = '';
-            let lastScrollTone = 0;
-            let lastHoverTone = 0;
-
-            /* ── REVERB: impulse response sintético ── */
-            function buildReverb() {
-                const conv = ctx.createConvolver();
-                const rate = ctx.sampleRate;
-                const len  = Math.floor(rate * 4.5);
-                const buf  = ctx.createBuffer(2, len, rate);
-                for (let c = 0; c < 2; c++) {
-                    const d = buf.getChannelData(c);
-                    for (let i = 0; i < len; i++) {
-                        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.8);
+            function fadeIn(el, target, ms) {
+                clearInterval(fadeTimer);
+                const step = (target - el.volume) / (ms / 50);
+                fadeTimer = setInterval(function() {
+                    el.volume = Math.min(target, Math.max(0, +(el.volume + step).toFixed(4)));
+                    if (Math.abs(el.volume - target) < 0.001) {
+                        el.volume = target;
+                        clearInterval(fadeTimer);
                     }
-                }
-                conv.buffer = buf;
-                return conv;
+                }, 50);
             }
 
-            /* ── INIT ── */
-            function init() {
-                if (initialized) return;
-                ctx    = new (window.AudioContext || window.webkitAudioContext)();
-                master = ctx.createGain();
-                master.gain.setValueAtTime(0, ctx.currentTime);
-
-                reverbNode = buildReverb();
-                const revGain = ctx.createGain();
-                revGain.gain.setValueAtTime(0.40, ctx.currentTime);
-                reverbNode.connect(revGain);
-                revGain.connect(master);
-                master.connect(ctx.destination);
-                initialized = true;
+            function fadeOut(el, ms) {
+                clearInterval(fadeTimer);
+                const step = el.volume / (ms / 50);
+                fadeTimer = setInterval(function() {
+                    el.volume = Math.max(0, +(el.volume - step).toFixed(4));
+                    if (el.volume <= 0) {
+                        el.pause();
+                        clearInterval(fadeTimer);
+                    }
+                }, 50);
             }
 
-            /* ── PAD AMBIENTAL ─────────────────────────────
-               Acorde espacial: A1 · E2 · A2 · D3
-               Cuatro osciladores con LFO de deriva lenta
-            ──────────────────────────────────────────────── */
-            function buildAmbient() {
-                const FREQS = [55.00, 82.41, 110.00, 146.83];
-                const GAINS = [0.065, 0.048, 0.038, 0.028];
-                const LFOS  = [0.07,  0.11,  0.09,  0.13];
-
-                FREQS.forEach((f, i) => {
-                    const osc  = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    const lfo  = ctx.createOscillator();
-                    const lfoG = ctx.createGain();
-
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(f, ctx.currentTime);
-                    gain.gain.setValueAtTime(GAINS[i], ctx.currentTime);
-
-                    lfo.type = 'sine';
-                    lfo.frequency.setValueAtTime(LFOS[i], ctx.currentTime);
-                    lfoG.gain.setValueAtTime(0.4, ctx.currentTime);
-                    lfo.connect(lfoG);
-                    lfoG.connect(osc.detune);
-
-                    osc.connect(gain);
-                    gain.connect(reverbNode);
-                    gain.connect(master);
-
-                    lfo.start();
-                    osc.start();
-                    ambNodes.push({ osc, lfo });
-                });
-            }
-
-            /* ── MICRO SONIDO genérico ── */
-            function micro(f1, f2, dur, vol) {
-                if (!isOn || !ctx) return;
-                const t   = ctx.currentTime;
-                const osc = ctx.createOscillator();
-                const env = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(f1, t);
-                if (f2) osc.frequency.exponentialRampToValueAtTime(f2, t + dur * 0.35);
-                env.gain.setValueAtTime(0, t);
-                env.gain.linearRampToValueAtTime(vol, t + dur * 0.08);
-                env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-                osc.connect(env);
-                env.connect(reverbNode);
-                osc.start(t);
-                osc.stop(t + dur);
-            }
-
-            /* ── INTERACCIONES ── */
-            function onHover() {
-                const now = Date.now();
-                if (now - lastHoverTone < 600) return;
-                lastHoverTone = now;
-                micro(1100, 770, 0.28, 0.007);
-            }
-
-            function onScroll() {
-                const now = Date.now();
-                if (now - lastScrollTone < 4000) return;
-                lastScrollTone = now;
-                micro(220, 165, 3.0, 0.011);
-            }
-
-            function onSection(id) {
-                if (id === lastSection) return;
-                lastSection = id;
-                micro(440, 330, 2.2, 0.009);
-            }
-
-            /* ── TOGGLE ── */
             function toggle() {
-                init();
+                if (!audio) {
+                    audio = new Audio(SRC);
+                    audio.loop = true;
+                    audio.volume = 0;
+                }
                 if (!isOn) {
-                    if (ambNodes.length === 0) buildAmbient();
-                    master.gain.cancelScheduledValues(ctx.currentTime);
-                    master.gain.setValueAtTime(0, ctx.currentTime);
-                    master.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 3.5);
+                    audio.play().then(function() {
+                        fadeIn(audio, 0.13, 4000);
+                    }).catch(function() {});
                     isOn = true;
                     btn.classList.add('atl-sound-on');
                     lbl.textContent = 'AMBIENT ON';
                 } else {
-                    master.gain.cancelScheduledValues(ctx.currentTime);
-                    master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
-                    master.gain.linearRampToValueAtTime(0, ctx.currentTime + 2.5);
+                    fadeOut(audio, 3000);
                     isOn = false;
                     btn.classList.remove('atl-sound-on');
                     lbl.textContent = 'AMBIENT';
                 }
             }
 
-            /* ── BOTÓN ── */
             const btn = document.createElement('button');
             btn.className = 'atl-sound-btn';
             btn.setAttribute('aria-label', 'Activar modo ambiental');
@@ -2451,24 +2364,6 @@
             document.body.appendChild(btn);
             const lbl = btn.querySelector('.atl-sound-label');
             btn.addEventListener('click', toggle);
-
-            /* ── LISTENERS ── */
-            document.addEventListener('mouseover', function(e) {
-                if (!isOn) return;
-                if (e.target.closest('.preview-item,.tec-item,.esp-item,.quienes-link,.btn-primary,.btn-secondary,.pilar'))
-                    onHover();
-            });
-
-            window.addEventListener('scroll', onScroll, { passive: true });
-
-            const obs = new IntersectionObserver(function(entries) {
-                entries.forEach(function(en) {
-                    if (en.isIntersecting && en.intersectionRatio >= 0.35)
-                        onSection(en.target.id);
-                });
-            }, { threshold: 0.35 });
-
-            document.querySelectorAll('section[id]').forEach(function(s) { obs.observe(s); });
         })();
 
     </script>
