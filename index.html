@@ -777,7 +777,7 @@
             .esp-body { padding: 1.5rem; }
             .filosofia-grid { grid-template-columns: 1fr; }
             .tec-grid { grid-template-columns: repeat(3, 1fr); } /* 2 filas de 3 */
-            #tecnologia { text-align: center; overflow-x: visible; }
+            #tecnologia { text-align: center; }
             .cifras-grid { grid-template-columns: repeat(2, 1fr); }
             .preview-grid { grid-template-columns: 1fr; height: auto; }
             .preview-item { height: 50vw; }
@@ -786,42 +786,8 @@
         }
         @media (max-width: 480px) {
             .esp-grid { grid-template-columns: 1fr; }
-
-            /* Sección tecnología: sin padding lateral para carrusel edge-to-edge */
-            #tecnologia { padding: 4rem 0 4rem 0 !important; }
-            /* El encabezado sí mantiene márgenes */
-            .tec-header { padding: 0 1.5rem; margin-bottom: 3rem; }
-            .section-label { padding-left: 1.5rem; }
-
-            /* Carrusel horizontal en móvil */
-            #tecnologia .tec-inner { overflow-x: auto; }
-            .tec-grid {
-                display: flex;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                background: transparent;
-                gap: 0;
-                /* Padding inicial para que el primer card empiece con margen */
-                padding: 0 0 0 1.5rem;
-            }
-            .tec-grid::-webkit-scrollbar { display: none; }
-            .tec-item {
-                flex: 0 0 72vw;
-                scroll-snap-align: start;
-                padding: 2.5rem 1.5rem;
-                border-right: 1px solid rgba(255,255,255,0.08);
-                border-bottom: none;
-                background: rgba(12,12,12,1);
-                /* Forzar visibilidad: IntersectionObserver no detecta ítems horizontales */
-                opacity: 1 !important;
-                transform: none !important;
-                transition: background 0.3s;
-            }
-            /* Último card: margen derecho para no quedar cortado */
-            .tec-item:last-child { margin-right: 1.5rem; border-right: none; }
+            .tec-grid { grid-template-columns: repeat(2, 1fr); }
+            .tec-item { padding: 2rem 1rem; }
             .tec-icon { height: 60px; }
         }
 
@@ -1195,7 +1161,7 @@
                 <!-- Cinema 4D -->
                 <div class="tec-item">
                     <span class="tec-icon">
-                        <img src="assets/img/logos/cinema4d.svg" alt="Cinema 4D" style="width:46px;height:46px;object-fit:contain;opacity:0.9;">
+                        <img src="assets/img/logos/cinema4d.png" alt="Cinema 4D" style="width:46px;height:46px;object-fit:contain;opacity:0.9;">
                     </span>
                     <div class="tec-name">Cinema 4D</div>
                     <div class="tec-sub">Recorridos hyperrealistas</div>
@@ -2391,6 +2357,13 @@
                 my = (e.clientY / window.innerHeight - 0.5) * 2;
             });
 
+            /* Scroll parallax — la cámara se acerca suavemente al bajar la página */
+            let scrollPct = 0;
+            window.addEventListener('scroll', function() {
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                scrollPct = maxScroll > 0 ? Math.min(1, window.scrollY / maxScroll) : 0;
+            }, { passive: true });
+
             /* Drone pull-back: se aleja al ESTE (+x) y sube levemente */
             let pull = 0;
             function animate() {
@@ -2398,11 +2371,16 @@
                 pull += 0.035;
                 if (pull > 200) pull = 0;
 
-                cX = lerp(cX, 226.1 + pull + mx * 5.0, 0.022);
-                cY = lerp(cY, 22.0  + pull * 0.02 + my * 2.5, 0.022);
+                // Scroll: la cámara avanza suavemente hacia la ciudad al bajar la página
+                const sX = scrollPct * 55;   // avanza oeste (acercarse a torres)
+                const sY = scrollPct * 7;    // desciende levemente
+                const sZ = scrollPct * 10;   // ligero desplazamiento en z
 
-                camera.position.set(cX, cY, -72.5 - mx * 2.0);
-                camera.lookAt(92.7 + mx * 2.5, 10.0 - pull * 0.006, -92.9);
+                cX = lerp(cX, 226.1 + pull + mx * 5.0 - sX, 0.022);
+                cY = lerp(cY, 22.0  + pull * 0.02 + my * 2.5 - sY, 0.022);
+
+                camera.position.set(cX, cY, -72.5 - mx * 2.0 + sZ);
+                camera.lookAt(92.7 + mx * 2.5 - sX * 0.3, 10.0 - pull * 0.006 - sY * 0.4, -92.9);
 
                 renderer.render(scene, camera);
             }
