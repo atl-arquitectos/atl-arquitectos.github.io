@@ -2492,150 +2492,154 @@
             btn.addEventListener('click', toggle);
         })();
 
-        /* ── ATL WATER DROP — desplazamiento radial real · ATL = agua en náhuatl ── */
+        /* ── ATL WATER SHADER — refracción WebGL · ATL = agua en náhuatl ── */
         (function() {
+            var video  = document.querySelector('.hero-bg video');
+            var heroBg = document.querySelector('.hero-bg');
+            if (!video || !heroBg || typeof THREE === 'undefined') return;
 
-            /* ── 1. Canvas de desplazamiento (128×128, invisible) ── */
-            var DM = 128;
-            var dmCanvas = document.createElement('canvas');
-            dmCanvas.width = dmCanvas.height = DM;
-            var dmCtx = dmCanvas.getContext('2d');
+            function init() {
+                /* Canvas WebGL encima del video */
+                var wCanvas = document.createElement('canvas');
+                wCanvas.setAttribute('aria-hidden', 'true');
+                wCanvas.style.cssText =
+                    'position:absolute;top:50%;left:50%;' +
+                    'transform:translate(-50%,-50%);' +
+                    'min-width:100%;min-height:100%;' +
+                    'width:100%;height:100%;pointer-events:none;z-index:2;';
+                heroBg.appendChild(wCanvas);
 
-            /* ── 2. Canvas de anillos visibles (tamaño hero) ── */
-            var ringCanvas = document.createElement('canvas');
-            ringCanvas.setAttribute('aria-hidden', 'true');
-            ringCanvas.style.cssText =
-                'position:absolute;inset:0;width:100%;height:100%;' +
-                'pointer-events:none;z-index:6;mix-blend-mode:screen;';
-            var heroEl = document.getElementById('hero');
-            if (heroEl) heroEl.appendChild(ringCanvas);
-            var ringCtx = ringCanvas.getContext('2d');
+                /* Ocultar video original (sigue corriendo como fuente de textura) */
+                video.style.opacity = '0';
 
-            function resizeRing() {
-                ringCanvas.width  = ringCanvas.offsetWidth  || window.innerWidth;
-                ringCanvas.height = ringCanvas.offsetHeight || window.innerHeight;
-            }
-            resizeRing();
-            window.addEventListener('resize', resizeRing, { passive: true });
+                var wRenderer = new THREE.WebGLRenderer({ canvas: wCanvas, alpha: false, antialias: false });
+                wRenderer.setPixelRatio(1);
 
-            /* ── 3. SVG filter con feImage → feDisplacementMap ── */
-            var svgNS = 'http://www.w3.org/2000/svg';
-            var svg = document.createElementNS(svgNS, 'svg');
-            svg.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden;');
-            svg.setAttribute('aria-hidden', 'true');
-            svg.innerHTML =
-                '<defs>' +
-                '<filter id="atl-water" x="-40%" y="-40%" width="180%" height="180%"' +
-                ' color-interpolation-filters="sRGB">' +
-                  '<feImage id="atl-feim" result="dmap"' +
-                    ' preserveAspectRatio="none" x="0%" y="0%" width="100%" height="100%"/>' +
-                  '<feDisplacementMap id="atl-disp" in="SourceGraphic" in2="dmap"' +
-                    ' scale="0" xChannelSelector="R" yChannelSelector="G"/>' +
-                '</filter>' +
-                '</defs>';
-            document.body.appendChild(svg);
+                function resize() {
+                    wRenderer.setSize(window.innerWidth, window.innerHeight);
+                }
+                resize();
+                window.addEventListener('resize', resize, { passive: true });
 
-            var feImg  = document.getElementById('atl-feim');
-            var feDisp = document.getElementById('atl-disp');
-            var content = document.querySelector('.hero-content');
-            if (!feImg || !feDisp || !content) return;
+                var wScene  = new THREE.Scene();
+                var wCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-            content.style.filter = 'url(#atl-water)';
+                var videoTex = new THREE.VideoTexture(video);
+                videoTex.minFilter = THREE.LinearFilter;
+                videoTex.magFilter = THREE.LinearFilter;
 
-            /* ── 4. Dibujar mapa de desplazamiento radial ── */
-            function updateDM(phase, amplitude) {
-                var imgData = dmCtx.createImageData(DM, DM);
-                var d = imgData.data;
-                var cx = DM / 2, cy = DM / 2;
-                for (var y = 0; y < DM; y++) {
-                    for (var x = 0; x < DM; x++) {
-                        var dx = x - cx, dy = y - cy;
-                        var r  = Math.sqrt(dx * dx + dy * dy);
-                        var ang = Math.atan2(dy, dx);
-                        // Onda radial amortiguada: crece y decrece desde el centro
-                        var wave = amplitude *
-                            Math.sin(r * 0.28 - phase) *
-                            Math.exp(-r * 0.022);
-                        var i = (y * DM + x) * 4;
-                        d[i]   = 128 + Math.round(wave * Math.cos(ang)); // R → X
-                        d[i+1] = 128 + Math.round(wave * Math.sin(ang)); // G → Y
-                        d[i+2] = 128;
-                        d[i+3] = 255;
+                /* ── Vertex shader (pass-through) ── */
+                var vert = [
+                    'varying vec2 vUv;',
+                    'void main(){',
+                    '  vUv = uv;',
+                    '  gl_Position = vec4(position,1.0);',
+                    '}'
+                ].join('\n');
+
+                /* ── Fragment shader: refracción radial de agua ── */
+                var frag = [
+                    'uniform sampler2D uTex;',
+                    'uniform float uTime;',   // tiempo de la onda
+                    'uniform float uAmp;',    // amplitud (0=quieto, 1=máximo)
+                    'uniform vec2  uCenter;', // centro ATL en UV (0-1)
+                    'uniform vec2  uAspect;', // corrección de aspecto
+                    'varying vec2 vUv;',
+                    'void main(){',
+                    '  vec2 uv = vUv;',
+                    '  vec2 d  = (uv - uCenter) * uAspect;',
+                    '  float dist = length(d);',
+                    /* Onda amortiguada: sin(dist·freq - tiempo·vel) · e^(-dist·amort) */
+                    '  float wave = uAmp',
+                    '    * sin(dist * 20.0 - uTime * 7.0)',
+                    '    * exp(-dist * 4.0);',
+                    /* Desplazamiento radial en UV */
+                    '  vec2 dir = dist > 0.001 ? normalize(d) : vec2(0.0);',
+                    '  uv += (dir / uAspect) * wave * 0.055;',
+                    '  gl_FragColor = texture2D(uTex, clamp(uv, 0.001, 0.999));',
+                    '}'
+                ].join('\n');
+
+                var mat = new THREE.ShaderMaterial({
+                    uniforms: {
+                        uTex:    { value: videoTex },
+                        uTime:   { value: 0.0 },
+                        uAmp:    { value: 0.0 },
+                        uCenter: { value: new THREE.Vector2(0.5, 0.58) },
+                        uAspect: { value: new THREE.Vector2(1.0, 1.0) }
+                    },
+                    vertexShader:   vert,
+                    fragmentShader: frag
+                });
+
+                var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
+                wScene.add(mesh);
+
+                /* Centrar en ATL */
+                function updateCenter() {
+                    var atlEl   = document.querySelector('.atl-clip') ||
+                                  document.querySelector('.hero-title');
+                    var heroEl  = document.getElementById('hero');
+                    if (!atlEl || !heroEl) return;
+                    var hR = heroEl.getBoundingClientRect();
+                    var aR = atlEl.getBoundingClientRect();
+                    var cx = (aR.left + aR.width  / 2 - hR.left) / hR.width;
+                    var cy = 1.0 - (aR.top  + aR.height / 2 - hR.top)  / hR.height;
+                    mat.uniforms.uCenter.value.set(cx, cy);
+                    var ar = window.innerHeight / window.innerWidth;
+                    mat.uniforms.uAspect.value.set(1.0, ar);
+                }
+                updateCenter();
+                window.addEventListener('resize', updateCenter, { passive: true });
+
+                /* ── Loop de render ── */
+                var dropping    = false;
+                var dropElapsed = 0;
+                var animTime    = 0;
+                var dropDur     = 3.2; // segundos
+                var lastTs      = null;
+
+                function loop(ts) {
+                    requestAnimationFrame(loop);
+                    var dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0;
+                    lastTs = ts;
+
+                    if (dropping) {
+                        dropElapsed += dt;
+                        animTime    += dt;
+                        var t   = Math.min(1, dropElapsed / dropDur);
+                        /* Amplitud: sube rápido, amortiguación física natural */
+                        var amp = Math.sin(t * Math.PI) * Math.exp(-t * 1.6);
+                        mat.uniforms.uAmp.value  = amp;
+                        mat.uniforms.uTime.value = animTime;
+
+                        if (t >= 1) {
+                            dropping = false;
+                            mat.uniforms.uAmp.value = 0;
+                            setTimeout(startDrop, 5000);
+                        }
                     }
+
+                    videoTex.needsUpdate = true;
+                    wRenderer.render(wScene, wCamera);
                 }
-                dmCtx.putImageData(imgData, 0, 0);
-                feImg.setAttribute('href', dmCanvas.toDataURL());
-            }
 
-            /* ── 5. Dibujar anillos visibles desde el centro de ATL ── */
-            function updateRings(cx, cy, phase, amplitude) {
-                var w = ringCanvas.width, h = ringCanvas.height;
-                ringCtx.clearRect(0, 0, w, h);
-                if (amplitude < 0.5) return;
-                var maxR = Math.hypot(w, h) * 0.75;
-                var speed = 55; // px por unidad de phase
-                for (var i = 0; i < 4; i++) {
-                    var r = (phase * speed + i * (maxR / 4)) % maxR;
-                    var op = Math.max(0, (amplitude / 55) * (1 - r / maxR) * 0.55);
-                    if (op < 0.01) continue;
-                    ringCtx.beginPath();
-                    ringCtx.arc(cx, cy, r, 0, Math.PI * 2);
-                    ringCtx.strokeStyle = 'rgba(196,181,212,' + op.toFixed(3) + ')';
-                    ringCtx.lineWidth = 1.4;
-                    ringCtx.stroke();
+                function startDrop() {
+                    if (dropping) return;
+                    dropping    = true;
+                    dropElapsed = 0;
+                    animTime    = 0;
+                    updateCenter();
                 }
+
+                requestAnimationFrame(loop);
+                /* Primera gota: 1s después de cargar */
+                setTimeout(startDrop, 1000);
             }
 
-            /* ── 6. Obtener centro de ATL en coords del hero ── */
-            function getATLCenter() {
-                var atlEl = document.querySelector('.atl-clip') ||
-                            document.querySelector('.hero-title') || content;
-                var heroRect = heroEl.getBoundingClientRect();
-                var atlRect  = atlEl.getBoundingClientRect();
-                return {
-                    x: atlRect.left + atlRect.width  / 2 - heroRect.left,
-                    y: atlRect.top  + atlRect.height / 2 - heroRect.top
-                };
-            }
-
-            /* ── 7. Animación de gota ── */
-            var running = false;
-
-            function runDrop() {
-                if (running) return;
-                running = true;
-
-                var duration = 3000;
-                var maxAmp   = 55;
-                var startTime = null;
-                var center   = getATLCenter();
-
-                function tick(ts) {
-                    if (!startTime) startTime = ts;
-                    var t = Math.min(1, (ts - startTime) / duration);
-
-                    // Amplitud: sube rápido, decae amortiguada (física real de gota)
-                    var amp   = maxAmp * Math.sin(t * Math.PI) * Math.exp(-t * 1.8);
-                    var phase = t * 9; // velocidad de expansión de ondas
-
-                    updateDM(phase, amp);
-                    feDisp.setAttribute('scale', (Math.abs(amp) * 0.9).toFixed(1));
-                    updateRings(center.x, center.y, phase, Math.abs(amp));
-
-                    if (t < 1) {
-                        requestAnimationFrame(tick);
-                    } else {
-                        feDisp.setAttribute('scale', '0');
-                        ringCtx.clearRect(0, 0, ringCanvas.width, ringCanvas.height);
-                        running = false;
-                        setTimeout(runDrop, 5000); // pausa 5s → bucle infinito
-                    }
-                }
-                requestAnimationFrame(tick);
-            }
-
-            // Primera gota: 1 segundo tras cargar
-            window.addEventListener('load', function() { setTimeout(runDrop, 1000); });
+            /* Esperar a que el video esté listo */
+            if (video.readyState >= 2) { init(); }
+            else { video.addEventListener('loadeddata', init, { once: true }); }
 
         })();
 
