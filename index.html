@@ -777,7 +777,7 @@
             .esp-body { padding: 1.5rem; }
             .filosofia-grid { grid-template-columns: 1fr; }
             .tec-grid { grid-template-columns: repeat(3, 1fr); } /* 2 filas de 3 */
-            #tecnologia { text-align: center; }
+            #tecnologia { text-align: center; overflow-x: visible; }
             .cifras-grid { grid-template-columns: repeat(2, 1fr); }
             .preview-grid { grid-template-columns: 1fr; height: auto; }
             .preview-item { height: 50vw; }
@@ -786,7 +786,15 @@
         }
         @media (max-width: 480px) {
             .esp-grid { grid-template-columns: 1fr; }
+
+            /* Sección tecnología: sin padding lateral para carrusel edge-to-edge */
+            #tecnologia { padding: 4rem 0 4rem 0 !important; }
+            /* El encabezado sí mantiene márgenes */
+            .tec-header { padding: 0 1.5rem; margin-bottom: 3rem; }
+            .section-label { padding-left: 1.5rem; }
+
             /* Carrusel horizontal en móvil */
+            #tecnologia .tec-inner { overflow-x: auto; }
             .tec-grid {
                 display: flex;
                 flex-wrap: nowrap;
@@ -796,15 +804,24 @@
                 scrollbar-width: none;
                 background: transparent;
                 gap: 0;
+                /* Padding inicial para que el primer card empiece con margen */
+                padding: 0 0 0 1.5rem;
             }
             .tec-grid::-webkit-scrollbar { display: none; }
             .tec-item {
-                flex: 0 0 68vw;
+                flex: 0 0 72vw;
                 scroll-snap-align: start;
-                padding: 2rem 1rem;
-                border-right: 1px solid rgba(255,255,255,0.06);
-                background: var(--bg);
+                padding: 2.5rem 1.5rem;
+                border-right: 1px solid rgba(255,255,255,0.08);
+                border-bottom: none;
+                background: rgba(12,12,12,1);
+                /* Forzar visibilidad: IntersectionObserver no detecta ítems horizontales */
+                opacity: 1 !important;
+                transform: none !important;
+                transition: background 0.3s;
             }
+            /* Último card: margen derecho para no quedar cortado */
+            .tec-item:last-child { margin-right: 1.5rem; border-right: none; }
             .tec-icon { height: 60px; }
         }
 
@@ -1321,6 +1338,12 @@
         });
 
         // ── SCROLL REVEAL ──
+        // En móvil/touch, los tec-item del carrusel horizontal no son detectados
+        // por IntersectionObserver (están fuera del viewport en X). Los marcamos visibles de inmediato.
+        const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+        if (isTouchDevice) {
+            document.querySelectorAll('.tec-item').forEach(el => el.classList.add('visible'));
+        }
         const revealEls = document.querySelectorAll('.pilar, .tec-item, .cifra, .esp-item');
         const revealObs = new IntersectionObserver((entries) => {
             entries.forEach((entry, i) => {
