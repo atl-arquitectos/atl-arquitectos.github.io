@@ -2492,68 +2492,151 @@
             btn.addEventListener('click', toggle);
         })();
 
-        /* ── ATL WATER DROP — gota que expande ondas · ATL = agua en náhuatl ── */
+        /* ── ATL WATER DROP — desplazamiento radial real · ATL = agua en náhuatl ── */
         (function() {
+
+            /* ── 1. Canvas de desplazamiento (128×128, invisible) ── */
+            var DM = 128;
+            var dmCanvas = document.createElement('canvas');
+            dmCanvas.width = dmCanvas.height = DM;
+            var dmCtx = dmCanvas.getContext('2d');
+
+            /* ── 2. Canvas de anillos visibles (tamaño hero) ── */
+            var ringCanvas = document.createElement('canvas');
+            ringCanvas.setAttribute('aria-hidden', 'true');
+            ringCanvas.style.cssText =
+                'position:absolute;inset:0;width:100%;height:100%;' +
+                'pointer-events:none;z-index:6;mix-blend-mode:screen;';
+            var heroEl = document.getElementById('hero');
+            if (heroEl) heroEl.appendChild(ringCanvas);
+            var ringCtx = ringCanvas.getContext('2d');
+
+            function resizeRing() {
+                ringCanvas.width  = ringCanvas.offsetWidth  || window.innerWidth;
+                ringCanvas.height = ringCanvas.offsetHeight || window.innerHeight;
+            }
+            resizeRing();
+            window.addEventListener('resize', resizeRing, { passive: true });
+
+            /* ── 3. SVG filter con feImage → feDisplacementMap ── */
             var svgNS = 'http://www.w3.org/2000/svg';
             var svg = document.createElementNS(svgNS, 'svg');
             svg.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden;');
             svg.setAttribute('aria-hidden', 'true');
             svg.innerHTML =
                 '<defs>' +
-                '<filter id="atl-water" x="-35%" y="-35%" width="170%" height="170%">' +
-                  '<feTurbulence id="atl-turb" type="turbulence" ' +
-                      'baseFrequency="0.007 0.007" numOctaves="2" seed="4" result="noise"/>' +
-                  '<feDisplacementMap id="atl-disp" in="SourceGraphic" in2="noise" ' +
-                      'scale="0" xChannelSelector="R" yChannelSelector="G"/>' +
+                '<filter id="atl-water" x="-40%" y="-40%" width="180%" height="180%"' +
+                ' color-interpolation-filters="sRGB">' +
+                  '<feImage id="atl-feim" result="dmap"' +
+                    ' preserveAspectRatio="none" x="0%" y="0%" width="100%" height="100%"/>' +
+                  '<feDisplacementMap id="atl-disp" in="SourceGraphic" in2="dmap"' +
+                    ' scale="0" xChannelSelector="R" yChannelSelector="G"/>' +
                 '</filter>' +
                 '</defs>';
             document.body.appendChild(svg);
 
-            var turb    = document.getElementById('atl-turb');
-            var disp    = document.getElementById('atl-disp');
+            var feImg  = document.getElementById('atl-feim');
+            var feDisp = document.getElementById('atl-disp');
             var content = document.querySelector('.hero-content');
-            if (!turb || !disp || !content) return;
+            if (!feImg || !feDisp || !content) return;
 
-            // Aplicar filtro permanentemente (scale=0 = sin distorsión visible)
             content.style.filter = 'url(#atl-water)';
 
+            /* ── 4. Dibujar mapa de desplazamiento radial ── */
+            function updateDM(phase, amplitude) {
+                var imgData = dmCtx.createImageData(DM, DM);
+                var d = imgData.data;
+                var cx = DM / 2, cy = DM / 2;
+                for (var y = 0; y < DM; y++) {
+                    for (var x = 0; x < DM; x++) {
+                        var dx = x - cx, dy = y - cy;
+                        var r  = Math.sqrt(dx * dx + dy * dy);
+                        var ang = Math.atan2(dy, dx);
+                        // Onda radial amortiguada: crece y decrece desde el centro
+                        var wave = amplitude *
+                            Math.sin(r * 0.28 - phase) *
+                            Math.exp(-r * 0.022);
+                        var i = (y * DM + x) * 4;
+                        d[i]   = 128 + Math.round(wave * Math.cos(ang)); // R → X
+                        d[i+1] = 128 + Math.round(wave * Math.sin(ang)); // G → Y
+                        d[i+2] = 128;
+                        d[i+3] = 255;
+                    }
+                }
+                dmCtx.putImageData(imgData, 0, 0);
+                feImg.setAttribute('href', dmCanvas.toDataURL());
+            }
+
+            /* ── 5. Dibujar anillos visibles desde el centro de ATL ── */
+            function updateRings(cx, cy, phase, amplitude) {
+                var w = ringCanvas.width, h = ringCanvas.height;
+                ringCtx.clearRect(0, 0, w, h);
+                if (amplitude < 0.5) return;
+                var maxR = Math.hypot(w, h) * 0.75;
+                var speed = 55; // px por unidad de phase
+                for (var i = 0; i < 4; i++) {
+                    var r = (phase * speed + i * (maxR / 4)) % maxR;
+                    var op = Math.max(0, (amplitude / 55) * (1 - r / maxR) * 0.55);
+                    if (op < 0.01) continue;
+                    ringCtx.beginPath();
+                    ringCtx.arc(cx, cy, r, 0, Math.PI * 2);
+                    ringCtx.strokeStyle = 'rgba(196,181,212,' + op.toFixed(3) + ')';
+                    ringCtx.lineWidth = 1.4;
+                    ringCtx.stroke();
+                }
+            }
+
+            /* ── 6. Obtener centro de ATL en coords del hero ── */
+            function getATLCenter() {
+                var atlEl = document.querySelector('.atl-clip') ||
+                            document.querySelector('.hero-title') || content;
+                var heroRect = heroEl.getBoundingClientRect();
+                var atlRect  = atlEl.getBoundingClientRect();
+                return {
+                    x: atlRect.left + atlRect.width  / 2 - heroRect.left,
+                    y: atlRect.top  + atlRect.height / 2 - heroRect.top
+                };
+            }
+
+            /* ── 7. Animación de gota ── */
             var running = false;
 
             function runDrop() {
                 if (running) return;
                 running = true;
 
+                var duration = 3000;
+                var maxAmp   = 55;
                 var startTime = null;
-                var duration  = 2800;  // duración de una "gota"
-                var maxScale  = 58;    // intensidad máxima de la onda
+                var center   = getATLCenter();
 
                 function tick(ts) {
                     if (!startTime) startTime = ts;
                     var t = Math.min(1, (ts - startTime) / duration);
 
-                    // Oscilación amortiguada: sin(t·π·2.8) · e^(-t·3)
-                    // → impacto fuerte, 2-3 ondas que se reducen, termina en calma
-                    var wave  = Math.sin(t * Math.PI * 2.8) * Math.exp(-t * 3.0);
-                    var scale = Math.abs(maxScale * wave);
+                    // Amplitud: sube rápido, decae amortiguada (física real de gota)
+                    var amp   = maxAmp * Math.sin(t * Math.PI) * Math.exp(-t * 1.8);
+                    var phase = t * 9; // velocidad de expansión de ondas
 
-                    disp.setAttribute('scale', scale.toFixed(2));
+                    updateDM(phase, amp);
+                    feDisp.setAttribute('scale', (Math.abs(amp) * 0.9).toFixed(1));
+                    updateRings(center.x, center.y, phase, Math.abs(amp));
 
                     if (t < 1) {
                         requestAnimationFrame(tick);
                     } else {
-                        disp.setAttribute('scale', '0');
+                        feDisp.setAttribute('scale', '0');
+                        ringCtx.clearRect(0, 0, ringCanvas.width, ringCanvas.height);
                         running = false;
-                        // Esperar 5 segundos y repetir en bucle infinito
-                        setTimeout(runDrop, 5000);
+                        setTimeout(runDrop, 5000); // pausa 5s → bucle infinito
                     }
                 }
                 requestAnimationFrame(tick);
             }
 
-            // Primera gota: 1 segundo después de cargar la página
-            window.addEventListener('load', function() {
-                setTimeout(runDrop, 1000);
-            });
+            // Primera gota: 1 segundo tras cargar
+            window.addEventListener('load', function() { setTimeout(runDrop, 1000); });
+
         })();
 
     </script>
