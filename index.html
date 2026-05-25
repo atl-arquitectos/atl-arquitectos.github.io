@@ -837,6 +837,64 @@
         }
         .section-dot:hover::before { opacity: 1; }
         @media (max-width: 900px) { .section-dots { display: none; } }
+
+        /* ── ATL SOUND SYSTEM ── */
+        .atl-sound-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(8, 8, 8, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.10);
+            padding: 0.55rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: border-color 0.5s ease, background 0.5s ease;
+            font-family: var(--font-body);
+            outline: none;
+        }
+        .atl-sound-btn:hover {
+            border-color: rgba(255,255,255,0.22);
+            background: rgba(8,8,8,0.6);
+        }
+        .atl-sound-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--lilac);
+            opacity: 0.25;
+            flex-shrink: 0;
+            transition: opacity 0.8s ease, box-shadow 0.8s ease;
+        }
+        .atl-sound-label {
+            font-size: 0.42rem;
+            font-weight: 400;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.30);
+            transition: color 0.5s ease;
+            white-space: nowrap;
+        }
+        .atl-sound-btn.atl-sound-on .atl-sound-dot {
+            opacity: 1;
+            box-shadow: 0 0 8px var(--lilac);
+            animation: soundPulse 4s ease-in-out infinite;
+        }
+        .atl-sound-btn.atl-sound-on .atl-sound-label {
+            color: rgba(196,181,212,0.75);
+        }
+        .atl-sound-btn.atl-sound-on {
+            border-color: rgba(196,181,212,0.20);
+        }
+        @keyframes soundPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.5; transform: scale(0.7); }
+        }
+        @media (max-width: 900px) { .atl-sound-btn { display: none; } }
     </style>
 </head>
 <body>
@@ -2244,6 +2302,174 @@
             });
         })();
 
+        /* ── ATL SOUND SYSTEM — Web Audio API ── */
+        (function() {
+            'use strict';
+
+            let ctx, master, reverbNode;
+            let ambNodes = [];
+            let isOn = false;
+            let initialized = false;
+            let lastSection = '';
+            let lastScrollTone = 0;
+            let lastHoverTone = 0;
+
+            /* ── REVERB: impulse response sintético ── */
+            function buildReverb() {
+                const conv = ctx.createConvolver();
+                const rate = ctx.sampleRate;
+                const len  = Math.floor(rate * 4.5);
+                const buf  = ctx.createBuffer(2, len, rate);
+                for (let c = 0; c < 2; c++) {
+                    const d = buf.getChannelData(c);
+                    for (let i = 0; i < len; i++) {
+                        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.8);
+                    }
+                }
+                conv.buffer = buf;
+                return conv;
+            }
+
+            /* ── INIT ── */
+            function init() {
+                if (initialized) return;
+                ctx    = new (window.AudioContext || window.webkitAudioContext)();
+                master = ctx.createGain();
+                master.gain.setValueAtTime(0, ctx.currentTime);
+
+                reverbNode = buildReverb();
+                const revGain = ctx.createGain();
+                revGain.gain.setValueAtTime(0.40, ctx.currentTime);
+                reverbNode.connect(revGain);
+                revGain.connect(master);
+                master.connect(ctx.destination);
+                initialized = true;
+            }
+
+            /* ── PAD AMBIENTAL ─────────────────────────────
+               Acorde espacial: A1 · E2 · A2 · D3
+               Cuatro osciladores con LFO de deriva lenta
+            ──────────────────────────────────────────────── */
+            function buildAmbient() {
+                const FREQS = [55.00, 82.41, 110.00, 146.83];
+                const GAINS = [0.065, 0.048, 0.038, 0.028];
+                const LFOS  = [0.07,  0.11,  0.09,  0.13];
+
+                FREQS.forEach((f, i) => {
+                    const osc  = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    const lfo  = ctx.createOscillator();
+                    const lfoG = ctx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(f, ctx.currentTime);
+                    gain.gain.setValueAtTime(GAINS[i], ctx.currentTime);
+
+                    lfo.type = 'sine';
+                    lfo.frequency.setValueAtTime(LFOS[i], ctx.currentTime);
+                    lfoG.gain.setValueAtTime(0.4, ctx.currentTime);
+                    lfo.connect(lfoG);
+                    lfoG.connect(osc.detune);
+
+                    osc.connect(gain);
+                    gain.connect(reverbNode);
+                    gain.connect(master);
+
+                    lfo.start();
+                    osc.start();
+                    ambNodes.push({ osc, lfo });
+                });
+            }
+
+            /* ── MICRO SONIDO genérico ── */
+            function micro(f1, f2, dur, vol) {
+                if (!isOn || !ctx) return;
+                const t   = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const env = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(f1, t);
+                if (f2) osc.frequency.exponentialRampToValueAtTime(f2, t + dur * 0.35);
+                env.gain.setValueAtTime(0, t);
+                env.gain.linearRampToValueAtTime(vol, t + dur * 0.08);
+                env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+                osc.connect(env);
+                env.connect(reverbNode);
+                osc.start(t);
+                osc.stop(t + dur);
+            }
+
+            /* ── INTERACCIONES ── */
+            function onHover() {
+                const now = Date.now();
+                if (now - lastHoverTone < 600) return;
+                lastHoverTone = now;
+                micro(1100, 770, 0.28, 0.007);
+            }
+
+            function onScroll() {
+                const now = Date.now();
+                if (now - lastScrollTone < 4000) return;
+                lastScrollTone = now;
+                micro(220, 165, 3.0, 0.011);
+            }
+
+            function onSection(id) {
+                if (id === lastSection) return;
+                lastSection = id;
+                micro(440, 330, 2.2, 0.009);
+            }
+
+            /* ── TOGGLE ── */
+            function toggle() {
+                init();
+                if (!isOn) {
+                    if (ambNodes.length === 0) buildAmbient();
+                    master.gain.cancelScheduledValues(ctx.currentTime);
+                    master.gain.setValueAtTime(0, ctx.currentTime);
+                    master.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 3.5);
+                    isOn = true;
+                    btn.classList.add('atl-sound-on');
+                    lbl.textContent = 'AMBIENT ON';
+                } else {
+                    master.gain.cancelScheduledValues(ctx.currentTime);
+                    master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+                    master.gain.linearRampToValueAtTime(0, ctx.currentTime + 2.5);
+                    isOn = false;
+                    btn.classList.remove('atl-sound-on');
+                    lbl.textContent = 'AMBIENT';
+                }
+            }
+
+            /* ── BOTÓN ── */
+            const btn = document.createElement('button');
+            btn.className = 'atl-sound-btn';
+            btn.setAttribute('aria-label', 'Activar modo ambiental');
+            btn.innerHTML =
+                '<span class="atl-sound-dot"></span>' +
+                '<span class="atl-sound-label">AMBIENT</span>';
+            document.body.appendChild(btn);
+            const lbl = btn.querySelector('.atl-sound-label');
+            btn.addEventListener('click', toggle);
+
+            /* ── LISTENERS ── */
+            document.addEventListener('mouseover', function(e) {
+                if (!isOn) return;
+                if (e.target.closest('.preview-item,.tec-item,.esp-item,.quienes-link,.btn-primary,.btn-secondary,.pilar'))
+                    onHover();
+            });
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+
+            const obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(en) {
+                    if (en.isIntersecting && en.intersectionRatio >= 0.35)
+                        onSection(en.target.id);
+                });
+            }, { threshold: 0.35 });
+
+            document.querySelectorAll('section[id]').forEach(function(s) { obs.observe(s); });
+        })();
 
     </script>
 </body>
