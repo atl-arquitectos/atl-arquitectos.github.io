@@ -24,9 +24,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600&family=Barlow+Condensed:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <!-- PixiJS v7 + ShockwaveFilter para efecto gota de agua -->
-    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pixi-filters@5.3.1/dist/browser/pixi-filters.js"></script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -2495,110 +2492,121 @@
             btn.addEventListener('click', toggle);
         })();
 
-        /* ── ATL WATER DROP — PixiJS ShockwaveFilter · ATL = agua en náhuatl ── */
+        /* ── ATL WATER DROP — refracción por anillos · ATL = agua en náhuatl ── */
         (function () {
-            if (typeof PIXI === 'undefined' || !PIXI.filters || !PIXI.filters.ShockwaveFilter) return;
-
             var video  = document.querySelector('.hero-bg video');
             var heroBg = document.querySelector('.hero-bg');
             if (!video || !heroBg) return;
 
-            function init() {
-                var W = window.innerWidth;
-                var H = window.innerHeight;
+            /* Canvas overlay transparente sobre el video */
+            var canvas = document.createElement('canvas');
+            canvas.setAttribute('aria-hidden', 'true');
+            canvas.style.cssText =
+                'position:absolute;inset:0;width:100%;height:100%;' +
+                'pointer-events:none;z-index:2;';
+            heroBg.appendChild(canvas);
+            var ctx = canvas.getContext('2d');
 
-                /* Aplicación PixiJS — canvas transparente sobre el video */
-                var app = new PIXI.Application({
-                    width: W, height: H,
-                    backgroundAlpha: 0,
-                    antialias: false,
-                    resolution: Math.min(window.devicePixelRatio, 2)
-                });
-                app.view.setAttribute('aria-hidden', 'true');
-                app.view.style.cssText =
-                    'position:absolute;top:0;left:0;width:100%;height:100%;' +
-                    'pointer-events:none;z-index:2;';
-                heroBg.appendChild(app.view);
+            function resize() {
+                canvas.width  = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize, { passive: true });
 
-                /* Ocultar video HTML — PixiJS lo renderiza como textura */
-                video.style.opacity = '0';
-
-                /* Textura de video */
-                var vidTex = PIXI.Texture.from(video);
-                var sprite = new PIXI.Sprite(vidTex);
-                app.stage.addChild(sprite);
-
-                /* Cubrir el canvas (equivalente a object-fit: cover) */
-                function coverSprite() {
-                    var vW = video.videoWidth  || 1920;
-                    var vH = video.videoHeight || 1080;
-                    var appW = app.renderer.width  / app.renderer.resolution;
-                    var appH = app.renderer.height / app.renderer.resolution;
-                    var scale = Math.max(appW / vW, appH / vH);
-                    sprite.scale.set(scale);
-                    sprite.x = (appW - vW * scale) / 2;
-                    sprite.y = (appH - vH * scale) / 2;
+            /* Centro del logo ATL */
+            var cx, cy;
+            function updateCenter() {
+                var atlEl  = document.querySelector('.atl-clip') ||
+                             document.querySelector('.hero-title');
+                var heroEl = document.getElementById('hero');
+                if (!atlEl || !heroEl) {
+                    cx = canvas.width / 2; cy = canvas.height * 0.42; return;
                 }
-                coverSprite();
-
-                /* Centro del logo ATL en píxeles dentro del canvas */
-                function getATLCenter() {
-                    var atlEl  = document.querySelector('.atl-clip') ||
-                                 document.querySelector('.hero-title');
-                    var heroEl = document.getElementById('hero');
-                    if (!atlEl || !heroEl) return [W / 2, H * 0.42];
-                    var hR = heroEl.getBoundingClientRect();
-                    var aR = atlEl.getBoundingClientRect();
-                    return [
-                        (aR.left + aR.width  / 2 - hR.left),
-                        (aR.top  + aR.height / 2 - hR.top)
-                    ];
-                }
-
-                /* ShockwaveFilter — onda de choque radial real */
-                var center = getATLCenter();
-                var shock  = new PIXI.filters.ShockwaveFilter(
-                    center,
-                    { amplitude: 38, wavelength: 145, brightness: 1.0, speed: 420, radius: -1 },
-                    -1   // time=-1 → sin efecto al inicio
-                );
-                sprite.filters = [shock];
-
-                /* Ticker de animación */
-                var dropping = false;
-                app.ticker.add(function () {
-                    vidTex.update();   // actualizar frame del video
-                    if (dropping) {
-                        shock.time += app.ticker.deltaMS / 1000;
-                        if (shock.time > 2.8) {        // duración de la onda
-                            dropping   = false;
-                            shock.time = -1;            // apagar efecto
-                            setTimeout(startDrop, 5000); // pausa 5s → siguiente gota
-                        }
-                    }
-                });
-
-                /* Lanzar una gota */
-                function startDrop() {
-                    if (dropping) return;
-                    shock.center = getATLCenter();
-                    shock.time   = 0;
-                    dropping     = true;
-                }
-
-                /* Resize */
-                window.addEventListener('resize', function () {
-                    var nW = window.innerWidth, nH = window.innerHeight;
-                    app.renderer.resize(nW, nH);
-                    coverSprite();
-                }, { passive: true });
-
-                /* Primera gota: 1 segundo tras cargar */
-                setTimeout(startDrop, 1000);
+                var hR = heroEl.getBoundingClientRect();
+                var aR = atlEl.getBoundingClientRect();
+                cx = aR.left + aR.width  / 2 - hR.left;
+                cy = aR.top  + aR.height / 2 - hR.top;
             }
 
-            if (video.readyState >= 2) { init(); }
-            else { video.addEventListener('loadeddata', init, { once: true }); }
+            /* Dibuja los anillos de refracción sobre el video */
+            function drawRipple(t) {
+                var W = canvas.width, H = canvas.height;
+                ctx.clearRect(0, 0, W, H);
+
+                /* Amplitud: sube y baja como una gota real */
+                var amp = 18 * Math.sin(t * Math.PI) * Math.exp(-t * 1.6);
+                if (Math.abs(amp) < 0.3) return;
+
+                var maxR   = Math.hypot(W, H) * 0.75;
+                var nRings = 5;
+                var speed  = maxR / 2.8; /* px/s — llega al borde en 2.8s */
+
+                for (var i = 0; i < nRings; i++) {
+                    var r = t * speed - i * (maxR / nRings);
+                    if (r < 1) continue;
+                    if (r > maxR) continue;
+
+                    var fade  = Math.max(0, 1 - r / maxR);
+                    var ringW = 28 * fade;
+                    if (ringW < 1) continue;
+
+                    /* Clip al anillo (corona circular) */
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, r + ringW / 2, 0, Math.PI * 2);
+                    ctx.arc(cx, cy, Math.max(0, r - ringW / 2), 0, Math.PI * 2, true);
+                    ctx.clip();
+
+                    /* Escalar el video desde el centro → efecto lente/refracción */
+                    var lensScale = 1 + amp * fade * 0.014;
+                    ctx.translate(cx, cy);
+                    ctx.scale(lensScale, lensScale);
+                    ctx.translate(-cx, -cy);
+
+                    /* Dibujar video cubriendo el canvas (object-fit: cover) */
+                    var vW = video.videoWidth  || W;
+                    var vH = video.videoHeight || H;
+                    var s  = Math.max(W / vW, H / vH);
+                    var dW = vW * s, dH = vH * s;
+                    ctx.drawImage(video, (W - dW) / 2, (H - dH) / 2, dW, dH);
+
+                    ctx.restore();
+                }
+            }
+
+            /* Loop principal */
+            var dropping  = false;
+            var dropTime  = 0;
+            var DROP_DUR  = 3.0;
+            var lastTs    = null;
+
+            function loop(ts) {
+                requestAnimationFrame(loop);
+                var dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0;
+                lastTs = ts;
+
+                if (dropping) {
+                    dropTime += dt;
+                    var t = Math.min(1, dropTime / DROP_DUR);
+                    drawRipple(t);
+                    if (t >= 1) {
+                        dropping = false;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        setTimeout(startDrop, 5000);
+                    }
+                }
+            }
+
+            function startDrop() {
+                if (dropping) return;
+                updateCenter();
+                dropping = true;
+                dropTime = 0;
+            }
+
+            requestAnimationFrame(loop);
+            window.addEventListener('load', function () { setTimeout(startDrop, 1000); });
         })();
 
     </script>
