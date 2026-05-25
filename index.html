@@ -2492,117 +2492,212 @@
             btn.addEventListener('click', toggle);
         })();
 
-        /* ── ATL WATER DROP — refracción por anillos · ATL = agua en náhuatl ── */
+        /* ── ATL WATER DROP v9 — feDisplacementMap radial + caustic rings ──
+         *  Fisica real: derivada de gaussiana genera push/pull en cada onda
+         *  El video se distorsiona a nivel de pixel, como agua de verdad       */
         (function () {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+
             var video  = document.querySelector('.hero-bg video');
             var heroBg = document.querySelector('.hero-bg');
-            if (!video || !heroBg) return;
+            var heroEl = document.getElementById('hero');
+            if (!video || !heroBg || !heroEl) return;
 
-            /* Canvas overlay transparente sobre el video */
-            var canvas = document.createElement('canvas');
-            canvas.setAttribute('aria-hidden', 'true');
-            canvas.style.cssText =
-                'position:absolute;inset:0;width:100%;height:100%;' +
-                'pointer-events:none;z-index:2;';
-            heroBg.appendChild(canvas);
-            var ctx = canvas.getContext('2d');
+            /* 1. Canvas overlay para anillos de luz caustic */
+            var OC = document.createElement('canvas');
+            OC.setAttribute('aria-hidden', 'true');
+            OC.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;';
+            heroBg.appendChild(OC);
+            var Octx = OC.getContext('2d');
 
-            function resize() {
-                canvas.width  = window.innerWidth;
-                canvas.height = window.innerHeight;
+            function resizeOC() {
+                OC.width  = heroEl.offsetWidth  || window.innerWidth;
+                OC.height = heroEl.offsetHeight || window.innerHeight;
             }
-            resize();
-            window.addEventListener('resize', resize, { passive: true });
+            resizeOC();
+            window.addEventListener('resize', resizeOC, { passive: true });
 
-            /* Centro del logo ATL */
-            var cx, cy;
-            function updateCenter() {
-                var atlEl  = document.querySelector('.atl-clip') ||
-                             document.querySelector('.hero-title');
-                var heroEl = document.getElementById('hero');
-                if (!atlEl || !heroEl) {
-                    cx = canvas.width / 2; cy = canvas.height * 0.42; return;
+            /* 2. Centro: letra ATL */
+            var CX = 0, CY = 0;
+            function findCenter() {
+                var el = document.querySelector('.atl-clip') || document.querySelector('.hero-title');
+                if (!el) { CX = OC.width / 2; CY = OC.height * 0.42; return; }
+                var hr = heroEl.getBoundingClientRect();
+                var er = el.getBoundingClientRect();
+                CX = er.left + er.width  / 2 - hr.left;
+                CY = er.top  + er.height / 2 - hr.top;
+            }
+
+            /* 3. SVG feDisplacementMap — distorsiona pixeles del video */
+            var NS  = 'http://www.w3.org/2000/svg';
+            var XNS = 'http://www.w3.org/1999/xlink';
+            var svgEl = document.createElementNS(NS, 'svg');
+            svgEl.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;';
+            var defsEl = document.createElementNS(NS, 'defs');
+            var filEl  = document.createElementNS(NS, 'filter');
+            filEl.setAttribute('id', 'atl-drop');
+            filEl.setAttribute('x', '0%');   filEl.setAttribute('y', '0%');
+            filEl.setAttribute('width', '100%'); filEl.setAttribute('height', '100%');
+            filEl.setAttribute('color-interpolation-filters', 'linearRGB');
+            var feiEl = document.createElementNS(NS, 'feImage');
+            feiEl.setAttribute('result', 'dm');
+            feiEl.setAttribute('preserveAspectRatio', 'none');
+            feiEl.setAttribute('x', '0'); feiEl.setAttribute('y', '0');
+            feiEl.setAttribute('width', '100%'); feiEl.setAttribute('height', '100%');
+            var fedEl = document.createElementNS(NS, 'feDisplacementMap');
+            fedEl.setAttribute('in', 'SourceGraphic');
+            fedEl.setAttribute('in2', 'dm');
+            fedEl.setAttribute('scale', '75');
+            fedEl.setAttribute('xChannelSelector', 'R');
+            fedEl.setAttribute('yChannelSelector', 'G');
+            filEl.appendChild(feiEl); filEl.appendChild(fedEl);
+            defsEl.appendChild(filEl); svgEl.appendChild(defsEl);
+            document.body.appendChild(svgEl);
+
+            /* 4. Canvas 128x128 como mapa de desplazamiento */
+            var DM = 128, HALF = DM / 2;
+            var dmc  = document.createElement('canvas');
+            dmc.width = dmc.height = DM;
+            var dctx = dmc.getContext('2d');
+            var idat = dctx.createImageData(DM, DM);
+            var pix  = idat.data;
+
+            for (var j = 0; j < pix.length; j += 4) {
+                pix[j] = 128; pix[j+1] = 128; pix[j+2] = 0; pix[j+3] = 255;
+            }
+            dctx.putImageData(idat, 0, 0);
+            var neu = dmc.toDataURL();
+            feiEl.setAttribute('href', neu);
+            try { feiEl.setAttributeNS(XNS, 'xlink:href', neu); } catch(e) {}
+
+            /* Pre-calcular coords polares (una sola vez) */
+            var dmRad = new Float32Array(DM * DM);
+            var dmAng = new Float32Array(DM * DM);
+            for (var py = 0; py < DM; py++) {
+                for (var px = 0; px < DM; px++) {
+                    var pi = py * DM + px;
+                    var ddx = px - HALF, ddy = py - HALF;
+                    dmRad[pi] = Math.sqrt(ddx * ddx + ddy * ddy);
+                    dmAng[pi] = Math.atan2(ddy, ddx);
                 }
-                var hR = heroEl.getBoundingClientRect();
-                var aR = atlEl.getBoundingClientRect();
-                cx = aR.left + aR.width  / 2 - hR.left;
-                cy = aR.top  + aR.height / 2 - hR.top;
             }
 
-            /* Dibuja los anillos de refracción sobre el video */
-            function drawRipple(t) {
-                var W = canvas.width, H = canvas.height;
-                ctx.clearRect(0, 0, W, H);
+            /* 5. Fisica de ondas: derivada de gaussiana
+             *   Empuja hacia afuera en el frente, jala hacia atras — como agua real */
+            var DROP_DUR = 3.2;
+            var NR = 5;
+            var SPD = HALF / 1.55;
+            var GAP = HALF * 0.21;
+            var SIG = HALF * 0.068;
 
-                /* Amplitud: sube y baja como una gota real */
-                var amp = 18 * Math.sin(t * Math.PI) * Math.exp(-t * 1.6);
-                if (Math.abs(amp) < 0.3) return;
+            function dispAt(r, t) {
+                var env = Math.sin((t / DROP_DUR) * Math.PI) * Math.exp(-t * 0.75);
+                if (Math.abs(env) < 0.001) return 0;
+                var sum = 0;
+                for (var k = 0; k < NR; k++) {
+                    var r0   = t * SPD - k * GAP;
+                    if (r0 < 0) continue;
+                    var dist = r - r0;
+                    var dg   = (-dist / (SIG * SIG)) * Math.exp(-dist * dist / (2 * SIG * SIG));
+                    var fade = Math.exp(-r / (HALF * 0.88)) * Math.pow(0.62, k);
+                    sum += dg * fade;
+                }
+                return env * sum / 3.5;
+            }
 
-                var maxR   = Math.hypot(W, H) * 0.75;
-                var nRings = 5;
-                var speed  = maxR / 2.8; /* px/s — llega al borde en 2.8s */
+            function updateDM(t) {
+                var n = DM * DM;
+                for (var i = 0; i < n; i++) {
+                    var d = dispAt(dmRad[i], t);
+                    var c = Math.cos(dmAng[i]), s = Math.sin(dmAng[i]);
+                    pix[i * 4]     = 128 + d * c * 122;
+                    pix[i * 4 + 1] = 128 + d * s * 122;
+                }
+                dctx.putImageData(idat, 0, 0);
+                var url = dmc.toDataURL('image/png');
+                feiEl.setAttribute('href', url);
+                try { feiEl.setAttributeNS(XNS, 'xlink:href', url); } catch(e) {}
+            }
 
-                for (var i = 0; i < nRings; i++) {
-                    var r = t * speed - i * (maxR / nRings);
-                    if (r < 1) continue;
-                    if (r > maxR) continue;
+            /* 6. Anillos de luz caustic en canvas
+             *   Bright ring en el frente, dark shadow detras + splash inicial */
+            function drawCaustics(t) {
+                var W = OC.width, H = OC.height;
+                Octx.clearRect(0, 0, W, H);
+                var maxR  = Math.hypot(W, H) * 0.62;
+                var spd2  = maxR / 1.55;
+                var gap2  = maxR * 0.195;
+                var env   = Math.sin((t / DROP_DUR) * Math.PI) * Math.exp(-t * 0.75);
+                var absE  = Math.abs(env);
 
-                    var fade  = Math.max(0, 1 - r / maxR);
-                    var ringW = 28 * fade;
-                    if (ringW < 1) continue;
+                for (var k = 0; k < NR; k++) {
+                    var r = t * spd2 - k * gap2;
+                    if (r < 1 || r > maxR * 1.05) continue;
+                    var kF    = Math.pow(0.62, k);
+                    var rFade = Math.max(0, 1 - r / maxR);
+                    var alpha = absE * kF * rFade;
+                    if (alpha < 0.015) continue;
+                    var rW = Math.max(1.5, 14 * rFade * absE);
 
-                    /* Clip al anillo (corona circular) */
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, r + ringW / 2, 0, Math.PI * 2);
-                    ctx.arc(cx, cy, Math.max(0, r - ringW / 2), 0, Math.PI * 2, true);
-                    ctx.clip();
+                    /* Shadow oscuro detras del frente */
+                    Octx.beginPath();
+                    Octx.arc(CX, CY, Math.max(1, r - rW * 0.9), 0, Math.PI * 2);
+                    Octx.strokeStyle = 'rgba(0,8,20,' + (alpha * 0.3) + ')';
+                    Octx.lineWidth   = Math.max(1, rW * 0.7);
+                    Octx.stroke();
 
-                    /* Escalar el video desde el centro → efecto lente/refracción */
-                    var lensScale = 1 + amp * fade * 0.014;
-                    ctx.translate(cx, cy);
-                    ctx.scale(lensScale, lensScale);
-                    ctx.translate(-cx, -cy);
+                    /* Bright highlight en el frente de onda */
+                    Octx.save();
+                    Octx.shadowBlur  = rW * 4;
+                    Octx.shadowColor = 'rgba(190,220,255,' + (alpha * 0.7) + ')';
+                    Octx.beginPath();
+                    Octx.arc(CX, CY, r, 0, Math.PI * 2);
+                    Octx.strokeStyle = 'rgba(210,235,255,' + (alpha * 0.95) + ')';
+                    Octx.lineWidth   = Math.max(0.8, rW * 0.35);
+                    Octx.stroke();
+                    Octx.restore();
+                }
 
-                    /* Dibujar video cubriendo el canvas (object-fit: cover) */
-                    var vW = video.videoWidth  || W;
-                    var vH = video.videoHeight || H;
-                    var s  = Math.max(W / vW, H / vH);
-                    var dW = vW * s, dH = vH * s;
-                    ctx.drawImage(video, (W - dW) / 2, (H - dH) / 2, dW, dH);
-
-                    ctx.restore();
+                /* Splash inicial en el centro (primeros 0.35s) */
+                if (t < 0.35) {
+                    var sp = (0.35 - t) / 0.35;
+                    Octx.save();
+                    Octx.shadowBlur  = 22;
+                    Octx.shadowColor = 'rgba(160,210,255,' + (sp * 0.9) + ')';
+                    Octx.beginPath();
+                    Octx.arc(CX, CY, Math.max(0.5, 10 * (t / 0.35)), 0, Math.PI * 2);
+                    Octx.fillStyle = 'rgba(220,240,255,' + (sp * 0.85) + ')';
+                    Octx.fill();
+                    Octx.restore();
                 }
             }
 
-            /* Loop principal */
-            var dropping  = false;
-            var dropTime  = 0;
-            var DROP_DUR  = 3.0;
-            var lastTs    = null;
+            /* 7. Loop principal */
+            var active = false, dropT = 0, lastTs = null;
 
             function loop(ts) {
                 requestAnimationFrame(loop);
                 var dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0;
                 lastTs = ts;
-
-                if (dropping) {
-                    dropTime += dt;
-                    var t = Math.min(1, dropTime / DROP_DUR);
-                    drawRipple(t);
-                    if (t >= 1) {
-                        dropping = false;
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        setTimeout(startDrop, 5000);
-                    }
+                if (!active) return;
+                dropT += dt;
+                if (dropT >= DROP_DUR) {
+                    active = false;
+                    video.style.filter = '';
+                    Octx.clearRect(0, 0, OC.width, OC.height);
+                    setTimeout(startDrop, 5000);
+                    return;
                 }
+                updateDM(dropT);
+                drawCaustics(dropT);
             }
 
             function startDrop() {
-                if (dropping) return;
-                updateCenter();
-                dropping = true;
-                dropTime = 0;
+                if (active) return;
+                findCenter();
+                active = true;
+                dropT  = 0;
+                video.style.filter = 'url(#atl-drop)';
             }
 
             requestAnimationFrame(loop);
