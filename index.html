@@ -2399,7 +2399,7 @@
                 }
                 if (!isOn) {
                     audio.play().then(function() {
-                        fadeIn(audio, 0.08, 4000);
+                        fadeIn(audio, window.innerWidth < 900 ? 0.04 : 0.08, 4000);
                     }).catch(function() {});
                     isOn = true;
                     btn.classList.add('atl-sound-on');
