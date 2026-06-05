@@ -592,6 +592,125 @@
         }
 
         /* ── PREVIEW PROYECTOS ── */
+        /* ── ATL ESTRUCTURAL BANNER ── */
+        #estructural-banner {
+            padding: 8rem 5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .estructural-inner {
+            border: 1px solid rgba(255,255,255,0.06);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 4rem;
+            padding: 4rem 5rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.4s;
+        }
+        .estructural-inner:hover { border-color: rgba(196,181,212,0.2); }
+        .estructural-inner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(196,181,212,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .estructural-glyph {
+            position: absolute;
+            right: 380px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-title);
+            font-size: 14rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: rgba(196,181,212,0.035);
+            pointer-events: none;
+            line-height: 1;
+            user-select: none;
+        }
+        .estructural-label {
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--lilac);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .estructural-label::before {
+            content: '';
+            display: block;
+            width: 1.5rem;
+            height: 1px;
+            background: rgba(196,181,212,0.4);
+        }
+        .estructural-title {
+            font-family: var(--font-title);
+            font-size: clamp(2rem, 4vw, 3.8rem);
+            font-weight: 300;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        .estructural-title strong {
+            font-weight: 600;
+            color: var(--lilac);
+        }
+        .estructural-desc {
+            font-size: 0.82rem;
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            color: rgba(255,255,255,0.4);
+            max-width: 480px;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+        .estructural-tags {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .estructural-tag {
+            font-size: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.3rem 0.8rem;
+        }
+        .estructural-cta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .estructural-badge {
+            font-size: 0.45rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--lilac);
+            border: 1px solid rgba(196,181,212,0.3);
+            padding: 0.25rem 0.8rem;
+        }
+        @media (max-width: 900px) {
+            #estructural-banner { padding: 5rem 2rem; }
+            .estructural-inner { grid-template-columns: 1fr; padding: 3rem 2rem; gap: 2.5rem; }
+            .estructural-cta { align-items: flex-start; }
+            .estructural-glyph { display: none; }
+        }
+
         #preview {
             padding: 8rem 5rem;
             background: rgba(255,255,255,0.015);
@@ -1216,6 +1335,37 @@
     </section>
 
     <!-- PREVIEW PROYECTOS -->
+    <!-- ATL ESTRUCTURAL -->
+    <section id="estructural-banner">
+        <div class="estructural-inner">
+            <div class="estructural-glyph">E</div>
+            <div>
+                <div class="estructural-label">Nuevo producto</div>
+                <h2 class="estructural-title">ATL<br><strong>Estructural</strong></h2>
+                <p class="estructural-desc">
+                    Software nativo de análisis estructural para macOS y Windows.
+                    Desarrollado por arquitectos e ingenieros, para el mercado mexicano.
+                    Beta pública gratuita disponible ahora.
+                </p>
+                <div class="estructural-tags">
+                    <span class="estructural-tag">macOS</span>
+                    <span class="estructural-tag">Windows</span>
+                    <span class="estructural-tag">Análisis estructural</span>
+                    <span class="estructural-tag">Gratis para estudiantes</span>
+                </div>
+            </div>
+            <div class="estructural-cta">
+                <span class="estructural-badge">Beta · v0.1</span>
+                <a href="estructural.html" class="btn-primary">
+                    Ver programa →
+                </a>
+                <a href="estructural.html#download" class="btn-secondary" style="padding:0.8rem 2rem;">
+                    Descargar
+                </a>
+            </div>
+        </div>
+    </section>
+
     <section id="preview">
         <div class="preview-inner">
             <div class="preview-header">
