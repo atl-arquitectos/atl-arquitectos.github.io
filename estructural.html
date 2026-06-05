@@ -2,278 +2,269 @@
 <html lang="es">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>ATL Estructural — Software de Análisis Estructural · BETA</title>
-    <meta name="description" content="ATL Estructural es un programa nativo de análisis estructural para macOS y Windows. Desarrollado por ATL arquitectos. Gratis para estudiantes, profesional para ingenieros y arquitectos.">
-    <meta name="keywords" content="software análisis estructural, programa estructural Mac, cálculo estructural arquitectos, ATL estructural beta, software ingeniería estructural México">
-    <meta property="og:title" content="ATL Estructural — Software de Análisis Estructural">
-    <meta property="og:description" content="Programa nativo de análisis estructural para macOS y Windows. Beta gratuita disponible.">
-    <meta property="og:url" content="https://atl-arquitectos.github.io/estructural.html">
-    <meta property="og:type" content="website">
-    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <meta name="description" content="ATL Estructural es un programa nativo de análisis estructural para macOS y Windows. Beta gratuita disponible. Gratis para estudiantes.">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="shortcut icon" href="images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&family=Barlow+Condensed:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600&family=Barlow+Condensed:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg:        #080808;
-            --bg2:       #0e0e0e;
-            --bg3:       #141414;
-            --border:    rgba(255,255,255,0.08);
-            --white:     #ffffff;
-            --muted:     rgba(255,255,255,0.45);
-            --lilac:     #c4b5d4;
-            --lilac-dim: rgba(196,181,212,0.15);
-            --blue:      #4a9eff;
-            --blue-dim:  rgba(74,158,255,0.12);
-            --green:     #3ecf8e;
-            --green-dim: rgba(62,207,142,0.12);
+            --bg:         #080808;
+            --white:      #ffffff;
+            --lilac:      #c4b5d4;
+            --amber:      #d4845a;
+            --gray:       #666666;
+            --font-title: 'Barlow Condensed', sans-serif;
+            --font-body:  'Inter', sans-serif;
         }
 
-        html { scroll-behavior: smooth; }
+        html, body { width: 100%; overflow-x: hidden; }
 
         body {
             background: var(--bg);
             color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
-            line-height: 1.6;
+            font-family: var(--font-body);
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ── NAV ── */
+        /* ── NAV (idéntico al index) ── */
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
-            z-index: 100;
+            z-index: 1000;
+            padding: 2rem 3rem;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 1.2rem 4rem;
-            border-bottom: 1px solid var(--border);
-            background: rgba(8,8,8,0.85);
-            backdrop-filter: blur(12px);
+            align-items: center;
+            transition: background 0.5s ease, backdrop-filter 0.5s ease, padding 0.4s ease, border-color 0.5s ease;
+            border-bottom: 1px solid transparent;
         }
-        .nav-brand {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-            text-decoration: none;
-            color: var(--white);
+        nav.scrolled {
+            background: rgba(8,8,8,0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 1.2rem 3rem;
         }
-        .nav-brand-atl {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 600;
+        .nav-logo {
+            font-family: var(--font-title);
             font-size: 1.1rem;
-            letter-spacing: 0.12em;
-        }
-        .nav-brand-sub {
-            font-family: 'Inter', sans-serif;
-            font-weight: 200;
-            font-size: 0.8rem;
-            letter-spacing: 0.2em;
-            color: var(--muted);
+            font-weight: 600;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
+            color: var(--white);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: baseline;
         }
-        .nav-divider {
-            width: 1px;
-            height: 1.2rem;
-            background: var(--border);
-            margin: 0 0.8rem;
+        .nav-logo span {
+            font-weight: 200;
+            opacity: 0.75;
+            margin-left: 5px;
+            letter-spacing: 0.1em;
+            text-transform: none;
+        }
+        .nav-sep {
+            width: 1px; height: 1rem;
+            background: rgba(255,255,255,0.15);
+            margin: 0 1.2rem;
         }
         .nav-product {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 400;
+            font-family: var(--font-title);
             font-size: 1rem;
-            letter-spacing: 0.15em;
-            color: var(--lilac);
+            font-weight: 300;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
+            color: var(--lilac);
+            opacity: 0.9;
         }
         .nav-badge {
-            background: rgba(196,181,212,0.15);
-            border: 1px solid rgba(196,181,212,0.3);
-            color: var(--lilac);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
-            letter-spacing: 0.15em;
-            padding: 0.15rem 0.5rem;
-            border-radius: 2px;
-            margin-left: 0.5rem;
-            vertical-align: middle;
-        }
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-        .nav-link {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.8rem;
-            letter-spacing: 0.1em;
+            margin-left: 0.8rem;
+            font-size: 0.45rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
-            transition: color 0.2s;
+            color: var(--lilac);
+            border: 1px solid rgba(196,181,212,0.35);
+            padding: 0.2rem 0.55rem;
+            opacity: 0.8;
         }
-        .nav-link:hover { color: var(--white); }
-        .nav-cta {
-            background: var(--white);
-            color: var(--bg);
-            padding: 0.5rem 1.4rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.08em;
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            font-size: 0.65rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.65);
             text-decoration: none;
-            border-radius: 2px;
-            transition: opacity 0.2s;
+            transition: color 0.3s;
         }
-        .nav-cta:hover { opacity: 0.85; }
+        .nav-links a:hover { color: var(--white); }
 
         /* ── HERO ── */
-        .hero {
+        #hero {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 8rem 2rem 4rem;
+            padding: 10rem 2rem 6rem;
             position: relative;
             overflow: hidden;
         }
-        .hero::before {
-            content: '';
+        .hero-glow {
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse 60% 40% at 50% 30%, rgba(196,181,212,0.07) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 30% at 20% 80%, rgba(74,158,255,0.05) 0%, transparent 60%);
+                radial-gradient(ellipse 55% 45% at 50% 35%, rgba(196,181,212,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 35% 25% at 15% 85%, rgba(196,181,212,0.03) 0%, transparent 60%);
             pointer-events: none;
         }
-        /* Grid de fondo sutil */
-        .hero::after {
-            content: '';
+        .hero-grid {
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-            background-size: 60px 60px;
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
             pointer-events: none;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
         }
-        .hero-content { position: relative; z-index: 1; max-width: 820px; }
+        .hero-content { position: relative; z-index: 1; }
 
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: 1px solid rgba(196,181,212,0.3);
-            background: rgba(196,181,212,0.06);
-            padding: 0.4rem 1rem;
-            border-radius: 100px;
-            margin-bottom: 2.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            letter-spacing: 0.15em;
+        .hero-label {
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
             color: var(--lilac);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
         }
-        .hero-badge-dot {
-            width: 6px; height: 6px;
-            background: var(--lilac);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.8); }
+        .hero-label::before, .hero-label::after {
+            content: '';
+            display: block;
+            width: 2rem;
+            height: 1px;
+            background: rgba(196,181,212,0.4);
         }
 
         .hero-title {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 300;
-            font-size: clamp(3.5rem, 8vw, 7rem);
-            letter-spacing: 0.04em;
-            line-height: 0.95;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-        }
-        .hero-title span { color: var(--lilac); }
-
-        .hero-sub {
-            font-size: clamp(1rem, 2vw, 1.15rem);
-            font-weight: 200;
-            color: var(--muted);
+            font-family: var(--font-title);
+            font-size: clamp(4.5rem, 12vw, 11rem);
+            font-weight: 600;
             letter-spacing: 0.05em;
-            max-width: 540px;
+            text-transform: uppercase;
+            line-height: 0.9;
+            margin-bottom: 0.3em;
+        }
+        .hero-title-sub {
+            font-family: var(--font-title);
+            font-size: clamp(1.5rem, 4vw, 3.5rem);
+            font-weight: 200;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--lilac);
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-desc {
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+            font-weight: 300;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.5);
+            max-width: 480px;
             margin: 0 auto 3rem;
+            line-height: 1.8;
         }
 
         .hero-platforms {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 2rem;
             margin-bottom: 3rem;
         }
         .platform-tag {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
         }
-        .platform-tag svg { opacity: 0.6; }
+        .platform-tag svg { opacity: 0.5; }
+        .platform-status {
+            font-size: 0.45rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+            border: 1px solid rgba(196,181,212,0.3);
+            color: var(--lilac);
+        }
 
         .hero-actions {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
+            gap: 1.5rem;
             flex-wrap: wrap;
         }
-        .btn-download {
+        .btn-primary {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.8rem;
+            padding: 1rem 2.5rem;
             background: var(--white);
             color: var(--bg);
-            padding: 0.9rem 2rem;
-            font-size: 0.9rem;
+            font-size: 0.65rem;
             font-weight: 500;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
             text-decoration: none;
-            border-radius: 3px;
             border: none;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
-        .btn-download:hover { background: var(--lilac); transform: translateY(-1px); }
+        .btn-primary:hover { background: var(--lilac); }
         .btn-secondary {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 0.9rem 1.8rem;
-            font-size: 0.85rem;
+            gap: 0.8rem;
+            padding: 1rem 2.5rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--white);
+            font-size: 0.65rem;
             font-weight: 300;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
             text-decoration: none;
-            border-radius: 3px;
             background: transparent;
-            transition: all 0.2s;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .btn-secondary:hover { border-color: rgba(255,255,255,0.3); color: var(--white); }
+        .btn-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+        .btn-secondary:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .hero-counter {
-            margin-top: 2rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
+            margin-top: 2.5rem;
+            font-size: 0.55rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
         }
         .hero-counter strong {
             color: var(--lilac);
@@ -281,76 +272,68 @@
         }
 
         /* ── MOCKUP ── */
-        .mockup-section {
-            padding: 0 2rem 6rem;
+        .mockup-wrap {
+            padding: 0 3rem 8rem;
             display: flex;
             justify-content: center;
         }
-        .mockup-wrap {
-            position: relative;
-            max-width: 900px;
-            width: 100%;
-        }
         .mockup-window {
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+            max-width: 960px;
+            width: 100%;
+            background: #0e0e0e;
+            border: 1px solid rgba(255,255,255,0.07);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
         }
         .mockup-bar {
-            background: var(--bg2);
+            background: #111;
             padding: 0.9rem 1.2rem;
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        .mockup-dot {
-            width: 12px; height: 12px;
-            border-radius: 50%;
-        }
+        .mockup-dot { width: 12px; height: 12px; border-radius: 50%; }
         .mockup-dot:nth-child(1) { background: #ff5f57; }
         .mockup-dot:nth-child(2) { background: #febc2e; }
         .mockup-dot:nth-child(3) { background: #28c840; }
-        .mockup-title {
+        .mockup-name {
             margin: 0 auto;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            color: var(--muted);
-            letter-spacing: 0.08em;
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.25);
+            text-transform: uppercase;
         }
         .mockup-body {
             display: grid;
-            grid-template-columns: 200px 1fr 180px;
-            min-height: 420px;
+            grid-template-columns: 190px 1fr 170px;
+            min-height: 440px;
         }
         .mockup-sidebar {
-            background: rgba(0,0,0,0.3);
-            border-right: 1px solid var(--border);
-            padding: 1rem 0;
+            border-right: 1px solid rgba(255,255,255,0.06);
+            padding: 1.2rem 0;
+            background: rgba(0,0,0,0.25);
         }
-        .mockup-sidebar-item {
-            padding: 0.6rem 1.2rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--muted);
-            letter-spacing: 0.06em;
-            cursor: default;
+        .m-label {
+            padding: 1rem 1.2rem 0.4rem;
+            font-size: 0.45rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.18);
+        }
+        .m-item {
+            padding: 0.55rem 1.2rem;
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.35);
             border-left: 2px solid transparent;
+            cursor: default;
         }
-        .mockup-sidebar-item.active {
+        .m-item.active {
             color: var(--lilac);
             border-left-color: var(--lilac);
-            background: var(--lilac-dim);
-        }
-        .mockup-sidebar-label {
-            padding: 1rem 1.2rem 0.3rem;
-            font-size: 0.55rem;
-            letter-spacing: 0.15em;
-            color: rgba(255,255,255,0.2);
-            text-transform: uppercase;
-            font-family: 'Inter', sans-serif;
+            background: rgba(196,181,212,0.06);
         }
         .mockup-main {
             padding: 1.5rem;
@@ -360,910 +343,770 @@
         }
         .mockup-canvas {
             flex: 1;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-            min-height: 260px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.06);
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 280px;
+            position: relative;
         }
-        /* Estructura SVG decorativa */
-        .mockup-canvas svg { opacity: 0.7; }
         .mockup-metrics {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 0.6rem;
         }
-        .mockup-metric {
+        .m-metric {
             background: rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 0.7rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 0.8rem;
         }
-        .mockup-metric-label {
-            font-size: 0.55rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
-            margin-bottom: 0.2rem;
-            font-family: 'JetBrains Mono', monospace;
+        .m-metric-label {
+            font-size: 0.45rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 0.3rem;
         }
-        .mockup-metric-value {
-            font-family: 'JetBrains Mono', monospace;
+        .m-metric-value {
             font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
             color: var(--lilac);
         }
         .mockup-panel {
-            border-left: 1px solid var(--border);
-            padding: 1rem;
+            border-left: 1px solid rgba(255,255,255,0.06);
+            padding: 1.2rem;
             display: flex;
             flex-direction: column;
             gap: 0.8rem;
         }
-        .mockup-panel-title {
-            font-family: 'JetBrains Mono', monospace;
+        .m-panel-title {
+            font-size: 0.45rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .m-field { display: flex; flex-direction: column; gap: 0.25rem; }
+        .m-field-label {
+            font-size: 0.45rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+        }
+        .m-field-val {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 0.35rem 0.6rem;
             font-size: 0.6rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
+            font-weight: 300;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.7);
         }
-        .mockup-input-row {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-        .mockup-input-label {
-            font-size: 0.55rem;
-            color: rgba(255,255,255,0.25);
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 0.08em;
-        }
-        .mockup-input {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
-            border-radius: 3px;
-            padding: 0.3rem 0.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--white);
-        }
-        .mockup-btn {
+        .m-run-btn {
             margin-top: auto;
             background: var(--lilac);
             color: var(--bg);
             border: none;
-            border-radius: 3px;
-            padding: 0.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 0.08em;
+            padding: 0.6rem;
+            font-size: 0.55rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
             cursor: default;
             text-align: center;
         }
 
-        /* ── SECCIONES GENÉRICAS ── */
-        section { padding: 6rem 2rem; }
-        .section-inner { max-width: 1100px; margin: 0 auto; }
+        /* ── SECCIÓN GENÉRICA ── */
+        .section {
+            padding: 8rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
         .section-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            color: var(--lilac);
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.4em;
             text-transform: uppercase;
-            margin-bottom: 1rem;
+            color: var(--lilac);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 1.5rem;
+            height: 1px;
+            background: rgba(196,181,212,0.4);
         }
         .section-title {
-            font-family: 'Barlow Condensed', sans-serif;
+            font-family: var(--font-title);
+            font-size: clamp(2.2rem, 5vw, 4.5rem);
             font-weight: 300;
-            font-size: clamp(2rem, 4vw, 3.2rem);
             letter-spacing: 0.04em;
             text-transform: uppercase;
-            margin-bottom: 1rem;
+            line-height: 1;
+            margin-bottom: 1.5rem;
         }
         .section-desc {
-            color: var(--muted);
-            font-size: 1rem;
-            max-width: 560px;
-            line-height: 1.7;
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            color: rgba(255,255,255,0.45);
+            max-width: 500px;
+            line-height: 1.8;
+            margin-bottom: 5rem;
         }
 
         /* ── FEATURES ── */
-        .features { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        #features { border-top: 1px solid rgba(255,255,255,0.05); }
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5px;
-            margin-top: 4rem;
-            border: 1px solid var(--border);
-            background: var(--border);
+            grid-template-columns: repeat(4, 1fr);
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .feature-card {
-            background: var(--bg2);
-            padding: 2.5rem;
-            transition: background 0.2s;
+        .feature {
+            padding: 3rem 2.5rem;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.3s;
         }
-        .feature-card:hover { background: var(--bg3); }
+        .feature:last-child { border-right: none; }
+        .feature:hover { background: rgba(255,255,255,0.015); }
+        .feature-num {
+            font-family: var(--font-title);
+            font-size: 3rem;
+            font-weight: 200;
+            letter-spacing: 0.05em;
+            color: rgba(196,181,212,0.15);
+            line-height: 1;
+            margin-bottom: 2rem;
+        }
         .feature-icon {
-            width: 44px; height: 44px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            color: rgba(196,181,212,0.5);
             margin-bottom: 1.5rem;
-            color: var(--lilac);
         }
         .feature-name {
-            font-family: 'Barlow Condensed', sans-serif;
+            font-family: var(--font-title);
+            font-size: 1.1rem;
             font-weight: 400;
-            font-size: 1.2rem;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.8rem;
         }
         .feature-desc {
-            font-size: 0.88rem;
-            color: var(--muted);
-            line-height: 1.65;
+            font-size: 0.78rem;
+            font-weight: 300;
+            letter-spacing: 0.03em;
+            color: rgba(255,255,255,0.4);
+            line-height: 1.75;
         }
         .feature-tag {
             display: inline-block;
-            margin-top: 1rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
-            letter-spacing: 0.12em;
-            color: var(--lilac);
-            border: 1px solid rgba(196,181,212,0.25);
-            padding: 0.2rem 0.6rem;
-            border-radius: 2px;
+            margin-top: 1.5rem;
+            font-size: 0.45rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(196,181,212,0.5);
+            border: 1px solid rgba(196,181,212,0.2);
+            padding: 0.2rem 0.7rem;
         }
 
         /* ── COMPATIBILIDAD ── */
+        #compat { border-top: 1px solid rgba(255,255,255,0.05); }
         .compat-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
-            margin-top: 3rem;
         }
         .compat-card {
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 3rem;
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             align-items: flex-start;
-            background: var(--bg2);
-            transition: border-color 0.2s;
+            transition: border-color 0.3s;
         }
-        .compat-card:hover { border-color: rgba(196,181,212,0.3); }
-        .compat-icon { color: var(--lilac); flex-shrink: 0; }
+        .compat-card:hover { border-color: rgba(196,181,212,0.2); }
+        .compat-icon { color: rgba(196,181,212,0.5); flex-shrink: 0; margin-top: 0.2rem; }
         .compat-name {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 400;
-            font-size: 1.4rem;
-            letter-spacing: 0.06em;
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
         }
-        .compat-version {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            color: var(--muted);
+        .compat-req {
+            font-size: 0.7rem;
+            font-weight: 300;
             letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.3);
+            line-height: 1.6;
+            margin-bottom: 1rem;
         }
         .compat-status {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            margin-top: 0.8rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 0.1em;
+            gap: 0.5rem;
+            font-size: 0.55rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
         }
-        .compat-status.ready { color: var(--green); }
-        .compat-status.soon  { color: var(--blue); }
-        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+        .compat-status.ready { color: #3ecf8e; }
+        .compat-status.soon  { color: rgba(255,255,255,0.35); }
+        .status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 
-        /* ── PRICING ── */
-        .pricing { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        /* ── PRECIOS ── */
+        #pricing { border-top: 1px solid rgba(255,255,255,0.05); }
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
-            margin-top: 3rem;
-            max-width: 780px;
+            max-width: 820px;
         }
         .pricing-card {
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 2.5rem;
-            background: var(--bg3);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 3rem;
             position: relative;
         }
-        .pricing-card.featured {
-            border-color: rgba(196,181,212,0.4);
-            background: linear-gradient(135deg, rgba(196,181,212,0.05) 0%, var(--bg3) 100%);
-        }
+        .pricing-card.featured { border-color: rgba(196,181,212,0.25); }
         .pricing-plan {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            color: var(--muted);
+            font-size: 0.55rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
-            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 1.5rem;
         }
         .pricing-price {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 300;
-            font-size: 3rem;
+            font-family: var(--font-title);
+            font-size: 3.5rem;
+            font-weight: 200;
             letter-spacing: 0.02em;
             line-height: 1;
-            margin-bottom: 0.3rem;
-        }
-        .pricing-price span {
-            font-size: 1rem;
-            color: var(--muted);
-            font-weight: 200;
+            margin-bottom: 0.5rem;
         }
         .pricing-note {
-            font-size: 0.8rem;
-            color: var(--muted);
-            margin-bottom: 2rem;
-            min-height: 1.2rem;
+            font-size: 0.65rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 2.5rem;
         }
         .pricing-divider {
             border: none;
-            border-top: 1px solid var(--border);
-            margin-bottom: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 2rem;
         }
-        .pricing-features {
+        .pricing-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 0.7rem;
-            margin-bottom: 2rem;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
         }
-        .pricing-features li {
-            font-size: 0.85rem;
-            color: var(--muted);
-            display: flex;
-            gap: 0.6rem;
-            align-items: flex-start;
-        }
-        .pricing-features li::before {
-            content: '→';
-            color: var(--lilac);
-            flex-shrink: 0;
-            font-family: 'JetBrains Mono', monospace;
+        .pricing-list li {
             font-size: 0.75rem;
-            margin-top: 0.1rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.45);
+            display: flex;
+            gap: 0.8rem;
         }
-        .pricing-btn {
-            display: block;
-            text-align: center;
-            padding: 0.8rem;
-            border-radius: 3px;
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            text-decoration: none;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
-            width: 100%;
+        .pricing-list li::before {
+            content: '—';
+            color: var(--lilac);
+            opacity: 0.5;
+            flex-shrink: 0;
         }
-        .pricing-btn.primary {
-            background: var(--white);
-            color: var(--bg);
-            font-weight: 500;
-        }
-        .pricing-btn.primary:hover { background: var(--lilac); }
-        .pricing-btn.secondary {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--muted);
-        }
-        .pricing-btn.secondary:hover { border-color: rgba(255,255,255,0.3); color: var(--white); }
         .pricing-badge {
             position: absolute;
-            top: -0.7rem;
-            right: 1.5rem;
-            background: var(--lilac);
-            color: var(--bg);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
-            letter-spacing: 0.1em;
-            padding: 0.2rem 0.7rem;
-            border-radius: 100px;
+            top: 1.5rem; right: 1.5rem;
+            font-size: 0.45rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--lilac);
+            border: 1px solid rgba(196,181,212,0.3);
+            padding: 0.2rem 0.6rem;
         }
 
-        /* ── DOWNLOAD ── */
-        .download-section {
+        /* ── DESCARGA ── */
+        #download {
+            border-top: 1px solid rgba(255,255,255,0.05);
             text-align: center;
-            padding: 8rem 2rem;
         }
-        .download-inner {
+        .download-box {
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 4rem;
             max-width: 680px;
             margin: 0 auto;
         }
-        .download-title {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 200;
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-        .download-sub {
-            color: var(--muted);
-            font-size: 0.95rem;
-            margin-bottom: 3rem;
-            line-height: 1.6;
-        }
-        .download-box {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 3rem;
-            background: var(--bg2);
-            margin-bottom: 2rem;
-        }
         .download-version {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--muted);
-            letter-spacing: 0.12em;
-            margin-bottom: 1.5rem;
+            font-size: 0.55rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.25);
+            margin-bottom: 2rem;
         }
         .download-btns {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 1.5rem;
-        }
-        .download-btn {
-            display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
-            background: var(--white);
-            color: var(--bg);
-            padding: 0.85rem 1.8rem;
-            font-size: 0.88rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-decoration: none;
-            border-radius: 3px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
         }
-        .download-btn:hover { background: var(--lilac); transform: translateY(-1px); }
-        .download-btn.outline {
-            background: transparent;
-            color: var(--muted);
-            border: 1px solid var(--border);
-            font-weight: 300;
-        }
-        .download-btn.outline:hover { border-color: rgba(255,255,255,0.3); color: var(--white); background: transparent; transform: none; }
         .download-count {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
+            font-size: 0.55rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.25);
         }
         .download-count strong { color: var(--lilac); font-weight: 400; }
-        .download-disclaimer {
-            font-size: 0.78rem;
+        .download-note {
+            margin-top: 1.5rem;
+            font-size: 0.65rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
             color: rgba(255,255,255,0.2);
-            margin-top: 1rem;
-            line-height: 1.5;
+            line-height: 1.7;
         }
+        .download-note a { color: var(--lilac); text-decoration: none; }
 
         /* ── FOOTER ── */
         footer {
-            border-top: 1px solid var(--border);
-            padding: 2.5rem 4rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 2.5rem 3rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .footer-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
         .footer-brand {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 0.12em;
-            color: var(--muted);
+            font-family: var(--font-title);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
             text-decoration: none;
+            display: inline-flex;
+            align-items: baseline;
+        }
+        .footer-brand span {
+            font-weight: 200;
+            text-transform: none;
+            letter-spacing: 0.1em;
+            margin-left: 4px;
         }
         .footer-right {
-            font-size: 0.75rem;
+            font-size: 0.55rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
             color: rgba(255,255,255,0.2);
-            letter-spacing: 0.06em;
         }
-        .footer-link {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
-            transition: color 0.2s;
-        }
-        .footer-link:hover { color: var(--white); }
 
         /* ── RESPONSIVE ── */
-        @media (max-width: 768px) {
-            nav { padding: 1rem 1.5rem; }
-            .nav-right { gap: 1rem; }
-            .nav-link { display: none; }
+        @media (max-width: 900px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .feature { border-bottom: 1px solid rgba(255,255,255,0.05); }
             .mockup-body { grid-template-columns: 1fr; }
             .mockup-sidebar, .mockup-panel { display: none; }
+        }
+        @media (max-width: 640px) {
+            nav { padding: 1.5rem; }
+            .nav-links { display: none; }
+            .section { padding: 5rem 1.5rem; }
+            .features-grid { grid-template-columns: 1fr; }
             .compat-grid, .pricing-grid { grid-template-columns: 1fr; }
-            .features-grid { grid-template-columns: 1fr; gap: 1px; }
-            footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem; }
+            .mockup-wrap { padding: 0 1.5rem 5rem; }
+            footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-<!-- ── NAVEGACIÓN ── -->
-<nav>
+<!-- ── NAV ── -->
+<nav id="navbar">
     <div style="display:flex;align-items:center;">
-        <a href="index.html" class="nav-brand">
-            <span class="nav-brand-atl">ATL</span>
-            <span class="nav-brand-sub">arquitectos</span>
-        </a>
-        <div class="nav-divider"></div>
+        <a href="index.html" class="nav-logo">ATL<span>arquitectos</span></a>
+        <div class="nav-sep"></div>
         <span class="nav-product">Estructural</span>
-        <span class="nav-badge">BETA</span>
+        <span class="nav-badge">Beta</span>
     </div>
-    <div class="nav-right">
-        <a href="#features" class="nav-link">Funciones</a>
-        <a href="#pricing" class="nav-link">Planes</a>
-        <a href="#download" class="nav-cta">Descargar</a>
-    </div>
+    <ul class="nav-links">
+        <li><a href="#features">Funciones</a></li>
+        <li><a href="#compat">Plataformas</a></li>
+        <li><a href="#pricing">Planes</a></li>
+        <li><a href="#download" style="color:var(--white);">Descargar</a></li>
+    </ul>
 </nav>
 
 <!-- ── HERO ── -->
-<section class="hero" id="hero">
+<section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-grid"></div>
     <div class="hero-content">
-        <div class="hero-badge">
-            <span class="hero-badge-dot"></span>
-            Beta pública disponible · v0.1.0
-        </div>
 
-        <h1 class="hero-title">
-            ATL<br><span>Estructural</span>
-        </h1>
+        <div class="hero-label">Software · Beta pública · v0.1</div>
 
-        <p class="hero-sub">
-            Software nativo de análisis estructural desarrollado por arquitectos e ingenieros,
-            para arquitectos e ingenieros.
+        <h1 class="hero-title">ATL</h1>
+        <div class="hero-title-sub">Estructural</div>
+
+        <p class="hero-desc">
+            Programa nativo de análisis estructural para arquitectos e ingenieros.
+            Desarrollado en México, para el mercado mexicano.
         </p>
 
         <div class="hero-platforms">
-            <!-- macOS -->
             <div class="platform-tag">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                 </svg>
                 macOS 12+
+                <span class="platform-status">Disponible</span>
             </div>
-            <div style="width:1px;height:14px;background:var(--border);"></div>
-            <!-- Windows -->
+            <div style="width:1px;height:12px;background:rgba(255,255,255,0.1);"></div>
             <div class="platform-tag">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.549H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.949"/>
                 </svg>
                 Windows 10+
+                <span class="platform-status" style="color:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.1);">Próximamente</span>
             </div>
         </div>
 
         <div class="hero-actions">
-            <button class="btn-download" id="hero-download-btn" onclick="handleDownload('mac')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="btn-primary" onclick="handleDownload('mac')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
                 Descargar para Mac
             </button>
-            <a href="#" class="btn-secondary" onclick="handleDownload('win'); return false;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.549H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.949"/>
-                </svg>
-                Windows
-            </a>
+            <button class="btn-secondary" disabled>Windows — Próximamente</button>
         </div>
 
         <p class="hero-counter">
-            <strong id="download-count">—</strong> descargas desde el lanzamiento beta
+            <strong id="count-hero">—</strong> &nbsp;descargas desde el lanzamiento beta
         </p>
     </div>
 </section>
 
-<!-- ── MOCKUP DEL PROGRAMA ── -->
-<div class="mockup-section">
-    <div class="mockup-wrap">
-        <div class="mockup-window">
-            <div class="mockup-bar">
-                <div class="mockup-dot"></div>
-                <div class="mockup-dot"></div>
-                <div class="mockup-dot"></div>
-                <span class="mockup-title">ATL Estructural — Proyecto sin título</span>
+<!-- ── MOCKUP ── -->
+<div class="mockup-wrap">
+    <div class="mockup-window">
+        <div class="mockup-bar">
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+            <span class="mockup-name">ATL Estructural — Proyecto sin título</span>
+        </div>
+        <div class="mockup-body">
+            <div class="mockup-sidebar">
+                <div class="m-label">Proyecto</div>
+                <div class="m-item active">▸ Modelo</div>
+                <div class="m-item">&nbsp;&nbsp;Cargas</div>
+                <div class="m-item">&nbsp;&nbsp;Materiales</div>
+                <div class="m-item">&nbsp;&nbsp;Secciones</div>
+                <div class="m-label" style="margin-top:1rem;">Análisis</div>
+                <div class="m-item">&nbsp;&nbsp;Estático</div>
+                <div class="m-item">&nbsp;&nbsp;Sísmico</div>
+                <div class="m-item">&nbsp;&nbsp;Viento</div>
+                <div class="m-label" style="margin-top:1rem;">Salida</div>
+                <div class="m-item">&nbsp;&nbsp;Memorias</div>
+                <div class="m-item">&nbsp;&nbsp;Planos</div>
             </div>
-            <div class="mockup-body">
-                <!-- Sidebar -->
-                <div class="mockup-sidebar">
-                    <div class="mockup-sidebar-label">Proyecto</div>
-                    <div class="mockup-sidebar-item active">▸ Modelo 3D</div>
-                    <div class="mockup-sidebar-item">  Cargas</div>
-                    <div class="mockup-sidebar-item">  Materiales</div>
-                    <div class="mockup-sidebar-item">  Secciones</div>
-                    <div class="mockup-sidebar-label" style="margin-top:1rem;">Análisis</div>
-                    <div class="mockup-sidebar-item">  Estático</div>
-                    <div class="mockup-sidebar-item">  Sísmico</div>
-                    <div class="mockup-sidebar-item">  Viento</div>
-                    <div class="mockup-sidebar-label" style="margin-top:1rem;">Reportes</div>
-                    <div class="mockup-sidebar-item">  Memorias</div>
-                    <div class="mockup-sidebar-item">  Planos</div>
+
+            <div class="mockup-main">
+                <div class="mockup-canvas">
+                    <svg width="400" height="240" viewBox="0 0 400 240">
+                        <defs>
+                            <pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M20 0L0 0 0 20" fill="none" stroke="rgba(196,181,212,0.06)" stroke-width="0.5"/>
+                            </pattern>
+                        </defs>
+                        <rect width="400" height="240" fill="url(#g)"/>
+                        <!-- Columnas -->
+                        <line x1="70"  y1="30"  x2="70"  y2="200" stroke="rgba(196,181,212,0.7)" stroke-width="2.5"/>
+                        <line x1="155" y1="30"  x2="155" y2="200" stroke="rgba(196,181,212,0.7)" stroke-width="2.5"/>
+                        <line x1="240" y1="30"  x2="240" y2="200" stroke="rgba(196,181,212,0.7)" stroke-width="2.5"/>
+                        <line x1="325" y1="30"  x2="325" y2="200" stroke="rgba(196,181,212,0.7)" stroke-width="2.5"/>
+                        <!-- Trabes -->
+                        <line x1="70" y1="30"  x2="325" y2="30"  stroke="rgba(74,158,255,0.6)"  stroke-width="2.5"/>
+                        <line x1="70" y1="100" x2="325" y2="100" stroke="rgba(74,158,255,0.6)"  stroke-width="2.5"/>
+                        <line x1="70" y1="165" x2="325" y2="165" stroke="rgba(74,158,255,0.6)"  stroke-width="2.5"/>
+                        <!-- Cimentación -->
+                        <line x1="50" y1="200" x2="345" y2="200" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                        <!-- Zapatas -->
+                        <rect x="58"  y="202" width="24" height="7" fill="rgba(196,181,212,0.4)"/>
+                        <rect x="143" y="202" width="24" height="7" fill="rgba(196,181,212,0.4)"/>
+                        <rect x="228" y="202" width="24" height="7" fill="rgba(196,181,212,0.4)"/>
+                        <rect x="313" y="202" width="24" height="7" fill="rgba(196,181,212,0.4)"/>
+                        <!-- Nodos -->
+                        <circle cx="70"  cy="30"  r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="155" cy="30"  r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="240" cy="30"  r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="325" cy="30"  r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="70"  cy="100" r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="155" cy="100" r="4" fill="rgba(74,158,255,0.9)"/>
+                        <circle cx="240" cy="100" r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="325" cy="100" r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="70"  cy="165" r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="155" cy="165" r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="240" cy="165" r="4" fill="rgba(196,181,212,0.9)"/>
+                        <circle cx="325" cy="165" r="4" fill="rgba(196,181,212,0.9)"/>
+                        <!-- Carga distribuida -->
+                        <line x1="70" y1="18" x2="325" y2="18" stroke="rgba(62,207,142,0.5)" stroke-width="1" stroke-dasharray="5,3"/>
+                        <line x1="100" y1="18" x2="100" y2="30" stroke="rgba(62,207,142,0.5)" stroke-width="1"/>
+                        <line x1="140" y1="18" x2="140" y2="30" stroke="rgba(62,207,142,0.5)" stroke-width="1"/>
+                        <line x1="180" y1="18" x2="180" y2="30" stroke="rgba(62,207,142,0.5)" stroke-width="1"/>
+                        <line x1="220" y1="18" x2="220" y2="30" stroke="rgba(62,207,142,0.5)" stroke-width="1"/>
+                        <line x1="260" y1="18" x2="260" y2="30" stroke="rgba(62,207,142,0.5)" stroke-width="1"/>
+                        <line x1="300" y1="18" x2="300" y2="30" stroke="rgba(62,207,142,0.5)" stroke-width="1"/>
+                        <!-- Labels -->
+                        <text x="192" y="11" fill="rgba(62,207,142,0.6)" font-family="monospace" font-size="7" text-anchor="middle">w = 1.8 t/m</text>
+                        <text x="346" y="33"  fill="rgba(74,158,255,0.5)" font-family="monospace" font-size="7">N1</text>
+                        <text x="346" y="103" fill="rgba(74,158,255,0.5)" font-family="monospace" font-size="7">N2</text>
+                        <text x="346" y="168" fill="rgba(74,158,255,0.5)" font-family="monospace" font-size="7">N3</text>
+                    </svg>
                 </div>
-
-                <!-- Canvas principal -->
-                <div class="mockup-main">
-                    <div class="mockup-canvas">
-                        <!-- Estructura esquemática SVG -->
-                        <svg width="380" height="220" viewBox="0 0 380 220">
-                            <!-- Grid de fondo -->
-                            <defs>
-                                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(196,181,212,0.08)" stroke-width="0.5"/>
-                                </pattern>
-                            </defs>
-                            <rect width="380" height="220" fill="url(#grid)"/>
-
-                            <!-- Estructura de marcos -->
-                            <!-- Columnas -->
-                            <line x1="60"  y1="30"  x2="60"  y2="190" stroke="#c4b5d4" stroke-width="2.5" opacity="0.8"/>
-                            <line x1="140" y1="30"  x2="140" y2="190" stroke="#c4b5d4" stroke-width="2.5" opacity="0.8"/>
-                            <line x1="220" y1="30"  x2="220" y2="190" stroke="#c4b5d4" stroke-width="2.5" opacity="0.8"/>
-                            <line x1="300" y1="30"  x2="300" y2="190" stroke="#c4b5d4" stroke-width="2.5" opacity="0.8"/>
-
-                            <!-- Trabes -->
-                            <line x1="60"  y1="30"  x2="300" y2="30"  stroke="#4a9eff" stroke-width="2.5" opacity="0.7"/>
-                            <line x1="60"  y1="90"  x2="300" y2="90"  stroke="#4a9eff" stroke-width="2.5" opacity="0.7"/>
-                            <line x1="60"  y1="150" x2="300" y2="150" stroke="#4a9eff" stroke-width="2.5" opacity="0.7"/>
-
-                            <!-- Cimentación -->
-                            <line x1="40"  y1="190" x2="320" y2="190" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-
-                            <!-- Zapatas -->
-                            <rect x="48"  y="192" width="24" height="8" rx="1" fill="rgba(196,181,212,0.5)"/>
-                            <rect x="128" y="192" width="24" height="8" rx="1" fill="rgba(196,181,212,0.5)"/>
-                            <rect x="208" y="192" width="24" height="8" rx="1" fill="rgba(196,181,212,0.5)"/>
-                            <rect x="288" y="192" width="24" height="8" rx="1" fill="rgba(196,181,212,0.5)"/>
-
-                            <!-- Nodos -->
-                            <circle cx="60"  cy="30"  r="4" fill="#c4b5d4"/>
-                            <circle cx="140" cy="30"  r="4" fill="#c4b5d4"/>
-                            <circle cx="220" cy="30"  r="4" fill="#c4b5d4"/>
-                            <circle cx="300" cy="30"  r="4" fill="#c4b5d4"/>
-                            <circle cx="60"  cy="90"  r="4" fill="#c4b5d4"/>
-                            <circle cx="140" cy="90"  r="4" fill="#c4b5d4"/>
-                            <circle cx="220" cy="90"  r="4" fill="#c4b5d4"/>
-                            <circle cx="300" cy="90"  r="4" fill="#c4b5d4"/>
-                            <circle cx="60"  cy="150" r="4" fill="#c4b5d4"/>
-                            <circle cx="140" cy="150" r="4" fill="#4a9eff" stroke="#4a9eff" stroke-width="1"/>
-                            <circle cx="220" cy="150" r="4" fill="#c4b5d4"/>
-                            <circle cx="300" cy="150" r="4" fill="#c4b5d4"/>
-
-                            <!-- Carga distribuida en trabe superior -->
-                            <line x1="60" y1="18" x2="300" y2="18" stroke="#3ecf8e" stroke-width="1" opacity="0.6" stroke-dasharray="4,3"/>
-                            <line x1="80"  y1="18" x2="80"  y2="30" stroke="#3ecf8e" stroke-width="1" opacity="0.6"/>
-                            <line x1="120" y1="18" x2="120" y2="30" stroke="#3ecf8e" stroke-width="1" opacity="0.6"/>
-                            <line x1="160" y1="18" x2="160" y2="30" stroke="#3ecf8e" stroke-width="1" opacity="0.6"/>
-                            <line x1="200" y1="18" x2="200" y2="30" stroke="#3ecf8e" stroke-width="1" opacity="0.6"/>
-                            <line x1="240" y1="18" x2="240" y2="30" stroke="#3ecf8e" stroke-width="1" opacity="0.6"/>
-                            <line x1="280" y1="18" x2="280" y2="30" stroke="#3ecf8e" stroke-width="1" opacity="0.6"/>
-
-                            <!-- Labels -->
-                            <text x="335" y="32"  fill="rgba(74,158,255,0.7)"  font-family="monospace" font-size="8">N1</text>
-                            <text x="335" y="92"  fill="rgba(74,158,255,0.7)"  font-family="monospace" font-size="8">N2</text>
-                            <text x="335" y="152" fill="rgba(74,158,255,0.7)"  font-family="monospace" font-size="8">N3</text>
-                            <text x="178" y="10"  fill="rgba(62,207,142,0.8)"  font-family="monospace" font-size="7">w = 1.8 t/m</text>
-                        </svg>
+                <div class="mockup-metrics">
+                    <div class="m-metric">
+                        <div class="m-metric-label">Tensión máx.</div>
+                        <div class="m-metric-value" style="color:#3ecf8e;">2.34 t/cm²</div>
                     </div>
-                    <div class="mockup-metrics">
-                        <div class="mockup-metric">
-                            <div class="mockup-metric-label">TENSIÓN MÁX.</div>
-                            <div class="mockup-metric-value" style="color:#3ecf8e;">2.34 t/cm²</div>
-                        </div>
-                        <div class="mockup-metric">
-                            <div class="mockup-metric-label">DEFORMACIÓN</div>
-                            <div class="mockup-metric-value">0.82 cm</div>
-                        </div>
-                        <div class="mockup-metric">
-                            <div class="mockup-metric-label">FACTOR SEGURIDAD</div>
-                            <div class="mockup-metric-value" style="color:#c4b5d4;">2.7</div>
-                        </div>
+                    <div class="m-metric">
+                        <div class="m-metric-label">Deformación</div>
+                        <div class="m-metric-value">0.82 cm</div>
+                    </div>
+                    <div class="m-metric">
+                        <div class="m-metric-label">Factor seguridad</div>
+                        <div class="m-metric-value">2.7</div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Panel de propiedades -->
-                <div class="mockup-panel">
-                    <div class="mockup-panel-title">PROPIEDADES</div>
-                    <div class="mockup-input-row">
-                        <span class="mockup-input-label">SECCIÓN</span>
-                        <div class="mockup-input">IPR 200×100</div>
-                    </div>
-                    <div class="mockup-input-row">
-                        <span class="mockup-input-label">MATERIAL</span>
-                        <div class="mockup-input">A-36</div>
-                    </div>
-                    <div class="mockup-input-row">
-                        <span class="mockup-input-label">LONGITUD</span>
-                        <div class="mockup-input">4.50 m</div>
-                    </div>
-                    <div class="mockup-input-row">
-                        <span class="mockup-input-label">CARGA AX.</span>
-                        <div class="mockup-input">12.4 t</div>
-                    </div>
-                    <div class="mockup-input-row">
-                        <span class="mockup-input-label">MOMENTO</span>
-                        <div class="mockup-input">8.2 t·m</div>
-                    </div>
-                    <div class="mockup-btn">Recalcular</div>
-                </div>
+            <div class="mockup-panel">
+                <div class="m-panel-title">Propiedades</div>
+                <div class="m-field"><span class="m-field-label">Sección</span><div class="m-field-val">IPR 200×100</div></div>
+                <div class="m-field"><span class="m-field-label">Material</span><div class="m-field-val">A-36</div></div>
+                <div class="m-field"><span class="m-field-label">Longitud</span><div class="m-field-val">4.50 m</div></div>
+                <div class="m-field"><span class="m-field-label">Carga axial</span><div class="m-field-val">12.4 t</div></div>
+                <div class="m-field"><span class="m-field-label">Momento</span><div class="m-field-val">8.2 t·m</div></div>
+                <div class="m-run-btn">Calcular</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ── FEATURES ── -->
-<section class="features" id="features">
-    <div class="section-inner">
-        <p class="section-label">Funciones</p>
-        <h2 class="section-title">Diseñado para el trabajo real</h2>
-        <p class="section-desc">
-            Herramientas que los profesionales necesitan sin la complejidad innecesaria.
-            <!-- ✏️ Edita esta descripción con la visión real del programa -->
-        </p>
-
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
-                </div>
-                <div class="feature-name">Análisis Estructural</div>
-                <!-- ✏️ Reemplaza con la descripción real -->
-                <p class="feature-desc">Cálculo de marcos, losas y sistemas mixtos bajo cargas gravitacionales, sísmicas y de viento conforme a normativa.</p>
-                <span class="feature-tag">EN BETA</span>
+<!-- ── FUNCIONES ── -->
+<section class="section" id="features">
+    <div class="section-label">Funciones</div>
+    <h2 class="section-title">Diseñado para el trabajo real</h2>
+    <p class="section-desc">
+        Herramientas precisas para profesionales. Sin complejidad innecesaria.
+    </p>
+    <div class="features-grid">
+        <div class="feature">
+            <div class="feature-num">01</div>
+            <div class="feature-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-                    </svg>
-                </div>
-                <!-- ✏️ Reemplaza nombre y descripción con funciones reales -->
-                <div class="feature-name">Modelado Intuitivo</div>
-                <p class="feature-desc">Interfaz nativa optimizada para macOS. Sin curva de aprendizaje extensa — el modelo se construye en minutos.</p>
-                <span class="feature-tag">EN BETA</span>
+            <!-- ✏️ Reemplaza con función real del programa -->
+            <div class="feature-name">Análisis Estructural</div>
+            <p class="feature-desc">Cálculo de marcos, losas y sistemas mixtos bajo cargas gravitacionales, sísmicas y de viento.</p>
+            <span class="feature-tag">En beta</span>
+        </div>
+        <div class="feature">
+            <div class="feature-num">02</div>
+            <div class="feature-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
             </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-                    </svg>
-                </div>
-                <!-- ✏️ Reemplaza con función real -->
-                <div class="feature-name">Memorias de Cálculo</div>
-                <p class="feature-desc">Genera memorias de cálculo profesionales en PDF listas para entrega, con toda la documentación del análisis.</p>
-                <span class="feature-tag">EN BETA</span>
+            <!-- ✏️ Reemplaza con función real -->
+            <div class="feature-name">Modelado Intuitivo</div>
+            <p class="feature-desc">Interfaz nativa optimizada para macOS. El modelo se construye rápido, sin curva de aprendizaje extensa.</p>
+            <span class="feature-tag">En beta</span>
+        </div>
+        <div class="feature">
+            <div class="feature-num">03</div>
+            <div class="feature-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-                    </svg>
-                </div>
-                <!-- ✏️ Reemplaza con función real -->
-                <div class="feature-name">Visualización 3D</div>
-                <p class="feature-desc">Vista tridimensional del modelo con diagramas de deformación, diagramas de momento y corte en tiempo real.</p>
-                <span class="feature-tag">PRÓXIMAMENTE</span>
+            <!-- ✏️ Reemplaza con función real -->
+            <div class="feature-name">Memorias de cálculo</div>
+            <p class="feature-desc">Genera memorias de cálculo en PDF listas para entrega con toda la documentación del análisis.</p>
+            <span class="feature-tag">En beta</span>
+        </div>
+        <div class="feature">
+            <div class="feature-num">04</div>
+            <div class="feature-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
             </div>
+            <!-- ✏️ Reemplaza con función real -->
+            <div class="feature-name">Visualización 3D</div>
+            <p class="feature-desc">Vista tridimensional con diagramas de deformación, momento y corte actualizados en tiempo real.</p>
+            <span class="feature-tag">Próximamente</span>
         </div>
     </div>
 </section>
 
 <!-- ── COMPATIBILIDAD ── -->
-<section id="compatibilidad">
-    <div class="section-inner">
-        <p class="section-label">Plataformas</p>
-        <h2 class="section-title">Disponible en tus sistemas</h2>
-
-        <div class="compat-grid">
-            <div class="compat-card">
-                <div class="compat-icon">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                    </svg>
-                </div>
-                <div>
-                    <div class="compat-name">macOS</div>
-                    <div class="compat-version">Requiere macOS 12 Monterey o superior · Apple Silicon y Intel</div>
-                    <div class="compat-status ready">
-                        <span class="status-dot"></span>
-                        Disponible en Beta
-                    </div>
-                </div>
+<section class="section" id="compat">
+    <div class="section-label">Plataformas</div>
+    <h2 class="section-title">Disponible en tus sistemas</h2>
+    <p class="section-desc">Nativo en macOS, con soporte para Windows en desarrollo activo.</p>
+    <div class="compat-grid">
+        <div class="compat-card">
+            <div class="compat-icon">
+                <svg width="38" height="38" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
             </div>
-
-            <div class="compat-card">
-                <div class="compat-icon">
-                    <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.549H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.949"/>
-                    </svg>
-                </div>
-                <div>
-                    <div class="compat-name">Windows</div>
-                    <div class="compat-version">Requiere Windows 10 64-bit o superior</div>
-                    <div class="compat-status soon">
-                        <span class="status-dot"></span>
-                        Próximamente en Beta
-                    </div>
-                </div>
+            <div>
+                <div class="compat-name">macOS</div>
+                <div class="compat-req">macOS 12 Monterey o superior<br>Apple Silicon · Intel</div>
+                <div class="compat-status ready"><span class="status-dot"></span>Disponible en Beta</div>
+            </div>
+        </div>
+        <div class="compat-card">
+            <div class="compat-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.549H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.949"/>
+                </svg>
+            </div>
+            <div>
+                <div class="compat-name">Windows</div>
+                <div class="compat-req">Windows 10 64-bit o superior<br>x64 · ARM</div>
+                <div class="compat-status soon"><span class="status-dot"></span>Próximamente en Beta</div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- ── PRECIOS ── -->
-<section class="pricing" id="pricing">
-    <div class="section-inner">
-        <p class="section-label">Planes</p>
-        <h2 class="section-title">Accesible para todos</h2>
-        <p class="section-desc">Durante la beta, el programa es gratuito. Al lanzar la versión final, los estudiantes siempre tendrán acceso sin costo.</p>
-
-        <div class="pricing-grid">
-            <!-- Estudiantes -->
-            <div class="pricing-card featured">
-                <div class="pricing-badge">RECOMENDADO</div>
-                <div class="pricing-plan">Estudiantes</div>
-                <div class="pricing-price">Gratis <span>para siempre</span></div>
-                <div class="pricing-note">Con correo institucional verificado</div>
-                <hr class="pricing-divider">
-                <ul class="pricing-features">
-                    <li>Acceso completo a todas las funciones</li>
-                    <li>Proyectos ilimitados</li>
-                    <li>Exportación de memorias de cálculo</li>
-                    <li>Actualizaciones incluidas</li>
-                    <li>Soporte por correo</li>
-                </ul>
-                <button class="pricing-btn primary" onclick="handleDownload('mac')">Descargar gratis</button>
-            </div>
-
-            <!-- Profesionales -->
-            <div class="pricing-card">
-                <div class="pricing-plan">Profesionales</div>
-                <div class="pricing-price">— <span>precio por definir</span></div>
-                <div class="pricing-note">Disponible al salir de Beta</div>
-                <hr class="pricing-divider">
-                <ul class="pricing-features">
-                    <li>Todo lo del plan Estudiantes</li>
-                    <li>Soporte prioritario</li>
-                    <li>Funciones avanzadas de análisis</li>
-                    <li>Integración con BIM</li>
-                    <li>Licencia comercial</li>
-                </ul>
-                <button class="pricing-btn secondary" disabled style="opacity:0.5;cursor:not-allowed;">Próximamente</button>
-            </div>
+<section class="section" id="pricing">
+    <div class="section-label">Planes</div>
+    <h2 class="section-title">Accesible para todos</h2>
+    <p class="section-desc">Durante la beta es gratuito para todos. Al lanzar la versión final, los estudiantes siempre tendrán acceso sin costo.</p>
+    <div class="pricing-grid">
+        <div class="pricing-card featured">
+            <div class="pricing-badge">Recomendado</div>
+            <div class="pricing-plan">Estudiantes</div>
+            <div class="pricing-price">Gratis</div>
+            <div class="pricing-note">Para siempre · Con correo institucional</div>
+            <hr class="pricing-divider">
+            <ul class="pricing-list">
+                <li>Acceso completo a todas las funciones</li>
+                <li>Proyectos ilimitados</li>
+                <li>Exportación de memorias de cálculo</li>
+                <li>Actualizaciones incluidas</li>
+                <li>Soporte por correo</li>
+            </ul>
+            <button class="btn-primary" onclick="handleDownload('mac')" style="width:100%;justify-content:center;">Descargar gratis</button>
+        </div>
+        <div class="pricing-card">
+            <div class="pricing-plan">Profesionales</div>
+            <div class="pricing-price" style="color:rgba(255,255,255,0.25);">—</div>
+            <div class="pricing-note">Disponible al salir de Beta</div>
+            <hr class="pricing-divider">
+            <ul class="pricing-list">
+                <li>Todo lo del plan Estudiantes</li>
+                <li>Soporte prioritario</li>
+                <li>Funciones avanzadas de análisis</li>
+                <li>Integración con flujos BIM</li>
+                <li>Licencia comercial</li>
+            </ul>
+            <button class="btn-secondary" disabled style="width:100%;justify-content:center;opacity:0.3;cursor:not-allowed;">Próximamente</button>
         </div>
     </div>
 </section>
 
 <!-- ── DESCARGA ── -->
-<section class="download-section" id="download">
-    <div class="download-inner">
-        <p class="section-label" style="text-align:center;">Descarga</p>
-        <h2 class="download-title">Comienza ahora,<br>es gratis</h2>
-        <p class="download-sub">
-            Beta pública disponible para macOS. Windows próximamente.<br>
-            Sin registro obligatorio para empezar.
-        </p>
+<section class="section" id="download" style="text-align:center;">
+    <div class="section-label" style="justify-content:center;">Descarga</div>
+    <h2 class="section-title">Comienza ahora,<br>es gratis</h2>
+    <p class="section-desc" style="margin:0 auto 4rem;">Beta pública disponible para macOS. Sin registro obligatorio para empezar.</p>
 
-        <div class="download-box">
-            <div class="download-version">
-                ATL Estructural · v0.1.0-beta · <!-- ✏️ actualiza el tamaño --> ~XX MB
-            </div>
-            <div class="download-btns">
-                <button class="download-btn" onclick="handleDownload('mac')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Descargar para macOS
-                </button>
-                <button class="download-btn outline" disabled style="opacity:0.4;cursor:not-allowed;">
-                    Windows — Próximamente
-                </button>
-            </div>
-            <div class="download-count">
-                <strong id="download-count-2">—</strong> descargas totales
-            </div>
-            <p class="download-disclaimer">
-                Al descargar aceptas los términos de uso de la versión beta.<br>
-                Este software está en desarrollo activo — reporta bugs a
-                <a href="mailto:iia.rquitectura@outlook.com" style="color:var(--lilac);text-decoration:none;">iia.rquitectura@outlook.com</a>
-            </p>
+    <div class="download-box">
+        <div class="download-version">ATL Estructural · v0.1.0-beta · macOS</div>
+        <div class="download-btns">
+            <button class="btn-primary" onclick="handleDownload('mac')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Descargar para macOS
+            </button>
+            <button class="btn-secondary" disabled>Windows — Próximamente</button>
         </div>
+        <div class="download-count">
+            <strong id="count-dl">—</strong> &nbsp;descargas totales
+        </div>
+        <p class="download-note">
+            Al descargar aceptas los términos de uso de la versión beta.<br>
+            Reporta errores a <a href="mailto:iia.rquitectura@outlook.com">iia.rquitectura@outlook.com</a>
+        </p>
     </div>
 </section>
 
 <!-- ── FOOTER ── -->
 <footer>
-    <div class="footer-left">
-        <a href="index.html" class="footer-brand">ATL arquitectos</a>
-        <span style="color:var(--border);font-size:0.8rem;">·</span>
-        <span style="color:var(--muted);font-size:0.78rem;letter-spacing:0.08em;">ATL Estructural</span>
-    </div>
-    <div class="footer-right">
-        © 2025 ATL arquitectos · Beta pública
-    </div>
+    <a href="index.html" class="footer-brand">ATL<span>arquitectos</span></a>
+    <div class="footer-right">© 2025 · ATL Estructural Beta</div>
 </footer>
 
 <script>
-    /* ── Contador de descargas con countapi.dev ── */
-    const COUNT_NAMESPACE = 'atl-estructural';
-    const COUNT_KEY       = 'downloads-v1';
+    /* Nav scroll */
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function () {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
 
-    function updateCountDisplay(val) {
-        var formatted = Number(val).toLocaleString('es-MX');
-        var el1 = document.getElementById('download-count');
-        var el2 = document.getElementById('download-count-2');
-        if (el1) el1.textContent = formatted;
-        if (el2) el2.textContent = formatted;
+    /* Contador de descargas */
+    var NS = 'atl-estructural', KEY = 'downloads-v1';
+
+    function setCount(val) {
+        var n = Number(val).toLocaleString('es-MX');
+        ['count-hero', 'count-dl'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = n;
+        });
     }
 
-    /* Obtener conteo actual (sin incrementar) */
-    fetch('https://api.countapi.xyz/get/' + COUNT_NAMESPACE + '/' + COUNT_KEY)
-        .then(function(r){ return r.json(); })
-        .then(function(d){ if (d.value !== null) updateCountDisplay(d.value); })
-        .catch(function(){});
+    fetch('https://api.countapi.xyz/get/' + NS + '/' + KEY)
+        .then(function(r) { return r.json(); })
+        .then(function(d) { if (d.value !== null) setCount(d.value); })
+        .catch(function() {});
 
-    /* Manejar descarga: incrementar contador y abrir archivo */
     function handleDownload(platform) {
-        /* ✏️ Reemplaza estas URLs con las reales cuando tengas el archivo */
         var urls = {
-            mac: '#', /* URL del .dmg o .zip para macOS */
-            win: '#'  /* URL del .exe o .zip para Windows */
+            mac: '#', /* ✏️ Reemplaza con URL real del archivo .dmg */
+            win: '#'
         };
+        fetch('https://api.countapi.xyz/hit/' + NS + '/' + KEY)
+            .then(function(r) { return r.json(); })
+            .then(function(d) { if (d.value !== null) setCount(d.value); })
+            .catch(function() {});
 
-        /* Incrementar contador */
-        fetch('https://api.countapi.xyz/hit/' + COUNT_NAMESPACE + '/' + COUNT_KEY)
-            .then(function(r){ return r.json(); })
-            .then(function(d){ if (d.value !== null) updateCountDisplay(d.value); })
-            .catch(function(){});
-
-        /* Abrir descarga */
         var url = urls[platform];
         if (url && url !== '#') {
             window.location.href = url;
         } else {
-            alert('El archivo de descarga estará disponible pronto.\nContacta a iia.rquitectura@outlook.com para acceso anticipado.');
+            alert('El archivo estará disponible pronto.\nContacta: iia.rquitectura@outlook.com');
         }
     }
 </script>
-
 </body>
 </html>
