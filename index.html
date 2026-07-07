@@ -1487,14 +1487,32 @@
 
         // ── HERO VIDEO: arranca desde el final en móvil/táctil ──
         (function() {
-            if (!window.matchMedia('(pointer: coarse)').matches) return;
             const heroVid = document.querySelector('.hero-bg video');
             if (!heroVid) return;
-            heroVid.addEventListener('loadedmetadata', function() {
-                if (heroVid.duration && isFinite(heroVid.duration)) {
-                    heroVid.currentTime = heroVid.duration * 0.88;
-                }
-            }, { once: true });
+
+            function ensurePlaying() {
+                const p = heroVid.play();
+                if (p && p.catch) p.catch(() => {});
+            }
+
+            if (window.matchMedia('(pointer: coarse)').matches) {
+                heroVid.addEventListener('loadedmetadata', function() {
+                    if (heroVid.duration && isFinite(heroVid.duration)) {
+                        heroVid.currentTime = heroVid.duration * 0.88;
+                    }
+                }, { once: true });
+                // Seek en móvil suele pausar el video: hay que reanudarlo a mano.
+                heroVid.addEventListener('seeked', ensurePlaying);
+            }
+
+            // Red lenta / cambio de pestaña puede dejar el video pausado sin
+            // volver a arrancar solo: si sigue en pausa al reaparecer, reintenta.
+            heroVid.addEventListener('pause', () => {
+                if (document.visibilityState === 'visible') ensurePlaying();
+            });
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible' && heroVid.paused) ensurePlaying();
+            });
         })();
 
         // ── NAV MOBILE TOGGLE ──
