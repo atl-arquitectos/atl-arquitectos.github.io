@@ -416,7 +416,7 @@ footer {
 .section-dot:hover::before { opacity: 1; }
 
 @media (max-width: 900px) {
-    .section-dots { display: none; }
+    .section-dots { right: 0.7rem; padding: 0.6rem 0.4rem; gap: 0.55rem; }
     .page-scroll-hint { display: none; }
 }
 
