@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400;600;700&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/atl.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 
     <style>
         /* ── CONTACT PAGE ── */
@@ -23,6 +24,7 @@
             padding: 8rem 5rem;
             max-width: 1400px;
             margin: 0 auto;
+            background: rgba(8, 8, 8, 0.78);
         }
 
         .contact-grid {
@@ -198,6 +200,7 @@
             padding: 0 5rem 8rem;
             max-width: 1400px;
             margin: 0 auto;
+            background: rgba(8, 8, 8, 0.78);
         }
         .wa-cta {
             background: rgba(255,255,255,0.025);
@@ -247,6 +250,7 @@
             padding: 0 5rem 10rem;
             max-width: 1400px;
             margin: 0 auto;
+            background: rgba(8, 8, 8, 0.78);
         }
         .location-inner {
             display: flex;
@@ -301,6 +305,7 @@
 </head>
 <body>
 
+    <canvas id="threejs-bg" aria-hidden="true"></canvas>
     <!-- CURSOR -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursorRing"></div>
@@ -601,6 +606,7 @@
             });
         });
     </script>
+    <script src="assets/js/threejs-bg.js"></script>
 
 </body>
 </html>
