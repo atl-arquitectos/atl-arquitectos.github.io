@@ -251,6 +251,45 @@ nav.scrolled {
     margin-top: 1rem;
 }
 
+/* ── MARQUEE BAND ── */
+.marquee-band {
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    padding: 1.6rem 0;
+    background: #080808;
+}
+.marquee-track {
+    display: flex;
+    gap: 0;
+    width: max-content;
+    animation: marqueeScroll 28s linear infinite;
+}
+.marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding-right: 2.5rem;
+    white-space: nowrap;
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.50);
+}
+.marquee-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--lilac);
+    opacity: 0.6;
+    flex-shrink: 0;
+}
+@keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
 /* ── BOTONES ── */
 .btn-primary {
     display: inline-flex;

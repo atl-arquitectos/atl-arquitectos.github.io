@@ -190,6 +190,127 @@
             nav .nav-social { display: none; }
         }
 
+        /* ── PROYECTOS HERO ── */
+        #proyectos-hero {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .proyectos-hero-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        .proyectos-hero-bg video {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            object-fit: cover;
+        }
+        .proyectos-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(8,8,8,0.75) 0%, rgba(8,8,8,0.45) 50%, rgba(8,8,8,0.65) 100%);
+            z-index: 1;
+        }
+        .proyectos-hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        .proyectos-hero-content .section-label-alt {
+            font-size: 0.65rem;
+            font-weight: 300;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 1.2rem;
+        }
+        .proyectos-hero-content h1 {
+            font-family: var(--font-title);
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 0.95;
+        }
+        .proyectos-hero-content p {
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.55);
+            text-transform: uppercase;
+            margin-top: 1.2rem;
+        }
+        .proyectos-hero-scroll {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .proyectos-hero-scroll span {
+            font-size: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+        }
+        .proyectos-hero-scroll-line {
+            width: 1px;
+            height: 3rem;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+        }
+
+        /* ── MARQUEE BAND ── */
+        .marquee-band {
+            overflow: hidden;
+            border-top: 1px solid rgba(255,255,255,0.10);
+            border-bottom: 1px solid rgba(255,255,255,0.10);
+            padding: 1.6rem 0;
+            background: #080808;
+        }
+        .marquee-track {
+            display: flex;
+            gap: 0;
+            width: max-content;
+            animation: marqueeScroll 28s linear infinite;
+        }
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            padding-right: 2.5rem;
+            white-space: nowrap;
+            font-family: var(--font-title);
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.50);
+        }
+        .marquee-dot {
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--lilac);
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+        @keyframes marqueeScroll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
         /* ── PROGRESS DOTS ── */
         .progress-dots {
             position: fixed;
@@ -385,6 +506,7 @@
 
         /* ── FOOTER FINAL ── */
         #fin {
+            position: relative;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -561,6 +683,50 @@
             <a href="https://www.facebook.com/ATL.arquitectos/" target="_blank" rel="noopener noreferrer" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
             <a href="mailto:proyectos@atl-arquitectos.com" title="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></a>
             <a href="https://wa.me/525627844012" target="_blank" rel="noopener noreferrer" title="WhatsApp"><svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 .5C7.439.5.5 7.439.5 16c0 2.777.726 5.384 1.993 7.647L.5 31.5l8.085-2.118A15.432 15.432 0 0 0 16 31.5c8.561 0 15.5-6.939 15.5-15.5S24.561.5 16 .5zm0 28.3a12.71 12.71 0 0 1-6.479-1.766l-.464-.277-4.797 1.258 1.279-4.674-.303-.479A12.717 12.717 0 0 1 3.2 16C3.2 9.2 9.2 3.2 16 3.2c6.8 0 12.8 6 12.8 12.8 0 6.8-6 12.8-12.8 12.8zm7.016-9.584c-.385-.192-2.274-1.122-2.627-1.25-.352-.128-.607-.192-.863.192-.255.385-.993 1.25-1.217 1.506-.224.255-.449.288-.833.096-.385-.192-1.624-.599-3.093-1.909-1.143-1.02-1.914-2.279-2.138-2.664-.224-.385-.024-.593.168-.784.173-.172.385-.449.577-.673.192-.224.256-.385.384-.641.128-.256.064-.481-.032-.673-.096-.192-.863-2.081-1.183-2.849-.311-.748-.627-.647-.863-.659-.224-.011-.48-.013-.736-.013-.255 0-.672.096-1.024.481-.352.384-1.344 1.314-1.344 3.203 0 1.889 1.376 3.714 1.568 3.97.192.256 2.709 4.136 6.564 5.799.918.396 1.634.633 2.191.811.921.293 1.759.252 2.42.153.739-.11 2.274-.929 2.595-1.826.32-.896.32-1.664.224-1.826-.096-.16-.352-.256-.737-.448z"/></svg></a>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section id="proyectos-hero">
+        <div class="proyectos-hero-bg">
+            <video autoplay muted loop playsinline preload="auto" poster="assets/video/hero-poster.jpg">
+                <source src="assets/video/hero.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="proyectos-hero-overlay"></div>
+        <div class="proyectos-hero-content">
+            <p class="section-label-alt">Nuestro trabajo</p>
+            <h1>Proyectos</h1>
+            <p>Arquitectura residencial y comercial en CDMX</p>
+        </div>
+        <div class="proyectos-hero-scroll">
+            <span>Scroll</span>
+            <div class="proyectos-hero-scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- MARQUEE BAND -->
+    <div class="marquee-band">
+        <div class="marquee-track">
+            <!-- repeated twice for seamless loop -->
+            <div class="marquee-item">Arquitectura<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Diseño<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Innovación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Interiorismo<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Construcción<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Remodelación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Experimentación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Humanismo<span class="marquee-dot"></span></div>
+            <div class="marquee-item">CDMX<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Arquitectura<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Diseño<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Innovación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Interiorismo<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Construcción<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Remodelación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Experimentación<span class="marquee-dot"></span></div>
+            <div class="marquee-item">Humanismo<span class="marquee-dot"></span></div>
+            <div class="marquee-item">CDMX<span class="marquee-dot"></span></div>
         </div>
     </div>
 
