@@ -477,3 +477,107 @@ footer {
     footer { padding: 3rem 2rem; flex-direction: column; gap: 1.5rem; text-align: center; align-items: center; }
     .footer-social { justify-content: center; }
 }
+
+/* ── ATL SOUND SYSTEM ── */
+.atl-sound-btn {
+    position: fixed;
+    bottom: 1.3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: rgba(8, 8, 8, 0.80);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.28);
+    padding: 0.7rem 1.4rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+    font-family: var(--font-body);
+    outline: none;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+.atl-sound-btn:hover {
+    border-color: rgba(255,255,255,0.50);
+    background: rgba(8,8,8,0.92);
+    box-shadow: 0 6px 32px rgba(0,0,0,0.55);
+}
+.atl-sound-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--lilac);
+    opacity: 0.55;
+    flex-shrink: 0;
+    transition: opacity 0.8s ease, box-shadow 0.8s ease;
+}
+.atl-sound-label {
+    font-size: 0.5rem;
+    font-weight: 400;
+    letter-spacing: 0.30em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    transition: color 0.4s ease;
+    white-space: nowrap;
+}
+.atl-sound-btn.atl-sound-on .atl-sound-dot {
+    opacity: 1;
+    box-shadow: 0 0 10px var(--lilac);
+    animation: soundPulse 4s ease-in-out infinite;
+}
+.atl-sound-btn.atl-sound-on .atl-sound-label {
+    color: rgba(196,181,212,0.95);
+}
+.atl-sound-btn.atl-sound-on {
+    border-color: rgba(196,181,212,0.40);
+    box-shadow: 0 4px 28px rgba(196,181,212,0.12);
+}
+/* Toggle switch */
+.atl-switch {
+    width: 28px; height: 15px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.35s ease;
+}
+.atl-switch::after {
+    content: '';
+    position: absolute;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.55);
+    top: 2px; left: 2px;
+    transition: transform 0.35s ease, background 0.35s ease;
+}
+.atl-sound-btn.atl-sound-on .atl-switch {
+    background: rgba(196,181,212,0.55);
+}
+.atl-sound-btn.atl-sound-on .atl-switch::after {
+    transform: translateX(13px);
+    background: #fff;
+}
+.atl-state {
+    font-size: 0.42rem;
+    font-weight: 400;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    transition: color 0.4s ease;
+    min-width: 1.6rem;
+}
+.atl-sound-btn.atl-sound-on .atl-state {
+    color: rgba(196,181,212,0.80);
+}
+@keyframes soundPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.45; transform: scale(0.65); }
+}
+@media (max-width: 900px) {
+    .atl-sound-btn {
+        bottom: 0.9rem;
+        padding: 0.65rem 1.2rem;
+    }
+}
