@@ -367,8 +367,18 @@
         /* ── SECCIONES ── */
         .proyecto {
             position: relative;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
+            overflow: hidden;
+            background: rgba(8, 8, 8, 0.78);
+        }
+        /* Encajona la foto como el resto del sitio (mismo max-width que el home),
+           dejando ver el grid 3D del fondo en los márgenes laterales */
+        .proyecto-inner {
+            position: relative;
+            max-width: 1400px;
+            height: 100%;
+            margin: 0 auto;
             overflow: hidden;
             display: flex;
             align-items: center;
@@ -765,29 +775,31 @@
 
     <!-- PROYECTO 01 -->
     <section class="proyecto" id="p1">
-        <div class="bg-img" style="background-image:url('images/pic01.jpg')"></div>
-        <div class="bg-overlay"></div>
-        <div class="top-right">
-            <div class="proy-code">IIA — 0013 / Residencial</div>
-            <div class="proy-coords">19°25′N · 99°08′O</div>
-        </div>
-        <div class="proyecto-content">
-            <div class="proy-num">Proyecto 01</div>
-            <h2 class="proy-title">Casa<br>Clásica</h2>
-            <p class="proy-subtitle">Elevación Frontal Nocturna</p>
-            <div class="proy-divider"></div>
-            <ul class="proy-specs">
-                <li><strong>Superficie</strong> 320 m²</li>
-                <li><strong>Ubicación</strong> Ciudad de México</li>
-                <li><strong>Tipo</strong> Residencial</li>
-                <li><strong>Material</strong> Concreto · Piedra · Vidrio</li>
-            </ul>
-            <div class="proy-tech">ArchiCAD BIM · Render Nocturno 3D</div>
-            <a href="contacto.html" class="proy-cta">Solicitar información</a>
-        </div>
-        <div class="scroll-hint">
-            <span>Scroll</span>
-            <div class="scroll-hint-line"></div>
+        <div class="proyecto-inner">
+            <div class="bg-img" style="background-image:url('images/pic01.jpg')"></div>
+            <div class="bg-overlay"></div>
+            <div class="top-right">
+                <div class="proy-code">IIA — 0013 / Residencial</div>
+                <div class="proy-coords">19°25′N · 99°08′O</div>
+            </div>
+            <div class="proyecto-content">
+                <div class="proy-num">Proyecto 01</div>
+                <h2 class="proy-title">Casa<br>Clásica</h2>
+                <p class="proy-subtitle">Elevación Frontal Nocturna</p>
+                <div class="proy-divider"></div>
+                <ul class="proy-specs">
+                    <li><strong>Superficie</strong> 320 m²</li>
+                    <li><strong>Ubicación</strong> Ciudad de México</li>
+                    <li><strong>Tipo</strong> Residencial</li>
+                    <li><strong>Material</strong> Concreto · Piedra · Vidrio</li>
+                </ul>
+                <div class="proy-tech">ArchiCAD BIM · Render Nocturno 3D</div>
+                <a href="contacto.html" class="proy-cta">Solicitar información</a>
+            </div>
+            <div class="scroll-hint">
+                <span>Scroll</span>
+                <div class="scroll-hint-line"></div>
+            </div>
         </div>
     </section>
 
@@ -795,25 +807,27 @@
 
     <!-- PROYECTO 02 -->
     <section class="proyecto" id="p2">
-        <div class="bg-img" style="background-image:url('images/pic02.jpg')"></div>
-        <div class="bg-overlay"></div>
-        <div class="top-right">
-            <div class="proy-code">IIA — 0014 / Interiorismo</div>
-            <div class="proy-coords">19°25′N · 99°08′O</div>
-        </div>
-        <div class="proyecto-content">
-            <div class="proy-num">Proyecto 02</div>
-            <h2 class="proy-title">Sala<br>Comedor</h2>
-            <p class="proy-subtitle">Redefinición Interior · Estilo Japandi</p>
-            <div class="proy-divider"></div>
-            <ul class="proy-specs">
-                <li><strong>Superficie</strong> 85 m²</li>
-                <li><strong>Ubicación</strong> Ciudad de México</li>
-                <li><strong>Tipo</strong> Remodelación Interior</li>
-                <li><strong>Material</strong> Madera · Concreto · Lino</li>
-            </ul>
-            <div class="proy-tech">ArchiCAD BIM · Render Fotorrealista 3D</div>
-            <a href="contacto.html" class="proy-cta">Solicitar información</a>
+        <div class="proyecto-inner">
+            <div class="bg-img" style="background-image:url('images/pic02.jpg')"></div>
+            <div class="bg-overlay"></div>
+            <div class="top-right">
+                <div class="proy-code">IIA — 0014 / Interiorismo</div>
+                <div class="proy-coords">19°25′N · 99°08′O</div>
+            </div>
+            <div class="proyecto-content">
+                <div class="proy-num">Proyecto 02</div>
+                <h2 class="proy-title">Sala<br>Comedor</h2>
+                <p class="proy-subtitle">Redefinición Interior · Estilo Japandi</p>
+                <div class="proy-divider"></div>
+                <ul class="proy-specs">
+                    <li><strong>Superficie</strong> 85 m²</li>
+                    <li><strong>Ubicación</strong> Ciudad de México</li>
+                    <li><strong>Tipo</strong> Remodelación Interior</li>
+                    <li><strong>Material</strong> Madera · Concreto · Lino</li>
+                </ul>
+                <div class="proy-tech">ArchiCAD BIM · Render Fotorrealista 3D</div>
+                <a href="contacto.html" class="proy-cta">Solicitar información</a>
+            </div>
         </div>
     </section>
 
@@ -821,25 +835,27 @@
 
     <!-- PROYECTO 03 -->
     <section class="proyecto" id="p3">
-        <div class="bg-img" style="background-image:url('images/pic03.jpg')"></div>
-        <div class="bg-overlay"></div>
-        <div class="top-right">
-            <div class="proy-code">IIA — 0015 / Comercial</div>
-            <div class="proy-coords">20°58′N · 89°37′O</div>
-        </div>
-        <div class="proyecto-content">
-            <div class="proy-num">Proyecto 03</div>
-            <h2 class="proy-title">Núcleo<br>Comercial</h2>
-            <p class="proy-subtitle">Espacio Comercial de Alto Nivel</p>
-            <div class="proy-divider"></div>
-            <ul class="proy-specs">
-                <li><strong>Superficie</strong> 480 m²</li>
-                <li><strong>Ubicación</strong> Mérida, Yucatán</li>
-                <li><strong>Tipo</strong> Comercial</li>
-                <li><strong>Material</strong> Madera · Piedra · Concreto</li>
-            </ul>
-            <div class="proy-tech">ArchiCAD BIM · Visualización 3D</div>
-            <a href="contacto.html" class="proy-cta">Solicitar información</a>
+        <div class="proyecto-inner">
+            <div class="bg-img" style="background-image:url('images/pic03.jpg')"></div>
+            <div class="bg-overlay"></div>
+            <div class="top-right">
+                <div class="proy-code">IIA — 0015 / Comercial</div>
+                <div class="proy-coords">20°58′N · 89°37′O</div>
+            </div>
+            <div class="proyecto-content">
+                <div class="proy-num">Proyecto 03</div>
+                <h2 class="proy-title">Núcleo<br>Comercial</h2>
+                <p class="proy-subtitle">Espacio Comercial de Alto Nivel</p>
+                <div class="proy-divider"></div>
+                <ul class="proy-specs">
+                    <li><strong>Superficie</strong> 480 m²</li>
+                    <li><strong>Ubicación</strong> Mérida, Yucatán</li>
+                    <li><strong>Tipo</strong> Comercial</li>
+                    <li><strong>Material</strong> Madera · Piedra · Concreto</li>
+                </ul>
+                <div class="proy-tech">ArchiCAD BIM · Visualización 3D</div>
+                <a href="contacto.html" class="proy-cta">Solicitar información</a>
+            </div>
         </div>
     </section>
 
@@ -847,25 +863,27 @@
 
     <!-- PROYECTO 04 -->
     <section class="proyecto" id="p4">
-        <div class="bg-img" style="background-image:url('images/pic04.jpg')"></div>
-        <div class="bg-overlay"></div>
-        <div class="top-right">
-            <div class="proy-code">IIA — 0016 / Terraza</div>
-            <div class="proy-coords">25°41′N · 100°18′O</div>
-        </div>
-        <div class="proyecto-content">
-            <div class="proy-num">Proyecto 04</div>
-            <h2 class="proy-title">Rooftop<br>Lounge</h2>
-            <p class="proy-subtitle">Terraza · Bar · Espacio Recreativo</p>
-            <div class="proy-divider"></div>
-            <ul class="proy-specs">
-                <li><strong>Superficie</strong> 250 m²</li>
-                <li><strong>Ubicación</strong> Monterrey, N.L.</li>
-                <li><strong>Tipo</strong> Terraza · Bar</li>
-                <li><strong>Material</strong> Ónix · Madera noble · Concreto</li>
-            </ul>
-            <div class="proy-tech">ArchiCAD BIM · Render Ambiental 3D</div>
-            <a href="contacto.html" class="proy-cta">Solicitar información</a>
+        <div class="proyecto-inner">
+            <div class="bg-img" style="background-image:url('images/pic04.jpg')"></div>
+            <div class="bg-overlay"></div>
+            <div class="top-right">
+                <div class="proy-code">IIA — 0016 / Terraza</div>
+                <div class="proy-coords">25°41′N · 100°18′O</div>
+            </div>
+            <div class="proyecto-content">
+                <div class="proy-num">Proyecto 04</div>
+                <h2 class="proy-title">Rooftop<br>Lounge</h2>
+                <p class="proy-subtitle">Terraza · Bar · Espacio Recreativo</p>
+                <div class="proy-divider"></div>
+                <ul class="proy-specs">
+                    <li><strong>Superficie</strong> 250 m²</li>
+                    <li><strong>Ubicación</strong> Monterrey, N.L.</li>
+                    <li><strong>Tipo</strong> Terraza · Bar</li>
+                    <li><strong>Material</strong> Ónix · Madera noble · Concreto</li>
+                </ul>
+                <div class="proy-tech">ArchiCAD BIM · Render Ambiental 3D</div>
+                <a href="contacto.html" class="proy-cta">Solicitar información</a>
+            </div>
         </div>
     </section>
 
@@ -873,25 +891,27 @@
 
     <!-- PROYECTO 05 -->
     <section class="proyecto" id="p5">
-        <div class="bg-img" style="background-image:url('images/pic05.jpg')"></div>
-        <div class="bg-overlay"></div>
-        <div class="top-right">
-            <div class="proy-code">IIA — 0017 / Residencial</div>
-            <div class="proy-coords">19°25′N · 99°08′O</div>
-        </div>
-        <div class="proyecto-content">
-            <div class="proy-num">Proyecto 05</div>
-            <h2 class="proy-title">Casa<br>Contemporánea</h2>
-            <p class="proy-subtitle">Arquitectura Residencial de Alta Gama</p>
-            <div class="proy-divider"></div>
-            <ul class="proy-specs">
-                <li><strong>Superficie</strong> 560 m²</li>
-                <li><strong>Ubicación</strong> Ciudad de México</li>
-                <li><strong>Tipo</strong> Residencial</li>
-                <li><strong>Material</strong> Acero · Vidrio · Madera</li>
-            </ul>
-            <div class="proy-tech">ArchiCAD BIM · Render Fotorrealista 3D</div>
-            <a href="contacto.html" class="proy-cta">Solicitar información</a>
+        <div class="proyecto-inner">
+            <div class="bg-img" style="background-image:url('images/pic05.jpg')"></div>
+            <div class="bg-overlay"></div>
+            <div class="top-right">
+                <div class="proy-code">IIA — 0017 / Residencial</div>
+                <div class="proy-coords">19°25′N · 99°08′O</div>
+            </div>
+            <div class="proyecto-content">
+                <div class="proy-num">Proyecto 05</div>
+                <h2 class="proy-title">Casa<br>Contemporánea</h2>
+                <p class="proy-subtitle">Arquitectura Residencial de Alta Gama</p>
+                <div class="proy-divider"></div>
+                <ul class="proy-specs">
+                    <li><strong>Superficie</strong> 560 m²</li>
+                    <li><strong>Ubicación</strong> Ciudad de México</li>
+                    <li><strong>Tipo</strong> Residencial</li>
+                    <li><strong>Material</strong> Acero · Vidrio · Madera</li>
+                </ul>
+                <div class="proy-tech">ArchiCAD BIM · Render Fotorrealista 3D</div>
+                <a href="contacto.html" class="proy-cta">Solicitar información</a>
+            </div>
         </div>
     </section>
 
