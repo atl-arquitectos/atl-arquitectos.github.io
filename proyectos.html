@@ -370,7 +370,6 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
-            background: rgba(8, 8, 8, 0.78);
         }
         /* Encajona la foto como el resto del sitio (mismo max-width que el home),
            dejando ver el grid 3D del fondo en los márgenes laterales */
@@ -387,6 +386,8 @@
         /* Franja entre proyectos: deja asomar el grid 3D del fondo al pasar de una foto a otra */
         .grid-interlude {
             height: 22vh;
+            max-width: 1400px;
+            margin: 0 auto;
             background: rgba(8, 8, 8, 0.78);
             border-top: 1px solid rgba(255,255,255,0.05);
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -548,6 +549,8 @@
         #fin {
             position: relative;
             height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
