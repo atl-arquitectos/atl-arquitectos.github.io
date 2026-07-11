@@ -231,6 +231,9 @@
             text-transform: uppercase;
             color: rgba(255,255,255,0.55);
             margin-bottom: 1.2rem;
+            opacity: 0;
+            transform: translateX(-24px);
+            animation: labelSlide 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
         }
         .proyectos-hero-content h1 {
             font-family: var(--font-title);
@@ -239,6 +242,13 @@
             letter-spacing: 0.05em;
             text-transform: uppercase;
             line-height: 0.95;
+            display: block;
+            overflow: hidden;
+        }
+        .proyectos-hero-content h1 span {
+            display: block;
+            transform: translateY(105%);
+            animation: curtainUp 1s cubic-bezier(0.16,1,0.3,1) 0.55s forwards;
         }
         .proyectos-hero-content p {
             font-size: 0.75rem;
@@ -247,6 +257,18 @@
             color: rgba(255,255,255,0.55);
             text-transform: uppercase;
             margin-top: 1.2rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.05s forwards;
+        }
+        @keyframes curtainUp {
+            to { transform: translateY(0); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes labelSlide {
+            to { opacity: 1; transform: translateX(0); }
         }
         .proyectos-hero-scroll {
             position: absolute;
@@ -350,6 +372,14 @@
             overflow: hidden;
             display: flex;
             align-items: center;
+        }
+
+        /* Franja entre proyectos: deja asomar el grid 3D del fondo al pasar de una foto a otra */
+        .grid-interlude {
+            height: 22vh;
+            background: rgba(8, 8, 8, 0.78);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         /* ── BG CON ZOOM SCROLL ── */
@@ -696,7 +726,7 @@
         <div class="proyectos-hero-overlay"></div>
         <div class="proyectos-hero-content">
             <p class="section-label-alt">Nuestro trabajo</p>
-            <h1>Proyectos</h1>
+            <h1><span>Proyectos</span></h1>
             <p>Arquitectura residencial y comercial en CDMX</p>
         </div>
         <div class="proyectos-hero-scroll">
@@ -761,6 +791,8 @@
         </div>
     </section>
 
+    <div class="grid-interlude"></div>
+
     <!-- PROYECTO 02 -->
     <section class="proyecto" id="p2">
         <div class="bg-img" style="background-image:url('images/pic02.jpg')"></div>
@@ -784,6 +816,8 @@
             <a href="contacto.html" class="proy-cta">Solicitar información</a>
         </div>
     </section>
+
+    <div class="grid-interlude"></div>
 
     <!-- PROYECTO 03 -->
     <section class="proyecto" id="p3">
@@ -809,6 +843,8 @@
         </div>
     </section>
 
+    <div class="grid-interlude"></div>
+
     <!-- PROYECTO 04 -->
     <section class="proyecto" id="p4">
         <div class="bg-img" style="background-image:url('images/pic04.jpg')"></div>
@@ -832,6 +868,8 @@
             <a href="contacto.html" class="proy-cta">Solicitar información</a>
         </div>
     </section>
+
+    <div class="grid-interlude"></div>
 
     <!-- PROYECTO 05 -->
     <section class="proyecto" id="p5">
