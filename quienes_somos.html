@@ -29,6 +29,19 @@
         }
         .estudio-img img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 0.8s ease; }
         .estudio-img:hover img { transform: scale(1.0); }
+        .estudio-img.is-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .estudio-img.is-logo img {
+            width: 55%; height: auto;
+            object-fit: contain;
+            transform: none;
+        }
+        .estudio-img.is-logo:hover img { transform: none; }
         .estudio-text h2 {
             font-family: var(--font-title);
             font-size: clamp(2rem, 4vw, 3.2rem);
@@ -158,7 +171,11 @@
 
     <!-- PAGE HERO -->
     <div class="page-hero">
-        <div class="page-hero-bg" style="background-image:url('images/banner.jpg')"></div>
+        <div class="page-hero-bg">
+            <video autoplay muted loop playsinline preload="auto" poster="assets/video/hero-alt-poster.jpg">
+                <source src="assets/video/hero-alt.mp4" type="video/mp4">
+            </video>
+        </div>
         <div class="page-hero-fade"></div>
         <div class="page-hero-content">
             <div class="section-label" style="margin-bottom:1rem;">El estudio</div>
@@ -214,8 +231,8 @@
                 <p>Somos un estudio de arquitectura que entiende que el escenario actual exige una arquitectura más consciente. Para nosotros, diseñar no se limita a construir edificios; implica asumir la responsabilidad de generar un impacto positivo en la sociedad y el medio ambiente. Cada proyecto representa una oportunidad para mejorar la calidad de vida de quienes lo habitan, optimizar los recursos y crear espacios capaces de perdurar en el tiempo.</p>
                 <p>Nos especializamos en <strong>arquitectura sustentable de alta gama</strong>, donde ponemos la excelencia en el diseño, la innovación tecnológica y la selección responsable de materiales. Priorizamos materiales de bajo impacto ambiental, como la madera certificada, el bambú, el concreto de cáñamo, la piedra natural y otros sistemas constructivos que favorecen la eficiencia, la durabilidad y el respeto por el contexto.</p>
             </div>
-            <div class="estudio-img reveal">
-                <img src="images/pic01.jpg" alt="ATL arquitectos - Historia">
+            <div class="estudio-img is-logo reveal">
+                <img src="assets/img/atl-logo-white.png" alt="ATL arquitectos">
             </div>
         </div>
     </section>
