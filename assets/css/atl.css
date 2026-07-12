@@ -240,6 +240,11 @@ nav.scrolled {
 .page-hero-bg    { z-index: 0; }
 .page-hero-fade  { z-index: 1; }
 .page-hero-content { position: relative; z-index: 2; }
+.page-hero-content .section-label {
+    opacity: 0;
+    transform: translateX(-24px);
+    animation: pageHeroLabelSlide 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+}
 .page-hero h1 {
     font-family: var(--font-title);
     font-size: clamp(3rem, 7vw, 6rem);
@@ -247,6 +252,12 @@ nav.scrolled {
     letter-spacing: 0.05em;
     text-transform: uppercase;
     line-height: 0.9;
+    overflow: hidden;
+}
+.page-hero h1 span {
+    display: block;
+    transform: translateY(105%);
+    animation: pageHeroCurtainUp 1s cubic-bezier(0.16,1,0.3,1) 0.55s forwards;
 }
 .page-hero p {
     font-size: 0.7rem;
@@ -255,6 +266,14 @@ nav.scrolled {
     color: rgba(255,255,255,0.5);
     text-transform: uppercase;
     margin-top: 1rem;
+    opacity: 0;
+    animation: atlFadeUp 1s ease 1.05s forwards;
+}
+@keyframes pageHeroCurtainUp {
+    to { transform: translateY(0); }
+}
+@keyframes pageHeroLabelSlide {
+    to { opacity: 1; transform: translateX(0); }
 }
 
 /* ── MARQUEE BAND ── */
