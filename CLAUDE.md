@@ -22,8 +22,9 @@ manual) — `git push` funciona directo sin pedir credenciales.
 - `assets/js/sound-system.js` — botón flotante "AMBIENT" (audio ambiental, `assets/audio/ambient.mp3`).
   Se auto-inyecta vía JS (`document.body.appendChild`), no necesita HTML propio — solo el CSS
   `.atl-sound-btn` (en `atl.css` o inline según la página) y el `<script>`. Compartido por las 6 páginas.
-- `images/`, `assets/img/` — imágenes. `assets/video/hero.mp4` + `hero-poster.jpg` — video del hero,
-  reusado también en el hero de `proyectos.html`.
+- `images/`, `assets/img/` — imágenes. `assets/img/atl-logo-white.png` — logo blanco (también usado
+  para la firma de correo del usuario, generado en esta sesión). Ver sección de videos de hero abajo
+  para `hero.mp4` / `hero-alt.mp4`.
 - `index-backup.html` — respaldo local, nunca se publica (está en `.gitignore`).
 - `robots.txt`, `.nojekyll`, `CNAME` — configuración de GitHub Pages.
 
@@ -46,16 +47,39 @@ manual) — `git push` funciona directo sin pedir credenciales.
 - **Cinta de texto animada (marquee)**: "Arquitectura · Diseño · Innovación · ..." debajo del hero,
   en todas las páginas. `proyectos.html` no tenía hero → se le construyó uno nuevo con el mismo
   video del home + esta cinta.
-- **Video de fondo del hero**: en index y proyectos. En servicios/quienes_somos/contacto se dejó
-  la foto de hero original de cada página (decisión explícita del usuario — no reemplazar por video
-  ahí). Bug arreglado: en móvil, el JS que salta el video a ~88% de su duración lo dejaba pausado
-  sin reanudarlo (los navegadores móviles pausan al hacer `seek`); ahora escucha `seeked` y
-  `pause`/`visibilitychange` para forzar `.play()` de nuevo.
+- **Video de fondo del hero**: TODAS las páginas ya tienen video de hero (ya no hay fotos estáticas
+  de hero en ninguna). Dos videos distintos:
+  - `assets/video/hero.mp4` + `hero-poster.jpg` — toma nocturna de edificio con ventanales, usado en
+    `index.html` y `proyectos.html`.
+  - `assets/video/hero-alt.mp4` + `hero-alt-poster.jpg` — toma aérea del Monumento a la Revolución
+    (CDMX), usado en `servicios.html`, `quienes_somos.html` y `contacto.html`. Comprimido de 17MB a
+    5.9MB (crf 26) desde el archivo fuente que el usuario dejó en su Escritorio.
+  - Estructura reusada: en index/proyectos el hero es una `<section>` propia a pantalla completa; en
+    servicios/quienes_somos/contacto el video vive dentro de `.page-hero-bg` (que antes usaba
+    `background-image`, ahora tiene un `<video>` hijo con `object-fit:cover`), reutilizando el resto
+    del `.page-hero`/`.page-hero-fade`/`.page-hero-content` que ya existía.
+  - Bug arreglado (solo afectaba a index/proyectos, que sí tienen el JS de salto de tiempo): en
+    móvil, el JS que salta el video a ~88% de su duración lo dejaba pausado sin reanudarlo (los
+    navegadores móviles pausan al hacer `seek`); ahora escucha `seeked` y
+    `pause`/`visibilitychange` para forzar `.play()` de nuevo.
 - **`.grid-interlude`**: franjas entre las 5 fotos de `proyectos.html` (solo ahí) donde se ve el
   grid 3D al hacer scroll entre proyectos, sin tapar las fotos. También encajonadas a 1400px.
 - **Fotos de proyectos encajonadas**: cada `.proyecto` ahora envuelve su contenido en
   `.proyecto-inner` (max-width 1400px, centrado) — mismo tratamiento que el resto del sitio, deja
   ver el grid en los márgenes en pantallas anchas.
+- **El tinte `rgba(8,8,8,0.78)` del `footer`** originalmente solo estaba en `index.html` (era parte
+  de su selector compartido `#quienes, #especialidades, ..., footer { background: ... }`). Se agregó
+  explícitamente al `footer` de `atl.css`, `proyectos.html` y `estructural.html` (fix en commit
+  `cde4cd0`) — si se toca el CSS del footer en cualquier página nueva, no olvidar este tinte.
+- **`servicios.html` — `.servicios-wrap` y `.servicio-info`** usaban un fondo sólido opaco
+  (`var(--bg)`) en vez del tinte translúcido `rgba(8,8,8,0.78)` que usan las secciones equivalentes
+  de las demás páginas (`.estudio-section`, `.contact-section`) — por eso no dejaba ver el grid
+  detrás del texto. Corregido en el mismo commit `cde4cd0`.
+- **Logo en vez de foto**: en `quienes_somos.html`, sección "Nuestra historia", la foto de render se
+  reemplazó por `assets/img/atl-logo-white.png` (el logo blanco, generado antes en la sesión para
+  firma de correo). Usa una clase modificadora `.estudio-img.is-logo` (fondo sutil, `object-fit:
+  contain`, sin el zoom al hover que sí tienen las fotos reales) — no reusar `.estudio-img` a secas
+  para logos, se vería recortado/deformado con el `object-fit:cover` normal.
 
 ## Gotchas / cosas que costó descubrir
 - **GitHub Pages build a veces se queda "atorado"** (`status: "building"` sin avanzar por minutos,
@@ -76,6 +100,35 @@ manual) — `git push` funciona directo sin pedir credenciales.
 - `estructural.html` queda deliberadamente fuera de algunos cambios "para todas las páginas" salvo
   que el usuario confirme explícitamente lo contrario (se ha preguntado varias veces — la respuesta
   ha sido mitad y mitad según el caso).
+- **Herramientas de preview inestables en esta sesión**: el MCP `Claude_Preview` (preview_start,
+  preview_screenshot, etc.) dejó de estar disponible a mitad de sesión sin aviso previo — si
+  `mcp__Claude_Preview__*` falla con "No such tool available", no reintentar, usar el fallback de
+  abajo. `claude-in-chrome` (el navegador real del usuario) también ha tenido desconexiones
+  transitorias — un síntoma visto: un `<video>` con `autoplay` reporta `paused:true` justo después
+  de un hiccup de conexión aunque el HTML/CSS estén perfectamente bien; antes de diagnosticar un bug
+  real, recargar la página (`navigate` de nuevo a la misma URL) y volver a chequear.
+- **Levantar servidor local manualmente** (ya que `preview_start` puede no estar disponible):
+  `(python3 -m http.server 8787 &>/tmp/pyserver.log &)` desde la raíz del repo, luego
+  `lsof -ti:8787 | xargs kill` para pararlo al terminar. Ya está en el allowlist de permisos.
+
+## Copy / textos actualizados en esta sesión
+- Home, tagline del hero: ahora entre comillas tipográficas — `"La arquitectura es un acto de
+  responsabilidad social y ambiental."`
+- Home, "Quiénes somos" (resumen corto): sin la palabra "contemporáneos" al final.
+- `quienes_somos.html`, sección "Nuestra historia": título cambiado a "¿Qué es ATL Arquitectos?" y
+  los 3 párrafos reescritos con enfoque en sustentabilidad (materiales de bajo impacto, madera
+  certificada, bambú, concreto de cáñamo, etc.) — reemplaza el texto anterior centrado en
+  "experiencia técnica acumulada".
+
+## Permisos de Claude Code (`.claude/settings.json`)
+Ya tiene un allowlist de comandos de solo lectura (`git status/diff/log`, `ls`, `find`, `grep`,
+`python3 -m http.server`, `curl` a localhost/al sitio en vivo, `ffprobe`, `pip3 show`). Regla
+importante: **nunca se agregó una regla para `gh api`** aunque se usa mucho (checar el build de
+GitHub Pages) — un patrón de prefijo tipo `Bash(gh api repos/.../pages*)` no puede distinguir de
+forma confiable un GET de un `-X POST` si las banderas cambian de orden (ej. `gh api repos/... -X
+POST` en vez de `gh api -X POST repos/...`), así que sería inseguro. Alternativa pendiente que se
+propuso pero no se implementó: un script `.sh` fijo con el comando exacto, agregado al allowlist por
+su ruta — retomar esto si el usuario lo vuelve a pedir.
 
 ## Cómo previsualizar
 No hay servidor de preview persistente configurado en este entorno de momento; si se necesita,

@@ -12,7 +12,12 @@
       "Bash(ls *)",
       "Bash(find *)",
       "Bash(grep *)",
-      "Bash(python3 -m http.server *)"
+      "Bash(python3 -m http.server *)",
+      "Bash(curl -s http://localhost:*)",
+      "Bash(curl -sI *)",
+      "Bash(curl -s https://www.atl-arquitectos.com*)",
+      "Bash(ffprobe *)",
+      "Bash(pip3 show *)"
     ]
   }
 }
