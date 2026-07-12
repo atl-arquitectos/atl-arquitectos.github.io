@@ -728,6 +728,88 @@
             .estructural-cta { align-items: flex-start; }
         }
 
+        /* ── FINANCIAMIENTO / MSI ── */
+        #financiamiento {
+            padding: 8rem 5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .financia-row {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            align-items: center;
+            gap: 5rem;
+        }
+        .financia-title {
+            font-family: var(--font-title);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+        }
+        .financia-title strong { font-weight: 600; color: var(--lilac); }
+        .financia-desc {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.45);
+            max-width: 480px;
+            line-height: 1.9;
+            margin-bottom: 2.5rem;
+        }
+        .msi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.06);
+        }
+        .msi-card {
+            background: var(--bg);
+            padding: 2.8rem 1.5rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease, background 0.4s ease;
+        }
+        .msi-card.visible { opacity: 1; transform: translateY(0); }
+        .msi-card.featured { background: rgba(196,181,212,0.06); }
+        .msi-num {
+            display: block;
+            font-family: var(--font-title);
+            font-size: 3.2rem;
+            font-weight: 600;
+            line-height: 1;
+            color: var(--white);
+        }
+        .msi-card.featured .msi-num { color: var(--lilac); }
+        .msi-label {
+            display: block;
+            margin-top: 0.6rem;
+            font-size: 0.6rem;
+            font-weight: 400;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+        .msi-note {
+            margin-top: 1.5rem;
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.25);
+            text-align: center;
+        }
+        @media (max-width: 900px) {
+            #financiamiento { padding: 5rem 2rem; }
+            .financia-row { grid-template-columns: 1fr; gap: 3rem; }
+        }
+        @media (max-width: 480px) {
+            .msi-card { padding: 2rem 0.8rem; }
+            .msi-num { font-size: 2.2rem; }
+        }
+
         #preview {
             padding: 8rem 5rem;
             background: rgba(255,255,255,0.015);
@@ -846,7 +928,7 @@
         }
 
         /* Secciones semi-transparentes para que se vea el 3D */
-        #quienes, #especialidades, #cifras, #tecnologia, #filosofia, #estructural-banner, #preview, footer {
+        #quienes, #especialidades, #cifras, #tecnologia, #filosofia, #estructural-banner, #financiamiento, #preview, footer {
             background: rgba(8, 8, 8, 0.78) !important;
         }
 
@@ -1452,6 +1534,38 @@
         </div>
     </section>
 
+    <section id="financiamiento">
+        <div class="section-label">Facilidades de pago</div>
+        <div class="financia-row">
+            <div>
+                <h2 class="financia-title">Empieza<br><strong>tu proyecto hoy</strong></h2>
+                <p class="financia-desc">
+                    No dejes tu proyecto en pausa. Diseña y construye el espacio que imaginas con
+                    meses sin intereses en las principales tarjetas bancarias, a un plazo que se
+                    ajusta al monto de tu inversión.
+                </p>
+                <a href="contacto.html" class="btn-primary">Cotiza tu proyecto →</a>
+            </div>
+            <div>
+                <div class="msi-grid">
+                    <div class="msi-card">
+                        <span class="msi-num">3</span>
+                        <span class="msi-label">Meses sin<br>intereses</span>
+                    </div>
+                    <div class="msi-card featured">
+                        <span class="msi-num">6</span>
+                        <span class="msi-label">Meses sin<br>intereses</span>
+                    </div>
+                    <div class="msi-card">
+                        <span class="msi-num">9</span>
+                        <span class="msi-label">Meses sin<br>intereses</span>
+                    </div>
+                </div>
+                <p class="msi-note">El plazo disponible depende del monto de tu proyecto.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- FOOTER -->
     <footer>
         <a href="index.html" class="footer-logo">ATL<span>arquitectos</span></a>
@@ -1566,7 +1680,7 @@
         if (isTouchDevice) {
             document.querySelectorAll('.tec-item').forEach(el => el.classList.add('visible'));
         }
-        const revealEls = document.querySelectorAll('.pilar, .tec-item, .cifra, .esp-item');
+        const revealEls = document.querySelectorAll('.pilar, .tec-item, .cifra, .esp-item, .msi-card');
         const revealObs = new IntersectionObserver((entries) => {
             entries.forEach((entry, i) => {
                 if (entry.isIntersecting) {

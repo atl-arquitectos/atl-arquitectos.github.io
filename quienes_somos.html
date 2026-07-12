@@ -42,6 +42,15 @@
             transform: none;
         }
         .estudio-img.is-logo:hover img { transform: none; }
+        .estudio-img.is-full {
+            aspect-ratio: auto;
+        }
+        .estudio-img.is-full img {
+            width: 100%; height: auto;
+            object-fit: contain;
+            transform: none;
+        }
+        .estudio-img.is-full:hover img { transform: none; }
         .estudio-text h2 {
             font-family: var(--font-title);
             font-size: clamp(2rem, 4vw, 3.2rem);
@@ -271,7 +280,7 @@
                     </div>
                 </div>
             </div>
-            <div class="estudio-img reveal">
+            <div class="estudio-img is-full reveal">
                 <img src="images/pic-mision.jpg" alt="Filosofía ATL - arquitectura sustentable">
             </div>
         </div>
