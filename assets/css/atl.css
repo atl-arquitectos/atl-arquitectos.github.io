@@ -331,6 +331,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: rgba(8, 8, 8, 0.78);
 }
 .footer-logo {
     font-family: var(--font-title);
