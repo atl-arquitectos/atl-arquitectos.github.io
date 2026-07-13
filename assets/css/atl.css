@@ -441,6 +441,86 @@ footer {
 }
 
 /* ══════════════════════════════════════
+   FINANCIAMIENTO / MSI
+   ══════════════════════════════════════ */
+#financiamiento {
+    padding: 8rem 5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    max-width: 1400px;
+    margin: 0 auto;
+    background: rgba(8, 8, 8, 0.78);
+}
+.financia-row {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: 5rem;
+}
+.financia-title {
+    font-family: var(--font-title);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+}
+.financia-title strong { font-weight: 600; color: var(--lilac); }
+.financia-desc {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    max-width: 480px;
+    line-height: 1.9;
+    margin-bottom: 2.5rem;
+}
+.financia-desc strong { color: var(--white); font-weight: 600; }
+.msi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+}
+.msi-card {
+    background: var(--bg);
+    padding: 2.8rem 1.5rem;
+    text-align: center;
+}
+.msi-num {
+    display: block;
+    font-family: var(--font-title);
+    font-size: 3.2rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--white);
+}
+.msi-label {
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+}
+.msi-note {
+    margin-top: 1.5rem;
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+}
+@media (max-width: 900px) {
+    #financiamiento { padding: 5rem 2rem; }
+    .financia-row { grid-template-columns: 1fr; gap: 3rem; }
+}
+@media (max-width: 480px) {
+    .msi-card { padding: 2rem 0.8rem; }
+    .msi-num { font-size: 2.2rem; }
+}
+
+/* ══════════════════════════════════════
    SECTION DOTS (navegación lateral fija)
    ══════════════════════════════════════ */
 .section-dots {

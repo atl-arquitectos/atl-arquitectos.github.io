@@ -674,6 +674,105 @@
             color: rgba(255,255,255,0.15);
         }
 
+        /* ── FINANCIAMIENTO / MSI ── */
+        .section-label {
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--lilac);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .section-label::before {
+            content: '';
+            width: 3rem; height: 1px;
+            background: var(--lilac);
+            flex-shrink: 0;
+        }
+        #financiamiento {
+            padding: 8rem 5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(8, 8, 8, 0.78);
+        }
+        .financia-row {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            align-items: center;
+            gap: 5rem;
+        }
+        .financia-title {
+            font-family: var(--font-title);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+        }
+        .financia-title strong { font-weight: 600; color: var(--lilac); }
+        .financia-desc {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.45);
+            max-width: 480px;
+            line-height: 1.9;
+            margin-bottom: 2.5rem;
+        }
+        .financia-desc strong { color: var(--white); font-weight: 600; }
+        .msi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.06);
+        }
+        .msi-card {
+            background: var(--bg);
+            padding: 2.8rem 1.5rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .msi-card.visible { opacity: 1; transform: translateY(0); }
+        .msi-num {
+            display: block;
+            font-family: var(--font-title);
+            font-size: 3.2rem;
+            font-weight: 600;
+            line-height: 1;
+            color: var(--white);
+        }
+        .msi-label {
+            display: block;
+            margin-top: 0.6rem;
+            font-size: 0.6rem;
+            font-weight: 400;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+        .msi-note {
+            margin-top: 1.5rem;
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.25);
+            text-align: center;
+        }
+        @media (max-width: 900px) {
+            #financiamiento { padding: 5rem 2rem; }
+            .financia-row { grid-template-columns: 1fr; gap: 3rem; }
+        }
+        @media (max-width: 480px) {
+            .msi-card { padding: 2rem 0.8rem; }
+            .msi-num { font-size: 2.2rem; }
+        }
+
         @media (max-width: 768px) {
             .proyecto-content { padding: 0 2rem; max-width: 90%; }
             .progress-dots { right: 1rem; }
@@ -1072,6 +1171,51 @@
         <p class="fin-copy">© 2026 ATL arquitectos · proyectos@atl-arquitectos.com</p>
     </section>
 
+    <!-- FINANCIAMIENTO -->
+    <section id="financiamiento">
+        <div class="section-label">Facilidades de pago</div>
+        <div class="financia-row">
+            <div>
+                <h2 class="financia-title">Empieza <strong>hoy</strong></h2>
+                <p class="financia-desc">
+                    <strong><em>"Más que un lujo, es una necesidad."</em></strong> Creemos que la buena arquitectura
+                    debe ser accesible para todos. Por ello, ofrecemos beneficios de pagos flexibles
+                    con tarjeta de crédito.
+                </p>
+                <a href="contacto.html" class="btn-primary">Cotiza tu proyecto →</a>
+            </div>
+            <div>
+                <div class="msi-grid">
+                    <div class="msi-card">
+                        <span class="msi-num">3</span>
+                        <span class="msi-label">Meses sin<br>intereses</span>
+                    </div>
+                    <div class="msi-card">
+                        <span class="msi-num">6</span>
+                        <span class="msi-label">Meses sin<br>intereses</span>
+                    </div>
+                    <div class="msi-card">
+                        <span class="msi-num">9</span>
+                        <span class="msi-label">Meses sin<br>intereses</span>
+                    </div>
+                    <div class="msi-card">
+                        <span class="msi-num">12</span>
+                        <span class="msi-label">Meses sin<br>intereses</span>
+                    </div>
+                    <div class="msi-card">
+                        <span class="msi-num">18</span>
+                        <span class="msi-label">Meses sin<br>intereses</span>
+                    </div>
+                    <div class="msi-card">
+                        <span class="msi-num">24</span>
+                        <span class="msi-label">Meses sin<br>intereses</span>
+                    </div>
+                </div>
+                <p class="msi-note"><em>El plazo disponible depende del monto de tu proyecto.</em></p>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <a href="index.html" class="footer-logo">ATL<span>arquitectos</span></a>
         <div class="footer-social">
@@ -1184,6 +1328,12 @@
                 }
             }, { passive: true });
         }
+
+        // ── MSI CARDS REVEAL ──
+        const msiObs = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('.msi-card').forEach(el => msiObs.observe(el));
     </script>
     <script src="assets/js/threejs-bg.js"></script>
     <script src="assets/js/sound-system.js"></script>
