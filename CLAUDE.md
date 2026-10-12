@@ -169,3 +169,18 @@ levantar uno rápido con `python3 -m http.server 8787` desde la raíz del repo y
   (licencia de uso, privacidad por correos, términos), reemplazar la vista previa ilustrativa del mockup
   por capturas reales, y sección de equipo/textos en plural → singular (ahora el estudio es solo el usuario).
 - El equipo en `quienes_somos.html` quedó con UNA sola persona (se quitó "Dirección de Diseño / Asociada").
+
+## ATL Library — estructura implementada (2026-10)
+- `library.html` (portada) + `library-catalog.html` (plantilla única de catálogo, se llena con JS desde
+  `assets/data/library-catalog.json`; navegación por query: `?g=<grupo>`, `?c=<categoría>`, `?s=<subcat>`).
+- **Grupos:** Arquitectura (01 Arquitectura, 09 Estructura) · Interiores y equipamiento (02 Mobiliario,
+  03 Cocina, 04 Baño, 10 Equipamiento) · MEP (06 Eléctrico, 05 Iluminación, 07 HVAC, 08 Hidrosanitario).
+  Decidido: Iluminación en MEP; Baño/Cocina en Interiores; Seguridad dentro de Equipamiento.
+- **Agregar un objeto:** añadir una entrada en `objects` del JSON (cat, sub, pack, icon, status, es, en,
+  tags). Agregar categoría/subcategoría = una línea en `categories`. Nombres ya bilingües (es/en) en el
+  JSON; la UI aún está en español (`LANG` en el script de library-catalog.html) — falta el paso ES/EN.
+- Los 8 objetos actuales son EJEMPLOS con `status: "soon"` (en desarrollo), no productos reales.
+- El menú de la librería tiene submenú "Catálogo" (hover) con los 3 grupos; menú móvil lo lista plano.
+- Sin cuentas de usuario por ahora (decisión: usar la cuenta de la plataforma de venta; ver cuentas
+  propias con Supabase/Firebase más adelante si hay demanda).
+- Pendiente: páginas de ficha por objeto, packs/compra, legal, inglés en todo el sitio, imágenes reales.
