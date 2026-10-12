@@ -84,11 +84,11 @@
         .valor p { font-size: 0.72rem; font-weight: 300; color: rgba(255,255,255,0.45); line-height: 1.9; }
 
         /* Equipo */
-        .equipo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(255,255,255,0.06); }
-        .miembro { background: var(--bg); overflow: hidden; }
-        .miembro-img { height: 380px; background-size: cover; background-position: center top; filter: grayscale(20%); transition: filter 0.5s; }
+        .equipo-grid { display: grid; grid-template-columns: 1fr; gap: 2px; background: rgba(255,255,255,0.06); }
+        .miembro { background: var(--bg); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; }
+        .miembro-img { min-height: 420px; background-size: cover; background-position: center top; filter: grayscale(20%); transition: filter 0.5s; }
         .miembro:hover .miembro-img { filter: grayscale(0%); }
-        .miembro-info { padding: 2.5rem; }
+        .miembro-info { padding: 3.5rem; display: flex; flex-direction: column; justify-content: center; }
         .miembro-role {
             font-size: 0.58rem;
             font-weight: 300;
@@ -122,7 +122,9 @@
             .estudio-section { padding: 5rem 2rem; }
             .estudio-grid { grid-template-columns: 1fr; gap: 3rem; }
             .estudio-grid.reverse { direction: ltr; }
-            .equipo-grid { grid-template-columns: 1fr; }
+            .miembro { grid-template-columns: 1fr; }
+            .miembro-img { min-height: 380px; }
+            .miembro-info { padding: 2.5rem; }
             .filosofia-grid { grid-template-columns: 1fr; }
             .valores-grid { grid-template-columns: 1fr; }
         }
@@ -327,14 +329,6 @@
                     <div class="miembro-role">Dirección Creativa</div>
                     <h3>Director General<br>& Fundador</h3>
                     <p>Con <strong>8 años de trayectoria independiente</strong>, ha liderado proyectos residenciales y comerciales de alta gama. Su enfoque se centra en el rigor técnico y la dirección de obra, transformando la complejidad técnica en espacios de orden y armonía.</p>
-                </div>
-            </div>
-            <div class="miembro reveal">
-                <div class="miembro-img" style="background-image:url('images/pic03.jpg')"></div>
-                <div class="miembro-info">
-                    <div class="miembro-role">Dirección de Diseño</div>
-                    <h3>Asociada & Talento<br>Emergente</h3>
-                    <p>Arquitecta cuya visión de vanguardia nutre las nuevas narrativas del despacho. Especializada en la optimización de arquitectura vernácula, aporta la frescura conceptual necesaria para los desafíos de la nueva era arquitectónica.</p>
                 </div>
             </div>
         </div>
