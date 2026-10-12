@@ -9,8 +9,12 @@ manual) — `git push` funciona directo sin pedir credenciales.
 - `index.html` — home. Referencia de diseño: todo lo demás se hizo "igual que el index".
 - `proyectos.html` — galería de 5 proyectos a pantalla completa + hero con video + footer.
 - `servicios.html`, `quienes_somos.html`, `contacto.html` — comparten `assets/css/atl.css`.
-- `estructural.html` — landing del producto "ATL Estructural" (software), diseño propio,
-  navegación con anclas internas (`#features`, `#compat`, etc.) en vez de Proyectos/Servicios/...
+- `library.html` — landing de **ATL Library** (biblioteca de objetos para ArchiCAD). Se creó copiando
+  el diseño de `estructural.html` (mismo fondo/estilo, nav con anclas internas). Tiene lista de espera
+  con correo (Web3Forms, misma access_key que contacto.html).
+- `estructural.html` — landing antigua de "ATL Estructural". YA NO está enlazada en ningún menú ni en
+  el home (reemplazada por library). El archivo sigue en el repo; respaldo adicional fuera del repo en
+  `~/Desktop/respaldo-atl-estructural/` (página + banner del home). El software vive en otro proyecto.
 - `assets/css/atl.css` — CSS compartido por servicios/quienes_somos/contacto (index y
   proyectos/estructural tienen su CSS inline en el propio `<style>`, por decisión original del
   proyecto, no migrado).
@@ -143,3 +147,25 @@ levantar uno rápido con `python3 -m http.server 8787` desde la raíz del repo y
 - Nunca hacer commit de `index-backup.html` ni de archivos `.DS_Store`.
 - El usuario pide confirmación explícita del build de Pages después de cada push ("¿ya está en
   GitHub?") — conviene chequear proactivamente y avisar cuando el build termine.
+
+## ATL Library — visión y decisiones (2026-10)
+- **Meta del usuario:** ser un pilar para impulsar ArchiCAD frente a Revit, a nivel MUNDIAL (no solo
+  México). Línea futura: plugins/herramientas (API de Python/JSON de ArchiCAD; add-ons C++ más adelante).
+- **Solo ArchiCAD**, versión del usuario: **ArchiCAD 29**. Objetos GDL en bibliotecas `.lcf`.
+- **Modelo de negocio:** packs GRATIS a cambio de correo + packs PRO de pago. Precios: máx **1 USD por
+  objeto** y máx **5 USD por pack** (pack de ~20 objetos). Aviso: las pasarelas cobran tarifa fija por
+  transacción, así que la venta suelta de 1 USD no es rentable; vender packs. Cobro/entrega de pagos vía
+  plataforma externa (Lemon Squeezy/Gumroad/Mercado Pago), el sitio es solo catálogo (GitHub Pages no
+  protege archivos). Solo vender objetos modelados por el usuario (no la biblioteca de Graphisoft ni
+  modelos de fabricantes).
+- **Primer contenido:** mínimo 20 objetos, empezando por **MEP eléctrico** (apagadores, contactos, salidas
+  de luz, centro de carga, medidor, registros, datos/TV, minisplit, sensores, ventilador...). Pack gratis
+  de ~10 objetos básicos. Cada objeto: símbolo 2D + 3D ligero, parámetros, clasificación IFC; variantes
+  NOM/NEC (127 V) e IEC (230 V). Se modelará en una sesión aparte (probar conector Tapir con ArchiCAD).
+- **Idiomas (PENDIENTE, paso 2):** TODO el sitio debe tener español + inglés con selector. Decisión
+  recomendada: páginas separadas en `/en/` (mejor SEO) con botón ES | EN en el menú y `hreflang`.
+  Las traducciones las hace Claude y el usuario las revisa.
+- **Pendiente después:** catálogo (`catalog.json`) + tarjetas de objetos, cobro/descargas, textos legales
+  (licencia de uso, privacidad por correos, términos), reemplazar la vista previa ilustrativa del mockup
+  por capturas reales, y sección de equipo/textos en plural → singular (ahora el estudio es solo el usuario).
+- El equipo en `quienes_somos.html` quedó con UNA sola persona (se quitó "Dirección de Diseño / Asociada").

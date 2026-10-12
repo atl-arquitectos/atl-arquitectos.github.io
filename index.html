@@ -662,19 +662,19 @@
 
         /* ── PREVIEW PROYECTOS ── */
         /* ── ATL ESTRUCTURAL BANNER ── */
-        #estructural-banner {
+        #library-banner {
             padding: 8rem 5rem;
             border-top: 1px solid rgba(255,255,255,0.05);
             max-width: 1400px;
             margin: 0 auto;
         }
-        .estructural-row {
+        .library-row {
             display: grid;
             grid-template-columns: 1fr auto;
             align-items: center;
             gap: 4rem;
         }
-        .estructural-title {
+        .library-title {
             font-family: var(--font-title);
             font-size: clamp(2.5rem, 5vw, 4.5rem);
             font-weight: 300;
@@ -683,8 +683,8 @@
             line-height: 1;
             margin-bottom: 1.5rem;
         }
-        .estructural-title strong { font-weight: 600; color: var(--lilac); }
-        .estructural-desc {
+        .library-title strong { font-weight: 600; color: var(--lilac); }
+        .library-desc {
             font-size: 0.8rem;
             font-weight: 300;
             color: rgba(255,255,255,0.45);
@@ -692,12 +692,12 @@
             line-height: 1.9;
             margin-bottom: 2rem;
         }
-        .estructural-tags {
+        .library-tags {
             display: flex;
             gap: 0.8rem;
             flex-wrap: wrap;
         }
-        .estructural-tag {
+        .library-tag {
             font-size: 0.5rem;
             font-weight: 300;
             letter-spacing: 0.2em;
@@ -706,14 +706,14 @@
             border: 1px solid rgba(255,255,255,0.08);
             padding: 0.3rem 0.8rem;
         }
-        .estructural-cta {
+        .library-cta {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1.2rem;
             flex-shrink: 0;
         }
-        .estructural-badge {
+        .library-badge {
             font-size: 0.45rem;
             font-weight: 300;
             letter-spacing: 0.25em;
@@ -723,9 +723,9 @@
             padding: 0.25rem 0.8rem;
         }
         @media (max-width: 900px) {
-            #estructural-banner { padding: 5rem 2rem; }
-            .estructural-row { grid-template-columns: 1fr; gap: 2.5rem; }
-            .estructural-cta { align-items: flex-start; }
+            #library-banner { padding: 5rem 2rem; }
+            .library-row { grid-template-columns: 1fr; gap: 2.5rem; }
+            .library-cta { align-items: flex-start; }
         }
 
         /* ── FINANCIAMIENTO / MSI ── */
@@ -927,7 +927,7 @@
         }
 
         /* Secciones semi-transparentes para que se vea el 3D */
-        #quienes, #especialidades, #cifras, #tecnologia, #filosofia, #estructural-banner, #financiamiento, #preview, footer {
+        #quienes, #especialidades, #cifras, #tecnologia, #filosofia, #library-banner, #financiamiento, #preview, footer {
             background: rgba(8, 8, 8, 0.78) !important;
         }
 
@@ -1208,7 +1208,7 @@
             <li><a href="servicios.html">Servicios</a></li>
             <li><a href="quienes_somos.html">Estudio</a></li>
             <li><a href="contacto.html">Contacto</a></li>
-            <li><a href="estructural.html" style="color:var(--lilac);opacity:0.85;">ATL Estructural <span style="font-size:0.4rem;letter-spacing:0.15em;border:1px solid rgba(196,181,212,0.4);padding:0.1rem 0.4rem;margin-left:0.3rem;vertical-align:middle;">BETA</span></a></li>
+            <li><a href="library.html" style="color:var(--lilac);opacity:0.85;">ATL Library <span style="font-size:0.4rem;letter-spacing:0.15em;border:1px solid rgba(196,181,212,0.4);padding:0.1rem 0.4rem;margin-left:0.3rem;vertical-align:middle;">BETA</span></a></li>
         </ul>
         <div class="nav-right">
             <div class="nav-social">
@@ -1238,7 +1238,7 @@
             <li><a href="servicios.html">Servicios</a></li>
             <li><a href="quienes_somos.html">Estudio</a></li>
             <li><a href="contacto.html">Contacto</a></li>
-            <li><a href="estructural.html" style="color:var(--lilac);opacity:0.85;">ATL Estructural <span style="font-size:0.5rem;letter-spacing:0.15em;border:1px solid rgba(196,181,212,0.4);padding:0.1rem 0.4rem;margin-left:0.3rem;vertical-align:middle;">BETA</span></a></li>
+            <li><a href="library.html" style="color:var(--lilac);opacity:0.85;">ATL Library <span style="font-size:0.5rem;letter-spacing:0.15em;border:1px solid rgba(196,181,212,0.4);padding:0.1rem 0.4rem;margin-left:0.3rem;vertical-align:middle;">BETA</span></a></li>
         </ul>
         <div class="nav-social">
             <a href="https://www.instagram.com/atl.arquitectos/" target="_blank" rel="noopener noreferrer" title="Instagram">
@@ -1507,28 +1507,27 @@
     </section>
 
     <!-- ATL ESTRUCTURAL -->
-    <section id="estructural-banner">
-        <div class="section-label">Desarrollo de software</div>
-        <div class="estructural-row">
+    <section id="library-banner">
+        <div class="section-label">Biblioteca ArchiCAD</div>
+        <div class="library-row">
             <div>
-                <h2 class="estructural-title">ATL<br><strong>Estructural</strong></h2>
-                <p class="estructural-desc">
-                    Un desarrollo fuera de lo convencional para despachos de arquitectura.
-                    Software nativo de análisis estructural creado desde la práctica profesional,
-                    pensado para estudiantes, profesores e ingenieros que exigen precisión
-                    sin complejidades innecesarias.
+                <h2 class="library-title">ATL<br><strong>Library</strong></h2>
+                <p class="library-desc">
+                    Objetos para ArchiCAD creados desde la práctica profesional. Empezamos con
+                    MEP eléctrico: packs gratuitos con tu correo y packs Pro a precio bajo,
+                    pensados para trabajar en proyectos reales.
                 </p>
-                <div class="estructural-tags">
-                    <span class="estructural-tag">Estudiantes</span>
-                    <span class="estructural-tag">Profesores</span>
-                    <span class="estructural-tag">Profesionales</span>
-                    <span class="estructural-tag">macOS · Windows</span>
+                <div class="library-tags">
+                    <span class="library-tag">ArchiCAD 29</span>
+                    <span class="library-tag">MEP eléctrico</span>
+                    <span class="library-tag">Gratis con correo</span>
+                    <span class="library-tag">Packs hasta 5 USD</span>
                 </div>
             </div>
-            <div class="estructural-cta">
-                <span class="estructural-badge">Beta pública · v0.1</span>
-                <a href="estructural.html" class="btn-primary">Conocer ATL Estructural →</a>
-                <a href="estructural.html#download" class="btn-secondary" style="padding:0.8rem 2rem;">Descargar gratis</a>
+            <div class="library-cta">
+                <span class="library-badge">Beta · Próximamente</span>
+                <a href="library.html" class="btn-primary">Conocer ATL Library →</a>
+                <a href="library.html#waitlist" class="btn-secondary" style="padding:0.8rem 2rem;">Unirme a la lista</a>
             </div>
         </div>
     </section>
