@@ -837,22 +837,25 @@
         .crumbs a { color: var(--lilac); text-decoration: none; }
         .cat-title { font-family: var(--font-title); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1; margin-bottom: 1rem; }
         .cat-desc { font-size: 0.8rem; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.9; max-width: 560px; margin-bottom: 3rem; }
-        .cat-layout { display: grid; grid-template-columns: 260px 1fr; gap: 3rem; align-items: start; }
-        .cat-side { background: rgba(8,8,8,0.88); border: 1px solid rgba(255,255,255,0.06); padding: 1.8rem 1.5rem; position: sticky; top: 6rem; }
-        .side-group { font-size: 0.55rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--lilac); margin: 1.6rem 0 0.7rem; }
-        .side-group:first-child { margin-top: 0; }
-        .side-cat a, .side-sub a { display: flex; justify-content: space-between; gap: 0.5rem; text-decoration: none; font-size: 0.75rem; font-weight: 300; color: rgba(255,255,255,0.55); padding: 0.32rem 0; transition: color 0.3s; }
-        .side-cat a:hover, .side-sub a:hover { color: var(--white); }
-        .side-cat a.active { color: var(--white); font-weight: 400; }
-        .side-cat .cnt { font-size: 0.6rem; color: rgba(255,255,255,0.25); }
-        .side-cat .soon-tag { font-size: 0.45rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25); padding-top: 0.2rem; }
-        .side-sub { margin: 0.2rem 0 0.7rem 0.9rem; border-left: 1px solid rgba(255,255,255,0.08); padding-left: 0.9rem; }
-        .side-sub a { font-size: 0.7rem; }
-        .side-sub a.active { color: var(--lilac); }
+        .cat-layout { display: block; }
+        .cat-bar { margin-bottom: 2rem; background: rgba(8,8,8,0.88); border: 1px solid rgba(255,255,255,0.06); }
+        .bar-row { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .bar-row::-webkit-scrollbar { display: none; }
+        .bar-row:last-child { border-bottom: none; }
+        .bar-row a { flex: 0 0 auto; text-decoration: none; white-space: nowrap; color: rgba(255,255,255,0.5); transition: color 0.3s, background 0.3s; display: flex; align-items: center; gap: 0.6rem; }
+        .bar-groups a { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 1.1rem 1.8rem; }
+        .bar-cats a { font-size: 0.72rem; font-weight: 300; padding: 0.95rem 1.3rem; }
+        .bar-subs a { font-size: 0.66rem; font-weight: 300; padding: 0.75rem 1.1rem; color: rgba(255,255,255,0.4); }
+        .bar-row a:hover { color: var(--white); }
+        .bar-row a.active { color: var(--white); box-shadow: inset 0 -2px 0 var(--lilac); }
+        .bar-subs a.active { color: var(--lilac); }
+        .bar-cats .num { color: var(--lilac); opacity: 0.6; font-size: 0.62rem; }
+        .bar-cats .cnt { font-size: 0.58rem; color: rgba(255,255,255,0.25); }
+        .bar-cats .soon-tag { font-size: 0.45rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
         .cat-tools { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; }
-        .cat-tools input { flex: 1 1 220px; max-width: 320px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--white); font-family: var(--font-body); font-size: 0.75rem; padding: 0.8rem 1rem; outline: none; }
+        .cat-tools input { flex: 1 1 220px; max-width: 320px; background: rgba(8,8,8,0.88); border: 1px solid rgba(255,255,255,0.2); color: var(--white); font-family: var(--font-body); font-size: 0.75rem; padding: 0.8rem 1rem; outline: none; }
         .cat-tools input:focus { border-color: var(--lilac); }
-        .chip { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.55); font-family: var(--font-body); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.65rem 1.1rem; cursor: pointer; transition: all 0.3s; }
+        .chip { background: rgba(8,8,8,0.88); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.55); font-family: var(--font-body); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.65rem 1.1rem; cursor: pointer; transition: all 0.3s; }
         .chip:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
         .chip.on { color: var(--bg); background: var(--white); border-color: var(--white); }
         .obj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: rgba(255,255,255,0.06); }
@@ -870,8 +873,6 @@
         .empty-state p { font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,0.45); margin-bottom: 1.8rem; line-height: 1.8; }
         @media (max-width: 900px) {
             .cat-page { padding: 7rem 1.5rem 4rem; }
-            .cat-layout { grid-template-columns: 1fr; }
-            .cat-side { position: static; }
         }
 
         /* ── FOOTER ── */
@@ -1084,8 +1085,8 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
     <div class="crumbs" id="crumbs"></div>
     <h1 class="cat-title" id="catTitle">Catálogo</h1>
     <p class="cat-desc" id="catDesc"></p>
+    <div class="cat-bar" id="bar" role="navigation" aria-label="Categorías"></div>
     <div class="cat-layout">
-        <aside class="cat-side" id="side" aria-label="Categorías"></aside>
         <section>
             <div class="cat-tools">
                 <input type="search" id="q" placeholder="Buscar objeto…" aria-label="Buscar objeto">
@@ -1130,25 +1131,36 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
         return 'library-catalog.html' + (q.length ? '?' + q.join('&') : '');
     }
 
-    function renderSide() {
-        var h = '';
+    function activeGroup() {
+        if (C && cats[C]) {
+            var g = data.groups.filter(function(x) { return x.categories.indexOf(C) >= 0; })[0];
+            return g ? g.id : null;
+        }
+        return G;
+    }
+    function renderBar() {
+        var ag = activeGroup();
+        var h = '<div class="bar-row bar-groups"><a href="' + url({}) + '" class="' + (!ag ? 'active' : '') + '">Todo</a>';
         data.groups.forEach(function(g) {
-            h += '<div class="side-group">' + esc(t(g)) + '</div>';
-            g.categories.forEach(function(cid) {
-                var c = cats[cid], n = count(cid);
-                h += '<div class="side-cat"><a href="' + url({c: cid}) + '" class="' + (C === cid ? 'active' : '') + '"><span>' + c.num + ' · ' + esc(t(c)) + '</span>' +
-                     (n ? '<span class="cnt">' + n + '</span>' : '<span class="soon-tag">Pronto</span>') + '</a>';
-                if (C === cid) {
-                    h += '<div class="side-sub">';
-                    c.subs.forEach(function(s) {
-                        h += '<a href="' + url({c: cid, s: s.id}) + '" class="' + (S === s.id ? 'active' : '') + '">' + esc(t(s)) + '</a>';
-                    });
-                    h += '</div>';
-                }
-                h += '</div>';
-            });
+            h += '<a href="' + url({g: g.id}) + '" class="' + (ag === g.id ? 'active' : '') + '">' + esc(t(g)) + '</a>';
         });
-        document.getElementById('side').innerHTML = h;
+        h += '</div>';
+        var visibleCats = ag ? data.groups.filter(function(x) { return x.id === ag; })[0].categories : data.categories.map(function(c) { return c.id; });
+        h += '<div class="bar-row bar-cats">';
+        visibleCats.forEach(function(cid) {
+            var c = cats[cid], n = count(cid);
+            h += '<a href="' + url({c: cid}) + '" class="' + (C === cid ? 'active' : '') + '"><span class="num">' + c.num + '</span>' + esc(t(c)) +
+                 (n ? '<span class="cnt">' + n + '</span>' : '<span class="soon-tag">Pronto</span>') + '</a>';
+        });
+        h += '</div>';
+        if (C && cats[C]) {
+            h += '<div class="bar-row bar-subs"><a href="' + url({c: C}) + '" class="' + (!S ? 'active' : '') + '">Todas</a>';
+            cats[C].subs.forEach(function(sb) {
+                h += '<a href="' + url({c: C, s: sb.id}) + '" class="' + (S === sb.id ? 'active' : '') + '">' + esc(t(sb)) + '</a>';
+            });
+            h += '</div>';
+        }
+        document.getElementById('bar').innerHTML = h;
     }
 
     function renderHead() {
@@ -1209,7 +1221,7 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
             data = d;
             d.categories.forEach(function(c) { cats[c.id] = c; });
             d.packs.forEach(function(p) { packs[p.id] = p; });
-            renderHead(); renderSide(); renderResults();
+            renderHead(); renderBar(); renderResults();
         })
         .catch(function() { document.getElementById('results').innerHTML = '<div class="empty-state"><p>No se pudo cargar el catálogo. Intenta de nuevo.</p></div>'; });
 
