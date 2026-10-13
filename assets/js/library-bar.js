@@ -48,6 +48,8 @@
                 h += '<a href="' + url({ c: C, s: sb.id }) + '" class="' + (S === sb.id ? 'active' : '') + '">' + esc(t(sb)) + '</a>';
             });
             h += '</div>';
+        } else {
+            h += '<div class="bar-row bar-subs"><span class="bar-hint">Elige una categoría para ver sus subcategorías</span></div>';
         }
         bar.innerHTML = h;
     }
@@ -61,6 +63,9 @@
         tmr = setTimeout(syncTop, 500);
     }, { passive: true });
     window.addEventListener('resize', syncTop);
+    window.addEventListener('load', syncTop);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncTop);
+    setTimeout(syncTop, 600);
     syncTop();
 
     fetch('assets/data/library-catalog.json')

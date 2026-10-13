@@ -1,6 +1,6 @@
 /* Barra de categorías de ATL Library (menú propio de toda la sección) */
 .cat-bar {
-    margin-top: 5.6rem;
+    margin-top: var(--nav-h, 74px);
     position: sticky;
     top: var(--nav-h, 64px);
     z-index: 900;
@@ -38,11 +38,12 @@
 .bar-groups .bar-cta:hover { background: #c4b5d4; color: #080808; }
 .bar-cats a { font-size: 0.72rem; font-weight: 300; padding: 0.9rem 1.3rem; }
 .bar-subs a { font-size: 0.66rem; font-weight: 300; padding: 0.7rem 1.1rem; color: rgba(255,255,255,0.4); }
+.bar-hint { font-size: 0.66rem; font-weight: 300; padding: 0.7rem 1.1rem; color: rgba(255,255,255,0.3); white-space: nowrap; }
 .bar-subs a.active { color: #c4b5d4; }
 .bar-cats .num { color: #c4b5d4; opacity: 0.6; font-size: 0.62rem; }
 .bar-cats .cnt { font-size: 0.58rem; color: rgba(255,255,255,0.25); }
 .bar-cats .soon-tag { font-size: 0.45rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
 @media (max-width: 900px) {
-    .cat-bar { margin-top: 4.6rem; position: static; }
+    .cat-bar { position: static; }
     .bar-row { padding: 0 0.6rem; }
 }

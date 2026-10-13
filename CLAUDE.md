@@ -204,3 +204,6 @@ levantar uno rápido con `python3 -m http.server 8787` desde la raíz del repo y
   en la portada. Portada: hero → categorías → "Cada objeto incluye" → packs → pack gratis.
 - Los ids internos del formulario siguen llamándose waitlist* (no visibles); la sección es `#free`.
 - Las demás páginas del sitio siguen enlazando a "ATL Library" en su menú.
+- Altura del header/barra de Library es FIJA (nav sin encogerse; la barra siempre tiene 2 filas: categorías +
+  subcategorías o un aviso). Si se agregan filas o se cambia el padding del nav, mantener esa estabilidad.
+- Los archivos library-bar.css/js se enlazan con `?v=N`; subir N al modificarlos (GitHub Pages cachea 10 min).
