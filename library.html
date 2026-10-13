@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>ATL Library — Objetos para ArchiCAD</title>
-    <meta name="description" content="ATL Library: biblioteca de objetos GDL para ArchiCAD 29. Packs gratuitos y de pago, empezando por MEP eléctrico. Únete a la lista de espera.">
+    <meta name="description" content="ATL Library: biblioteca de objetos GDL para ArchiCAD 29. Packs gratuitos y de pago, empezando por MEP eléctrico.">
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="shortcut icon" href="images/favicon.ico">
@@ -728,7 +728,7 @@
         }
 
         /* ── DESCARGA ── */
-        #waitlist {
+        #free {
             border-top: 1px solid rgba(255,255,255,0.05);
             text-align: center;
         }
@@ -840,6 +840,17 @@
         .nav-links a.active { color: var(--white); }
         .mobile-menu .nav-social { margin-left: 0; padding-left: 0; border-left: none; }
         @media (max-width: 1100px) { nav .nav-social { display: none; } }
+
+
+        /* ── MENÚ INDEPENDIENTE DE LIBRARY ── */
+        .nav-right { display: flex; align-items: center; gap: 1.6rem; }
+        .nav-cta { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: var(--bg); background: var(--white); padding: 0.75rem 1.4rem; transition: background 0.3s; }
+        .nav-cta:hover { background: var(--lilac); }
+        .nav-back { font-size: 0.58rem; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.45); transition: color 0.3s; }
+        .nav-back:hover { color: var(--white); }
+        .nav-links a.active { color: var(--white); }
+        @media (max-width: 1100px) { .nav-back { display: none; } }
+        @media (max-width: 480px) { .nav-cta { display: none; } }
 
         /* ── FOOTER ── */
         footer {
@@ -1013,48 +1024,39 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
 
 <canvas id="threejs-bg" aria-hidden="true"></canvas>
 
-<!-- NAV -->
-    <nav id="navbar">
-        <a href="index.html" class="nav-logo">ATL<span>arquitectos</span></a>
-        <ul class="nav-links">
-            <li><a href="proyectos.html">Proyectos</a></li>
-            <li><a href="servicios.html">Servicios</a></li>
-            <li><a href="quienes_somos.html">Estudio</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
-            <li><a href="library.html" class="active" style="color:var(--lilac);">ATL Library</a></li>
-        </ul>
-        <div class="nav-right">
-            <div class="nav-social">
-                <a href="https://www.instagram.com/atl.arquitectos/" target="_blank" rel="noopener noreferrer" title="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-                <a href="https://www.facebook.com/ATL.arquitectos/" target="_blank" rel="noopener noreferrer" title="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-                <a href="mailto:proyectos@atl-arquitectos.com" title="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></a>
-                <a href="https://wa.me/525514127413" target="_blank" rel="noopener noreferrer" title="WhatsApp"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 .5C7.439.5.5 7.439.5 16c0 2.777.726 5.384 1.993 7.647L.5 31.5l8.085-2.118A15.432 15.432 0 0 0 16 31.5c8.561 0 15.5-6.939 15.5-15.5S24.561.5 16 .5zm0 28.3a12.71 12.71 0 0 1-6.479-1.766l-.464-.277-4.797 1.258 1.279-4.674-.303-.479A12.717 12.717 0 0 1 3.2 16C3.2 9.2 9.2 3.2 16 3.2c6.8 0 12.8 6 12.8 12.8 0 6.8-6 12.8-12.8 12.8zm7.016-9.584c-.385-.192-2.274-1.122-2.627-1.25-.352-.128-.607-.192-.863.192-.255.385-.993 1.25-1.217 1.506-.224.255-.449.288-.833.096-.385-.192-1.624-.599-3.093-1.909-1.143-1.02-1.914-2.279-2.138-2.664-.224-.385-.024-.593.168-.784.173-.172.385-.449.577-.673.192-.224.256-.385.384-.641.128-.256.064-.481-.032-.673-.096-.192-.863-2.081-1.183-2.849-.311-.748-.627-.647-.863-.659-.224-.011-.48-.013-.736-.013-.255 0-.672.096-1.024.481-.352.384-1.344 1.314-1.344 3.203 0 1.889 1.376 3.714 1.568 3.97.192.256 2.709 4.136 6.564 5.799.918.396 1.634.633 2.191.811.921.293 1.759.252 2.42.153.739-.11 2.274-.929 2.595-1.826.32-.896.32-1.664.224-1.826-.096-.16-.352-.256-.737-.448z"/></svg></a>
-            </div>
-            <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- MOBILE MENU -->
-    <div class="mobile-menu" id="mobileMenu">
-        <ul>
-            <li><a href="proyectos.html">Proyectos</a></li>
-            <li><a href="servicios.html">Servicios</a></li>
-            <li><a href="quienes_somos.html">Estudio</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
-            <li><a href="library.html" class="active" style="color:var(--lilac);">ATL Library</a></li>
-        </ul>
-        <div class="nav-social">
-            <a href="https://www.instagram.com/atl.arquitectos/" target="_blank" rel="noopener noreferrer" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-            <a href="https://www.facebook.com/ATL.arquitectos/" target="_blank" rel="noopener noreferrer" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-            <a href="mailto:proyectos@atl-arquitectos.com" title="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></a>
-            <a href="https://wa.me/525514127413" target="_blank" rel="noopener noreferrer" title="WhatsApp"><svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 .5C7.439.5.5 7.439.5 16c0 2.777.726 5.384 1.993 7.647L.5 31.5l8.085-2.118A15.432 15.432 0 0 0 16 31.5c8.561 0 15.5-6.939 15.5-15.5S24.561.5 16 .5zm0 28.3a12.71 12.71 0 0 1-6.479-1.766l-.464-.277-4.797 1.258 1.279-4.674-.303-.479A12.717 12.717 0 0 1 3.2 16C3.2 9.2 9.2 3.2 16 3.2c6.8 0 12.8 6 12.8 12.8 0 6.8-6 12.8-12.8 12.8zm7.016-9.584c-.385-.192-2.274-1.122-2.627-1.25-.352-.128-.607-.192-.863.192-.255.385-.993 1.25-1.217 1.506-.224.255-.449.288-.833.096-.385-.192-1.624-.599-3.093-1.909-1.143-1.02-1.914-2.279-2.138-2.664-.224-.385-.024-.593.168-.784.173-.172.385-.449.577-.673.192-.224.256-.385.384-.641.128-.256.064-.481-.032-.673-.096-.192-.863-2.081-1.183-2.849-.311-.748-.627-.647-.863-.659-.224-.011-.48-.013-.736-.013-.255 0-.672.096-1.024.481-.352.384-1.344 1.314-1.344 3.203 0 1.889 1.376 3.714 1.568 3.97.192.256 2.709 4.136 6.564 5.799.918.396 1.634.633 2.191.811.921.293 1.759.252 2.42.153.739-.11 2.274-.929 2.595-1.826.32-.896.32-1.664.224-1.826-.096-.16-.352-.256-.737-.448z"/></svg></a>
-        </div>
+<!-- ── MENÚ DE ATL LIBRARY ── -->
+<nav id="navbar">
+    <a href="library.html" class="nav-logo">ATL<span>Library</span></a>
+    <ul class="nav-links">
+        <li><a href="library-catalog.html" data-g="">Todo</a></li>
+        <li><a href="library-catalog.html?g=arquitectura" data-g="arquitectura">Arquitectura</a></li>
+        <li><a href="library-catalog.html?g=interiores" data-g="interiores">Interiores y equipamiento</a></li>
+        <li><a href="library-catalog.html?g=mep" data-g="mep">MEP</a></li>
+        <li><a href="library.html#pricing">Packs</a></li>
+    </ul>
+    <div class="nav-right">
+        <a class="nav-cta" href="library.html#free">Pack gratis</a>
+        <a class="nav-back" href="index.html">ATL arquitectos &#8599;</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+            <span></span><span></span><span></span>
+        </button>
     </div>
+</nav>
 
-    
-<!-- BARRA DE CATEGORÍAS (menú de la librería) -->
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <ul>
+        <li><a href="library-catalog.html">Catálogo</a></li>
+        <li><a href="library-catalog.html?g=arquitectura">· Arquitectura</a></li>
+        <li><a href="library-catalog.html?g=interiores">· Interiores y equipamiento</a></li>
+        <li><a href="library-catalog.html?g=mep">· MEP</a></li>
+        <li><a href="library.html#pricing">Packs</a></li>
+        <li><a href="library.html#free" style="color:var(--lilac);">Pack gratis</a></li>
+        <li><a href="index.html">ATL arquitectos &#8599;</a></li>
+    </ul>
+</div>
+
+<!-- BARRA DE CATEGORÍAS -->
 <div class="cat-bar" id="bar" role="navigation" aria-label="Categorías de la librería"></div>
 
 <!-- ── HERO ── -->
@@ -1063,33 +1065,19 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
     <div class="hero-grid"></div>
     <div class="hero-content">
 
-        <div class="hero-label">ArchiCAD · Objetos GDL</div>
+        <div class="hero-label">ArchiCAD 29 · Objetos GDL</div>
 
         <h1 class="hero-title">ATL</h1>
         <div class="hero-title-sub">Library</div>
 
         <p class="hero-desc">
-            Biblioteca de objetos para ArchiCAD, diseñados por arquitectos para trabajar
+            Biblioteca de objetos para ArchiCAD 29, diseñados por arquitectos para trabajar
             en proyectos reales. Empezamos con MEP eléctrico.
         </p>
 
-        <div class="hero-platforms">
-            <div class="platform-tag">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                ArchiCAD 29
-                <span class="platform-status">En desarrollo</span>
-            </div>
-            <div style="width:1px;height:12px;background:rgba(255,255,255,0.1);"></div>
-            <div class="platform-tag">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
-                Pack 01 · Eléctrico
-                <span class="platform-status" style="color:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.1);">Próximamente</span>
-            </div>
-        </div>
-
         <div class="hero-actions">
-            <a class="btn-primary" href="#waitlist">Unirme a la lista de espera</a>
-            <a class="btn-secondary" href="#pricing">Ver packs</a>
+            <a class="btn-primary" href="library-catalog.html">Explorar catálogo</a>
+            <a class="btn-secondary" href="#free">Pack gratis</a>
         </div>
 
         <p class="hero-counter">
@@ -1097,70 +1085,6 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
         </p>
     </div>
 </section>
-
-<!-- ── MOCKUP ── -->
-<div class="mockup-wrap">
-    <div class="mockup-window">
-        <div class="mockup-bar">
-            <div class="mockup-dot"></div>
-            <div class="mockup-dot"></div>
-            <div class="mockup-dot"></div>
-            <span class="mockup-name">ATL Library — Eléctrico (vista previa ilustrativa)</span>
-        </div>
-        <div class="mockup-body">
-            <div class="mockup-sidebar">
-                <div class="m-label">Categorías</div>
-                <div class="m-item active">▸ Eléctrico</div>
-                <div class="m-item">&nbsp;&nbsp;Iluminación</div>
-                <div class="m-item">&nbsp;&nbsp;Datos y TV</div>
-                <div class="m-label" style="margin-top:1rem;">Próximamente</div>
-                <div class="m-item">&nbsp;&nbsp;Plomería</div>
-                <div class="m-item">&nbsp;&nbsp;HVAC</div>
-                <div class="m-item">&nbsp;&nbsp;Mobiliario</div>
-                <div class="m-label" style="margin-top:1rem;">Formato</div>
-                <div class="m-item">&nbsp;&nbsp;.lcf · GDL</div>
-            </div>
-
-            <div class="mockup-main">
-                <div class="mockup-canvas">
-                    <svg width="400" height="240" viewBox="0 0 400 240">
-                        <defs>
-                            <pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse">
-                                <path d="M20 0L0 0 0 20" fill="none" stroke="rgba(196,181,212,0.06)" stroke-width="0.5"/>
-                            </pattern>
-                        </defs>
-                        <rect width="400" height="240" fill="url(#g)"/>
-                        <circle cx="85" cy="70" r="9" fill="none" stroke="rgba(196,181,212,0.85)" stroke-width="1.6"/><line x1="91" y1="64" x2="101" y2="54" stroke="rgba(196,181,212,0.85)" stroke-width="1.6"/><text x="85" y="73" fill="rgba(196,181,212,0.85)" font-family="monospace" font-size="9" text-anchor="middle">S</text><text x="85" y="100" fill="rgba(255,255,255,0.45)" font-family="monospace" font-size="7" text-anchor="middle">Apagador</text><circle cx="200" cy="70" r="9" fill="none" stroke="rgba(196,181,212,0.85)" stroke-width="1.6"/><line x1="196" y1="65" x2="196" y2="75" stroke="rgba(196,181,212,0.85)" stroke-width="1.6"/><line x1="204" y1="65" x2="204" y2="75" stroke="rgba(196,181,212,0.85)" stroke-width="1.6"/><text x="200" y="100" fill="rgba(255,255,255,0.45)" font-family="monospace" font-size="7" text-anchor="middle">Contacto</text><circle cx="315" cy="70" r="10" fill="none" stroke="rgba(74,158,255,0.8)" stroke-width="1.6"/><line x1="308" y1="63" x2="322" y2="77" stroke="rgba(74,158,255,0.8)" stroke-width="1.6"/><line x1="322" y1="63" x2="308" y2="77" stroke="rgba(74,158,255,0.8)" stroke-width="1.6"/><text x="315" y="100" fill="rgba(255,255,255,0.45)" font-family="monospace" font-size="7" text-anchor="middle">Salida de luz</text><rect x="75" y="148" width="20" height="24" fill="none" stroke="rgba(196,181,212,0.85)" stroke-width="1.6"/><line x1="75" y1="156" x2="95" y2="156" stroke="rgba(196,181,212,0.85)" stroke-width="1"/><line x1="75" y1="164" x2="95" y2="164" stroke="rgba(196,181,212,0.85)" stroke-width="1"/><text x="85" y="190" fill="rgba(255,255,255,0.45)" font-family="monospace" font-size="7" text-anchor="middle">Centro de carga</text><polygon points="200,150 210,168 190,168" fill="none" stroke="rgba(196,181,212,0.85)" stroke-width="1.6"/><circle cx="200" cy="162" r="1.8" fill="rgba(196,181,212,0.85)"/><text x="200" y="190" fill="rgba(255,255,255,0.45)" font-family="monospace" font-size="7" text-anchor="middle">Datos RJ45</text><rect x="301" y="154" width="28" height="12" rx="2" fill="none" stroke="rgba(74,158,255,0.8)" stroke-width="1.6"/><line x1="306" y1="162" x2="324" y2="162" stroke="rgba(74,158,255,0.8)" stroke-width="1"/><text x="315" y="190" fill="rgba(255,255,255,0.45)" font-family="monospace" font-size="7" text-anchor="middle">Minisplit</text>
-                    </svg>
-                </div>
-                <div class="mockup-metrics">
-                    <div class="m-metric">
-                        <div class="m-metric-label">Objetos (pack 01)</div>
-                        <div class="m-metric-value" style="color:#3ecf8e;">20</div>
-                    </div>
-                    <div class="m-metric">
-                        <div class="m-metric-label">ArchiCAD</div>
-                        <div class="m-metric-value">29</div>
-                    </div>
-                    <div class="m-metric">
-                        <div class="m-metric-label">Símbolos</div>
-                        <div class="m-metric-value">2D + 3D</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mockup-panel">
-                <div class="m-panel-title">Parámetros</div>
-                <div class="m-field"><span class="m-field-label">Objeto</span><div class="m-field-val">Apagador sencillo</div></div>
-                <div class="m-field"><span class="m-field-label">Altura</span><div class="m-field-val">1.20 m</div></div>
-                <div class="m-field"><span class="m-field-label">Voltaje</span><div class="m-field-val">127 V</div></div>
-                <div class="m-field"><span class="m-field-label">Acabado</span><div class="m-field-val">Blanco</div></div>
-                <div class="m-field"><span class="m-field-label">Clasificación</span><div class="m-field-val">IFC</div></div>
-                <div class="m-run-btn">Insertar</div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- ── CATEGORÍAS ── -->
 <section class="section" id="categories">
@@ -1188,8 +1112,8 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
 
 <!-- ── CARACTERÍSTICAS ── -->
 <section class="section" id="features">
-    <div class="section-label">Características</div>
-    <h2 class="section-title">Hechos para trabajar en ArchiCAD</h2>
+    <div class="section-label">Estándar ATL</div>
+    <h2 class="section-title">Cada objeto incluye</h2>
     <p class="section-desc">
         Objetos limpios, ligeros y bien documentados. Sin complejidad innecesaria.
     </p>
@@ -1201,7 +1125,7 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
             </div>
             <div class="feature-name">Objetos paramétricos GDL</div>
             <p class="feature-desc">Dimensiones, alturas y acabados editables desde la paleta de información de ArchiCAD.</p>
-            <span class="feature-tag">En desarrollo</span>
+            
         </div>
         <div class="feature">
             <div class="feature-num">02</div>
@@ -1210,7 +1134,7 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
             </div>
             <div class="feature-name">Símbolo 2D y 3D ligero</div>
             <p class="feature-desc">Representación clara en planta y en el modelo 3D, sin hacer pesado tu proyecto.</p>
-            <span class="feature-tag">En desarrollo</span>
+            
         </div>
         <div class="feature">
             <div class="feature-num">03</div>
@@ -1219,7 +1143,7 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
             </div>
             <div class="feature-name">Datos BIM listos</div>
             <p class="feature-desc">Clasificación IFC y propiedades para listados, cuantificación y coordinación.</p>
-            <span class="feature-tag">En desarrollo</span>
+            
         </div>
         <div class="feature">
             <div class="feature-num">04</div>
@@ -1228,36 +1152,7 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
             </div>
             <div class="feature-name">Variantes por región</div>
             <p class="feature-desc">Versiones para estándares NOM/NEC (127 V) e IEC (230 V) en cada pack.</p>
-            <span class="feature-tag">Planeado</span>
-        </div>
-    </div>
-</section>
-
-<!-- ── COMPATIBILIDAD ── -->
-<section class="section" id="compat">
-    <div class="section-label">Compatibilidad</div>
-    <h2 class="section-title">Pensada para ArchiCAD 29</h2>
-    <p class="section-desc">Bibliotecas en formato .lcf para Windows y macOS, con soporte para versiones posteriores.</p>
-    <div class="compat-grid">
-        <div class="compat-card">
-            <div class="compat-icon">
-                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            </div>
-            <div>
-                <div class="compat-name">ArchiCAD 29</div>
-                <div class="compat-req">Biblioteca .lcf · Objetos GDL<br>Windows · macOS</div>
-                <div class="compat-status soon"><span class="status-dot"></span>Primer pack en desarrollo</div>
-            </div>
-        </div>
-        <div class="compat-card">
-            <div class="compat-icon">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
-            </div>
-            <div>
-                <div class="compat-name">Estándares eléctricos</div>
-                <div class="compat-req">NOM · NEC · IEC<br>Variantes por región</div>
-                <div class="compat-status soon"><span class="status-dot"></span>Planeado</div>
-            </div>
+            
         </div>
     </div>
 </section>
@@ -1281,7 +1176,7 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
                 <li>Compatible con ArchiCAD 29</li>
                 <li>Aviso de nuevos packs</li>
             </ul>
-            <a class="btn-primary" href="#waitlist" style="width:100%;justify-content:center;">Unirme a la lista</a>
+            <a class="btn-primary" href="#free" style="width:100%;justify-content:center;">Pedir pack gratis</a>
         </div>
         <div class="pricing-card">
             <div class="pricing-plan">Packs Pro</div>
@@ -1300,25 +1195,25 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
     </div>
 </section>
 
-<!-- ── LISTA DE ESPERA ── -->
-<section class="section" id="waitlist" style="text-align:center;">
-    <div class="section-label" style="justify-content:center;">Lista de espera</div>
-    <h2 class="section-title">Sé de los primeros<br>en descargar</h2>
-    <p class="section-desc" style="margin:0 auto 4rem;">Deja tu correo y te avisamos cuando el primer pack gratuito esté disponible.</p>
+<!-- ── PACK GRATIS ── -->
+<section class="section" id="free" style="text-align:center;">
+    <div class="section-label" style="justify-content:center;">Pack gratis</div>
+    <h2 class="section-title">Recibe el primer<br>pack gratis</h2>
+    <p class="section-desc" style="margin:0 auto 4rem;">Deja tu correo y te enviamos el Pack 01 · Eléctrico básico en cuanto esté listo.</p>
 
     <div class="download-box">
         <div class="download-version">ATL Library · Pack 01 · Eléctrico · ArchiCAD 29</div>
         <form id="waitlistForm" class="waitlist-form" novalidate>
             <input type="hidden" name="access_key" value="c4bd7a3c-e74a-4bcb-a1ea-3426cb3dd207">
-            <input type="hidden" name="subject" value="Lista de espera — ATL Library">
+            <input type="hidden" name="subject" value="Pack gratis — ATL Library">
             <input type="hidden" name="from_name" value="ATL Library">
             <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off">
             <input type="email" name="email" id="waitlistEmail" placeholder="tu@correo.com" required aria-label="Correo electrónico">
-            <button type="submit" class="btn-primary" id="waitlistBtn">Avísame</button>
+            <button type="submit" class="btn-primary" id="waitlistBtn">Quiero el pack</button>
         </form>
         <p class="waitlist-msg" id="waitlistMsg" role="status" aria-live="polite"></p>
         <p class="download-note">
-            Solo usaremos tu correo para avisarte del lanzamiento y de nuevos packs.<br>
+            Solo usaremos tu correo para enviarte el pack y avisarte de nuevos objetos.<br>
             Dudas: <a href="mailto:iia.rquitectura@outlook.com">iia.rquitectura@outlook.com</a>
         </p>
     </div>
@@ -1381,7 +1276,7 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
             .then(function(r) { return r.json(); })
             .then(function(d) {
                 if (d.success) {
-                    msg.textContent = '¡Listo! Te avisaremos cuando el pack esté disponible.';
+                    msg.textContent = '¡Listo! Te enviaremos el pack gratis en cuanto esté disponible.';
                     form.reset();
                 } else {
                     msg.textContent = 'No se pudo enviar. Intenta de nuevo o escríbenos por correo.';

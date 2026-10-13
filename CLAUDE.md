@@ -193,3 +193,14 @@ levantar uno rápido con `python3 -m http.server 8787` desde la raíz del repo y
   Se dibuja desde `assets/data/library-catalog.json`. TODA página nueva de la librería debe incluir ese
   div, el css y el js. A la derecha de la barra: "Packs" y botón "Lista de espera".
 - Gotcha: `overflow-x: hidden` en html/body rompe `position: sticky`; en estas páginas se usa `clip`.
+
+## ATL Library — aspecto independiente (actualizado)
+- La librería debe parecer un sitio PROPIO dentro del dominio (como antes ATL Estructural): en
+  library.html y library-catalog.html NO se usa el menú principal del sitio. Header propio: logo
+  "ATL Library", grupos (Todo/Arquitectura/Interiores/MEP) + Packs, botón "Pack gratis" y enlace
+  "ATL arquitectos ↗" para volver. Debajo, la barra de categorías/subcategorías (library-bar.js).
+- Se eliminaron los restos de Estructural: mockup de software, sección Compatibilidad, "Lista de
+  espera" (ahora "Pack gratis": el correo recibe el Pack 01 cuando exista), etiquetas Beta/En desarrollo
+  en la portada. Portada: hero → categorías → "Cada objeto incluye" → packs → pack gratis.
+- Los ids internos del formulario siguen llamándose waitlist* (no visibles); la sección es `#free`.
+- Las demás páginas del sitio siguen enlazando a "ATL Library" en su menú.

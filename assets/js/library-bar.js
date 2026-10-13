@@ -26,11 +26,10 @@
             var owner = data.groups.filter(function (x) { return x.categories.indexOf(C) >= 0; })[0];
             ag = owner ? owner.id : null;
         }
-        var h = '<div class="bar-row bar-groups"><a href="' + url({}) + '" class="' + (!ag ? 'active' : '') + '">Todo</a>';
-        data.groups.forEach(function (g) {
-            h += '<a href="' + url({ g: g.id }) + '" class="' + (ag === g.id ? 'active' : '') + '">' + esc(t(g)) + '</a>';
+        var h = '';
+        Array.prototype.forEach.call(document.querySelectorAll('nav .nav-links a[data-g]'), function (a) {
+            a.classList.toggle('active', (a.getAttribute('data-g') || null) === (ag || null) && (ag !== null || (G === null && C === null && location.pathname.indexOf('catalog') >= 0)));
         });
-        h += '<span class="bar-actions"><a href="library.html#pricing">Packs</a><a class="bar-cta" href="library.html#waitlist">Lista de espera</a></span></div>';
 
         var visible = ag
             ? data.groups.filter(function (x) { return x.id === ag; })[0].categories
