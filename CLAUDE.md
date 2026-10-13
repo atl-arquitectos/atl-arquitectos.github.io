@@ -184,3 +184,12 @@ levantar uno rápido con `python3 -m http.server 8787` desde la raíz del repo y
 - Sin cuentas de usuario por ahora (decisión: usar la cuenta de la plataforma de venta; ver cuentas
   propias con Supabase/Firebase más adelante si hay demanda).
 - Pendiente: páginas de ficha por objeto, packs/compra, legal, inglés en todo el sitio, imágenes reales.
+
+## ATL Library — navegación (actualizado)
+- Menú de arriba en library.html y library-catalog.html = el MISMO menú principal del sitio (Proyectos,
+  Servicios, Estudio, Contacto, ATL Library + redes). Ya no hay enlaces estilo "Características/Planes".
+- Menú propio de la librería = barra de categorías (grupos → categorías → subcategorías) fija bajo el
+  menú: `<div class="cat-bar" id="bar">` + `assets/js/library-bar.js` + `assets/css/library-bar.css`.
+  Se dibuja desde `assets/data/library-catalog.json`. TODA página nueva de la librería debe incluir ese
+  div, el css y el js. A la derecha de la barra: "Packs" y botón "Lista de espera".
+- Gotcha: `overflow-x: hidden` en html/body rompe `position: sticky`; en estas páginas se usa `clip`.

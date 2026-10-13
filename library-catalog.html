@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600&family=Barlow+Condensed:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/library-bar.css">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -24,7 +25,7 @@
             --font-body:  'Inter', sans-serif;
         }
 
-        html, body { width: 100%; overflow-x: hidden; }
+        html, body { width: 100%; overflow-x: clip; }
 
         body {
             background: var(--bg);
@@ -832,26 +833,12 @@
 
 
         /* ── CATÁLOGO ── */
-        .cat-page { padding: 9rem 3rem 6rem; max-width: 1400px; margin: 0 auto; }
+        .cat-page { padding: 2.5rem 3rem 6rem; max-width: 1400px; margin: 0 auto; }
         .crumbs { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 1.5rem; }
         .crumbs a { color: var(--lilac); text-decoration: none; }
         .cat-title { font-family: var(--font-title); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1; margin-bottom: 1rem; }
         .cat-desc { font-size: 0.8rem; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.9; max-width: 560px; margin-bottom: 3rem; }
         .cat-layout { display: block; }
-        .cat-bar { margin-bottom: 2rem; background: rgba(8,8,8,0.88); border: 1px solid rgba(255,255,255,0.06); }
-        .bar-row { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .bar-row::-webkit-scrollbar { display: none; }
-        .bar-row:last-child { border-bottom: none; }
-        .bar-row a { flex: 0 0 auto; text-decoration: none; white-space: nowrap; color: rgba(255,255,255,0.5); transition: color 0.3s, background 0.3s; display: flex; align-items: center; gap: 0.6rem; }
-        .bar-groups a { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 1.1rem 1.8rem; }
-        .bar-cats a { font-size: 0.72rem; font-weight: 300; padding: 0.95rem 1.3rem; }
-        .bar-subs a { font-size: 0.66rem; font-weight: 300; padding: 0.75rem 1.1rem; color: rgba(255,255,255,0.4); }
-        .bar-row a:hover { color: var(--white); }
-        .bar-row a.active { color: var(--white); box-shadow: inset 0 -2px 0 var(--lilac); }
-        .bar-subs a.active { color: var(--lilac); }
-        .bar-cats .num { color: var(--lilac); opacity: 0.6; font-size: 0.62rem; }
-        .bar-cats .cnt { font-size: 0.58rem; color: rgba(255,255,255,0.25); }
-        .bar-cats .soon-tag { font-size: 0.45rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
         .cat-tools { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; }
         .cat-tools input { flex: 1 1 220px; max-width: 320px; background: rgba(8,8,8,0.88); border: 1px solid rgba(255,255,255,0.2); color: var(--white); font-family: var(--font-body); font-size: 0.75rem; padding: 0.8rem 1rem; outline: none; }
         .cat-tools input:focus { border-color: var(--lilac); }
@@ -872,8 +859,18 @@
         .empty-state h3 { font-family: var(--font-title); font-size: 1.6rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.8rem; }
         .empty-state p { font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,0.45); margin-bottom: 1.8rem; line-height: 1.8; }
         @media (max-width: 900px) {
-            .cat-page { padding: 7rem 1.5rem 4rem; }
+            .cat-page { padding: 2rem 1.5rem 4rem; }
         }
+
+
+        /* ── MENÚ PRINCIPAL DEL SITIO ── */
+        .nav-right { display: flex; align-items: center; }
+        .nav-social { display: flex; gap: 1.2rem; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid rgba(255,255,255,0.12); }
+        .nav-social a { color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.3s; display: flex; align-items: center; }
+        .nav-social a:hover { color: var(--white); }
+        .nav-links a.active { color: var(--white); }
+        .mobile-menu .nav-social { margin-left: 0; padding-left: 0; border-left: none; }
+        @media (max-width: 1100px) { nav .nav-social { display: none; } }
 
         /* ── FOOTER ── */
         footer {
@@ -1047,45 +1044,55 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
 
 <canvas id="threejs-bg" aria-hidden="true"></canvas>
 
-<!-- ── NAV ── -->
-<nav id="navbar">
-    <div style="display:flex;align-items:center;">
+<!-- NAV -->
+    <nav id="navbar">
         <a href="index.html" class="nav-logo">ATL<span>arquitectos</span></a>
-        <div class="nav-sep"></div>
-        <a href="library.html" class="nav-product" style="text-decoration:none;">Library</a>
-        
-    </div>
-    <ul class="nav-links">
-        <li class="has-sub"><a href="library-catalog.html">Catálogo</a>
-            <ul class="sub"><li><a href="library-catalog.html?g=arquitectura">Arquitectura</a></li><li><a href="library-catalog.html?g=interiores">Interiores y equipamiento</a></li><li><a href="library-catalog.html?g=mep">MEP (instalaciones)</a></li></ul>
-        </li>
-        <li><a href="library.html#features">Características</a></li>
-        <li><a href="library.html#compat">Compatibilidad</a></li>
-        <li><a href="library.html#pricing">Packs</a></li>
-        <li><a href="library.html#waitlist" style="color:var(--white);">Lista de espera</a></li>
-    </ul><button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
-        <span></span><span></span><span></span>
-    </button>
-</nav>
+        <ul class="nav-links">
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="quienes_somos.html">Estudio</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="library.html" class="active" style="color:var(--lilac);">ATL Library</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="nav-social">
+                <a href="https://www.instagram.com/atl.arquitectos/" target="_blank" rel="noopener noreferrer" title="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+                <a href="https://www.facebook.com/ATL.arquitectos/" target="_blank" rel="noopener noreferrer" title="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+                <a href="mailto:proyectos@atl-arquitectos.com" title="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></a>
+                <a href="https://wa.me/525514127413" target="_blank" rel="noopener noreferrer" title="WhatsApp"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 .5C7.439.5.5 7.439.5 16c0 2.777.726 5.384 1.993 7.647L.5 31.5l8.085-2.118A15.432 15.432 0 0 0 16 31.5c8.561 0 15.5-6.939 15.5-15.5S24.561.5 16 .5zm0 28.3a12.71 12.71 0 0 1-6.479-1.766l-.464-.277-4.797 1.258 1.279-4.674-.303-.479A12.717 12.717 0 0 1 3.2 16C3.2 9.2 9.2 3.2 16 3.2c6.8 0 12.8 6 12.8 12.8 0 6.8-6 12.8-12.8 12.8zm7.016-9.584c-.385-.192-2.274-1.122-2.627-1.25-.352-.128-.607-.192-.863.192-.255.385-.993 1.25-1.217 1.506-.224.255-.449.288-.833.096-.385-.192-1.624-.599-3.093-1.909-1.143-1.02-1.914-2.279-2.138-2.664-.224-.385-.024-.593.168-.784.173-.172.385-.449.577-.673.192-.224.256-.385.384-.641.128-.256.064-.481-.032-.673-.096-.192-.863-2.081-1.183-2.849-.311-.748-.627-.647-.863-.659-.224-.011-.48-.013-.736-.013-.255 0-.672.096-1.024.481-.352.384-1.344 1.314-1.344 3.203 0 1.889 1.376 3.714 1.568 3.97.192.256 2.709 4.136 6.564 5.799.918.396 1.634.633 2.191.811.921.293 1.759.252 2.42.153.739-.11 2.274-.929 2.595-1.826.32-.896.32-1.664.224-1.826-.096-.16-.352-.256-.737-.448z"/></svg></a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-    <ul>
-        <li><a href="library-catalog.html">Catálogo</a></li>
-        <li><a href="library-catalog.html?g=arquitectura">· Arquitectura</a></li><li><a href="library-catalog.html?g=interiores">· Interiores y equipamiento</a></li><li><a href="library-catalog.html?g=mep">· MEP (instalaciones)</a></li>
-        <li><a href="library.html#features">Características</a></li>
-        <li><a href="library.html#compat">Compatibilidad</a></li>
-        <li><a href="library.html#pricing">Packs</a></li>
-        <li><a href="library.html#waitlist">Lista de espera</a></li>
-    </ul>
-</div>
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="quienes_somos.html">Estudio</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="library.html" class="active" style="color:var(--lilac);">ATL Library</a></li>
+        </ul>
+        <div class="nav-social">
+            <a href="https://www.instagram.com/atl.arquitectos/" target="_blank" rel="noopener noreferrer" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="https://www.facebook.com/ATL.arquitectos/" target="_blank" rel="noopener noreferrer" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="mailto:proyectos@atl-arquitectos.com" title="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></a>
+            <a href="https://wa.me/525514127413" target="_blank" rel="noopener noreferrer" title="WhatsApp"><svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 .5C7.439.5.5 7.439.5 16c0 2.777.726 5.384 1.993 7.647L.5 31.5l8.085-2.118A15.432 15.432 0 0 0 16 31.5c8.561 0 15.5-6.939 15.5-15.5S24.561.5 16 .5zm0 28.3a12.71 12.71 0 0 1-6.479-1.766l-.464-.277-4.797 1.258 1.279-4.674-.303-.479A12.717 12.717 0 0 1 3.2 16C3.2 9.2 9.2 3.2 16 3.2c6.8 0 12.8 6 12.8 12.8 0 6.8-6 12.8-12.8 12.8zm7.016-9.584c-.385-.192-2.274-1.122-2.627-1.25-.352-.128-.607-.192-.863.192-.255.385-.993 1.25-1.217 1.506-.224.255-.449.288-.833.096-.385-.192-1.624-.599-3.093-1.909-1.143-1.02-1.914-2.279-2.138-2.664-.224-.385-.024-.593.168-.784.173-.172.385-.449.577-.673.192-.224.256-.385.384-.641.128-.256.064-.481-.032-.673-.096-.192-.863-2.081-1.183-2.849-.311-.748-.627-.647-.863-.659-.224-.011-.48-.013-.736-.013-.255 0-.672.096-1.024.481-.352.384-1.344 1.314-1.344 3.203 0 1.889 1.376 3.714 1.568 3.97.192.256 2.709 4.136 6.564 5.799.918.396 1.634.633 2.191.811.921.293 1.759.252 2.42.153.739-.11 2.274-.929 2.595-1.826.32-.896.32-1.664.224-1.826-.096-.16-.352-.256-.737-.448z"/></svg></a>
+        </div>
+    </div>
+
+    
+<!-- BARRA DE CATEGORÍAS (menú de la librería) -->
+<div class="cat-bar" id="bar" role="navigation" aria-label="Categorías de la librería"></div>
 
 <!-- ── CATÁLOGO ── -->
 <main class="cat-page">
     <div class="crumbs" id="crumbs"></div>
     <h1 class="cat-title" id="catTitle">Catálogo</h1>
     <p class="cat-desc" id="catDesc"></p>
-    <div class="cat-bar" id="bar" role="navigation" aria-label="Categorías"></div>
     <div class="cat-layout">
         <section>
             <div class="cat-tools">
@@ -1129,38 +1136,6 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
         if (p.c) q.push('c=' + p.c);
         if (p.s) q.push('s=' + p.s);
         return 'library-catalog.html' + (q.length ? '?' + q.join('&') : '');
-    }
-
-    function activeGroup() {
-        if (C && cats[C]) {
-            var g = data.groups.filter(function(x) { return x.categories.indexOf(C) >= 0; })[0];
-            return g ? g.id : null;
-        }
-        return G;
-    }
-    function renderBar() {
-        var ag = activeGroup();
-        var h = '<div class="bar-row bar-groups"><a href="' + url({}) + '" class="' + (!ag ? 'active' : '') + '">Todo</a>';
-        data.groups.forEach(function(g) {
-            h += '<a href="' + url({g: g.id}) + '" class="' + (ag === g.id ? 'active' : '') + '">' + esc(t(g)) + '</a>';
-        });
-        h += '</div>';
-        var visibleCats = ag ? data.groups.filter(function(x) { return x.id === ag; })[0].categories : data.categories.map(function(c) { return c.id; });
-        h += '<div class="bar-row bar-cats">';
-        visibleCats.forEach(function(cid) {
-            var c = cats[cid], n = count(cid);
-            h += '<a href="' + url({c: cid}) + '" class="' + (C === cid ? 'active' : '') + '"><span class="num">' + c.num + '</span>' + esc(t(c)) +
-                 (n ? '<span class="cnt">' + n + '</span>' : '<span class="soon-tag">Pronto</span>') + '</a>';
-        });
-        h += '</div>';
-        if (C && cats[C]) {
-            h += '<div class="bar-row bar-subs"><a href="' + url({c: C}) + '" class="' + (!S ? 'active' : '') + '">Todas</a>';
-            cats[C].subs.forEach(function(sb) {
-                h += '<a href="' + url({c: C, s: sb.id}) + '" class="' + (S === sb.id ? 'active' : '') + '">' + esc(t(sb)) + '</a>';
-            });
-            h += '</div>';
-        }
-        document.getElementById('bar').innerHTML = h;
     }
 
     function renderHead() {
@@ -1221,7 +1196,7 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
             data = d;
             d.categories.forEach(function(c) { cats[c.id] = c; });
             d.packs.forEach(function(p) { packs[p.id] = p; });
-            renderHead(); renderBar(); renderResults();
+            renderHead(); renderResults();
         })
         .catch(function() { document.getElementById('results').innerHTML = '<div class="empty-state"><p>No se pudo cargar el catálogo. Intenta de nuevo.</p></div>'; });
 
@@ -1246,6 +1221,7 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
     window.addEventListener('scroll', function() { navbar.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
 })();
 </script>
+<script src="assets/js/library-bar.js"></script>
 <script src="assets/js/threejs-bg.js"></script>
 <script src="assets/js/sound-system.js"></script>
 </body>

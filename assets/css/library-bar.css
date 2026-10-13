@@ -1,0 +1,48 @@
+/* Barra de categorías de ATL Library (menú propio de toda la sección) */
+.cat-bar {
+    margin-top: 5.6rem;
+    position: sticky;
+    top: var(--nav-h, 64px);
+    z-index: 900;
+    background: rgba(8, 8, 8, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.bar-row {
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.bar-row::-webkit-scrollbar { display: none; }
+.bar-row:last-child { border-bottom: none; }
+.bar-row a {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    white-space: nowrap;
+    text-decoration: none;
+    color: rgba(255,255,255,0.5);
+    transition: color 0.3s, background 0.3s;
+}
+.bar-row a:hover { color: #fff; }
+.bar-row a.active { color: #fff; box-shadow: inset 0 -2px 0 #c4b5d4; }
+.bar-groups a { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 1.05rem 1.6rem; }
+.bar-groups .bar-actions { margin-left: auto; display: flex; flex: 0 0 auto; align-items: center; gap: 0.4rem; }
+.bar-groups .bar-cta { color: #080808; background: #fff; padding: 0.7rem 1.3rem; margin: 0.45rem 0 0.45rem 0.6rem; }
+.bar-groups .bar-cta:hover { background: #c4b5d4; color: #080808; }
+.bar-cats a { font-size: 0.72rem; font-weight: 300; padding: 0.9rem 1.3rem; }
+.bar-subs a { font-size: 0.66rem; font-weight: 300; padding: 0.7rem 1.1rem; color: rgba(255,255,255,0.4); }
+.bar-subs a.active { color: #c4b5d4; }
+.bar-cats .num { color: #c4b5d4; opacity: 0.6; font-size: 0.62rem; }
+.bar-cats .cnt { font-size: 0.58rem; color: rgba(255,255,255,0.25); }
+.bar-cats .soon-tag { font-size: 0.45rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+@media (max-width: 900px) {
+    .cat-bar { margin-top: 4.6rem; position: static; }
+    .bar-row { padding: 0 0.6rem; }
+}
