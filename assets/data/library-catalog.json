@@ -1,43 +1,461 @@
 {
   "groups": [
-    { "id": "arquitectura", "order": 1, "es": "Arquitectura", "en": "Architecture", "categories": ["arquitectura", "estructura"] },
-    { "id": "interiores", "order": 2, "es": "Interiores y equipamiento", "en": "Interiors & equipment", "categories": ["mobiliario", "cocina", "bano", "equipamiento"] },
-    { "id": "mep", "order": 3, "es": "MEP (instalaciones)", "en": "MEP (building services)", "categories": ["electrico", "iluminacion", "hvac", "hidrosanitario"] }
+    {
+      "id": "arquitectura",
+      "order": 1,
+      "es": "Arquitectura",
+      "en": "Architecture",
+      "categories": [
+        "arquitectura",
+        "estructura"
+      ]
+    },
+    {
+      "id": "interiores",
+      "order": 2,
+      "es": "Interiores y equipamiento",
+      "en": "Interiors & equipment",
+      "categories": [
+        "mobiliario",
+        "cocina",
+        "bano",
+        "equipamiento"
+      ]
+    },
+    {
+      "id": "mep",
+      "order": 3,
+      "es": "MEP (instalaciones)",
+      "en": "MEP (building services)",
+      "categories": [
+        "electrico",
+        "iluminacion",
+        "hvac",
+        "hidrosanitario"
+      ]
+    }
   ],
   "categories": [
-    { "id": "arquitectura", "num": "01", "es": "Arquitectura", "en": "Architecture", "subs": [
-      {"id":"puertas","es":"Puertas","en":"Doors"},{"id":"ventanas","es":"Ventanas","en":"Windows"},{"id":"muros","es":"Muros","en":"Walls"},{"id":"pisos","es":"Pisos","en":"Floors"},{"id":"plafones","es":"Plafones","en":"Ceilings"},{"id":"escaleras","es":"Escaleras","en":"Stairs"},{"id":"barandales","es":"Barandales","en":"Railings"},{"id":"fachadas","es":"Fachadas","en":"Facades"},{"id":"accesorios","es":"Accesorios","en":"Accessories"} ] },
-    { "id": "mobiliario", "num": "02", "es": "Mobiliario", "en": "Furniture", "subs": [
-      {"id":"sala","es":"Sala","en":"Living room"},{"id":"comedor","es":"Comedor","en":"Dining"},{"id":"recamara","es":"Recámara","en":"Bedroom"},{"id":"oficina","es":"Oficina","en":"Office"},{"id":"exterior","es":"Exterior","en":"Outdoor"},{"id":"escolar","es":"Escolar","en":"School"} ] },
-    { "id": "cocina", "num": "03", "es": "Cocina", "en": "Kitchen", "subs": [
-      {"id":"cocinas","es":"Cocinas","en":"Kitchens"},{"id":"tarjas","es":"Tarjas","en":"Sinks"},{"id":"campanas","es":"Campanas","en":"Range hoods"},{"id":"refrigeradores","es":"Refrigeradores","en":"Refrigerators"},{"id":"hornos","es":"Hornos","en":"Ovens"},{"id":"accesorios","es":"Accesorios","en":"Accessories"} ] },
-    { "id": "bano", "num": "04", "es": "Baño", "en": "Bathroom", "subs": [
-      {"id":"wc","es":"WC","en":"Toilets"},{"id":"lavabos","es":"Lavabos","en":"Washbasins"},{"id":"regaderas","es":"Regaderas","en":"Showers"},{"id":"accesorios","es":"Accesorios","en":"Accessories"},{"id":"muebles","es":"Muebles","en":"Furniture"} ] },
-    { "id": "iluminacion", "num": "05", "es": "Iluminación", "en": "Lighting", "subs": [
-      {"id":"interior","es":"Interior","en":"Interior"},{"id":"exterior","es":"Exterior","en":"Exterior"},{"id":"decorativa","es":"Decorativa","en":"Decorative"},{"id":"emergencia","es":"Emergencia","en":"Emergency"},{"id":"industrial","es":"Industrial","en":"Industrial"} ] },
-    { "id": "electrico", "num": "06", "es": "Eléctrico", "en": "Electrical", "subs": [
-      {"id":"contactos","es":"Contactos","en":"Outlets"},{"id":"apagadores","es":"Apagadores","en":"Switches"},{"id":"tableros","es":"Tableros","en":"Panels"},{"id":"charolas","es":"Charolas","en":"Cable trays"},{"id":"canalizaciones","es":"Canalizaciones","en":"Conduits"} ] },
-    { "id": "hvac", "num": "07", "es": "HVAC", "en": "HVAC", "subs": [
-      {"id":"umas","es":"UMAs","en":"Air handling units"},{"id":"minisplit","es":"Minisplit","en":"Mini-split"},{"id":"difusores","es":"Difusores","en":"Diffusers"},{"id":"rejillas","es":"Rejillas","en":"Grilles"},{"id":"extractores","es":"Extractores","en":"Exhaust fans"},{"id":"accesorios","es":"Accesorios","en":"Accessories"} ] },
-    { "id": "hidrosanitario", "num": "08", "es": "Hidrosanitario", "en": "Plumbing", "subs": [
-      {"id":"tuberias","es":"Tuberías","en":"Pipes"},{"id":"valvulas","es":"Válvulas","en":"Valves"},{"id":"bombas","es":"Bombas","en":"Pumps"},{"id":"coladeras","es":"Coladeras","en":"Drains"},{"id":"accesorios","es":"Accesorios","en":"Accessories"} ] },
-    { "id": "estructura", "num": "09", "es": "Estructura", "en": "Structure", "subs": [
-      {"id":"columnas","es":"Columnas","en":"Columns"},{"id":"vigas","es":"Vigas","en":"Beams"},{"id":"perfiles","es":"Perfiles","en":"Profiles"},{"id":"conexiones","es":"Conexiones","en":"Connections"},{"id":"acero","es":"Acero","en":"Steel"} ] },
-    { "id": "equipamiento", "num": "10", "es": "Equipamiento", "en": "Equipment", "subs": [
-      {"id":"industrial","es":"Industrial","en":"Industrial"},{"id":"comercial","es":"Comercial","en":"Commercial"},{"id":"oficina","es":"Oficina","en":"Office"},{"id":"seguridad","es":"Seguridad","en":"Security"} ] }
+    {
+      "id": "arquitectura",
+      "num": "01",
+      "es": "Arquitectura",
+      "en": "Architecture",
+      "subs": [
+        {
+          "id": "puertas",
+          "es": "Puertas",
+          "en": "Doors"
+        },
+        {
+          "id": "ventanas",
+          "es": "Ventanas",
+          "en": "Windows"
+        },
+        {
+          "id": "muros",
+          "es": "Muros",
+          "en": "Walls"
+        },
+        {
+          "id": "pisos",
+          "es": "Pisos",
+          "en": "Floors"
+        },
+        {
+          "id": "plafones",
+          "es": "Plafones",
+          "en": "Ceilings"
+        },
+        {
+          "id": "escaleras",
+          "es": "Escaleras",
+          "en": "Stairs"
+        },
+        {
+          "id": "barandales",
+          "es": "Barandales",
+          "en": "Railings"
+        },
+        {
+          "id": "fachadas",
+          "es": "Fachadas",
+          "en": "Facades"
+        },
+        {
+          "id": "accesorios",
+          "es": "Accesorios",
+          "en": "Accessories"
+        }
+      ]
+    },
+    {
+      "id": "mobiliario",
+      "num": "02",
+      "es": "Mobiliario",
+      "en": "Furniture",
+      "subs": [
+        {
+          "id": "sala",
+          "es": "Sala",
+          "en": "Living room"
+        },
+        {
+          "id": "comedor",
+          "es": "Comedor",
+          "en": "Dining"
+        },
+        {
+          "id": "recamara",
+          "es": "Recámara",
+          "en": "Bedroom"
+        },
+        {
+          "id": "oficina",
+          "es": "Oficina",
+          "en": "Office"
+        },
+        {
+          "id": "exterior",
+          "es": "Exterior",
+          "en": "Outdoor"
+        },
+        {
+          "id": "escolar",
+          "es": "Escolar",
+          "en": "School"
+        }
+      ]
+    },
+    {
+      "id": "cocina",
+      "num": "03",
+      "es": "Cocina",
+      "en": "Kitchen",
+      "subs": [
+        {
+          "id": "cocinas",
+          "es": "Cocinas",
+          "en": "Kitchens"
+        },
+        {
+          "id": "tarjas",
+          "es": "Tarjas",
+          "en": "Sinks"
+        },
+        {
+          "id": "campanas",
+          "es": "Campanas",
+          "en": "Range hoods"
+        },
+        {
+          "id": "refrigeradores",
+          "es": "Refrigeradores",
+          "en": "Refrigerators"
+        },
+        {
+          "id": "hornos",
+          "es": "Hornos",
+          "en": "Ovens"
+        },
+        {
+          "id": "accesorios",
+          "es": "Accesorios",
+          "en": "Accessories"
+        }
+      ]
+    },
+    {
+      "id": "bano",
+      "num": "04",
+      "es": "Baño",
+      "en": "Bathroom",
+      "subs": [
+        {
+          "id": "wc",
+          "es": "WC",
+          "en": "Toilets"
+        },
+        {
+          "id": "lavabos",
+          "es": "Lavabos",
+          "en": "Washbasins"
+        },
+        {
+          "id": "regaderas",
+          "es": "Regaderas",
+          "en": "Showers"
+        },
+        {
+          "id": "accesorios",
+          "es": "Accesorios",
+          "en": "Accessories"
+        },
+        {
+          "id": "muebles",
+          "es": "Muebles",
+          "en": "Furniture"
+        }
+      ]
+    },
+    {
+      "id": "iluminacion",
+      "num": "05",
+      "es": "Iluminación",
+      "en": "Lighting",
+      "subs": [
+        {
+          "id": "interior",
+          "es": "Interior",
+          "en": "Interior"
+        },
+        {
+          "id": "exterior",
+          "es": "Exterior",
+          "en": "Exterior"
+        },
+        {
+          "id": "decorativa",
+          "es": "Decorativa",
+          "en": "Decorative"
+        },
+        {
+          "id": "emergencia",
+          "es": "Emergencia",
+          "en": "Emergency"
+        },
+        {
+          "id": "industrial",
+          "es": "Industrial",
+          "en": "Industrial"
+        }
+      ]
+    },
+    {
+      "id": "electrico",
+      "num": "06",
+      "es": "Eléctrico",
+      "en": "Electrical",
+      "subs": [
+        {
+          "id": "contactos",
+          "es": "Contactos",
+          "en": "Outlets"
+        },
+        {
+          "id": "apagadores",
+          "es": "Apagadores",
+          "en": "Switches"
+        },
+        {
+          "id": "tableros",
+          "es": "Tableros",
+          "en": "Panels"
+        },
+        {
+          "id": "charolas",
+          "es": "Charolas",
+          "en": "Cable trays"
+        },
+        {
+          "id": "canalizaciones",
+          "es": "Canalizaciones",
+          "en": "Conduits"
+        }
+      ]
+    },
+    {
+      "id": "hvac",
+      "num": "07",
+      "es": "HVAC",
+      "en": "HVAC",
+      "subs": [
+        {
+          "id": "umas",
+          "es": "UMAs",
+          "en": "Air handling units"
+        },
+        {
+          "id": "minisplit",
+          "es": "Minisplit",
+          "en": "Mini-split"
+        },
+        {
+          "id": "difusores",
+          "es": "Difusores",
+          "en": "Diffusers"
+        },
+        {
+          "id": "rejillas",
+          "es": "Rejillas",
+          "en": "Grilles"
+        },
+        {
+          "id": "extractores",
+          "es": "Extractores",
+          "en": "Exhaust fans"
+        },
+        {
+          "id": "accesorios",
+          "es": "Accesorios",
+          "en": "Accessories"
+        }
+      ]
+    },
+    {
+      "id": "hidrosanitario",
+      "num": "08",
+      "es": "Hidrosanitario",
+      "en": "Plumbing",
+      "subs": [
+        {
+          "id": "tuberias",
+          "es": "Tuberías",
+          "en": "Pipes"
+        },
+        {
+          "id": "valvulas",
+          "es": "Válvulas",
+          "en": "Valves"
+        },
+        {
+          "id": "bombas",
+          "es": "Bombas",
+          "en": "Pumps"
+        },
+        {
+          "id": "coladeras",
+          "es": "Coladeras",
+          "en": "Drains"
+        },
+        {
+          "id": "accesorios",
+          "es": "Accesorios",
+          "en": "Accessories"
+        }
+      ]
+    },
+    {
+      "id": "estructura",
+      "num": "09",
+      "es": "Estructura",
+      "en": "Structure",
+      "subs": [
+        {
+          "id": "columnas",
+          "es": "Columnas",
+          "en": "Columns"
+        },
+        {
+          "id": "vigas",
+          "es": "Vigas",
+          "en": "Beams"
+        },
+        {
+          "id": "perfiles",
+          "es": "Perfiles",
+          "en": "Profiles"
+        },
+        {
+          "id": "conexiones",
+          "es": "Conexiones",
+          "en": "Connections"
+        },
+        {
+          "id": "acero",
+          "es": "Acero",
+          "en": "Steel"
+        }
+      ]
+    },
+    {
+      "id": "equipamiento",
+      "num": "10",
+      "es": "Equipamiento",
+      "en": "Equipment",
+      "subs": [
+        {
+          "id": "industrial",
+          "es": "Industrial",
+          "en": "Industrial"
+        },
+        {
+          "id": "comercial",
+          "es": "Comercial",
+          "en": "Commercial"
+        },
+        {
+          "id": "oficina",
+          "es": "Oficina",
+          "en": "Office"
+        },
+        {
+          "id": "seguridad",
+          "es": "Seguridad",
+          "en": "Security"
+        }
+      ]
+    }
   ],
   "packs": [
-    { "id": "pack-01-electrico-basico", "es": "Pack 01 · Eléctrico básico", "en": "Pack 01 · Electrical basics", "price": 0 },
-    { "id": "pack-02-electrico-pro", "es": "Pack 02 · Eléctrico Pro", "en": "Pack 02 · Electrical Pro", "price": 5 }
+    {
+      "id": "pack-01-electrico-basico",
+      "es": "Pack 01 · Eléctrico básico",
+      "en": "Pack 01 · Electrical basics",
+      "price": 0
+    },
+    {
+      "id": "pack-02-electrico-pro",
+      "es": "Pack 02 · Eléctrico Pro",
+      "en": "Pack 02 · Electrical Pro",
+      "price": 5
+    }
   ],
   "objects": [
-    { "id": "contacto-sencillo", "cat": "electrico", "sub": "contactos", "pack": "pack-01-electrico-basico", "icon": "outlet", "status": "soon", "es": "Contacto sencillo", "en": "Single outlet", "tags": ["2D+3D", "127 V"] },
-    { "id": "contacto-doble", "cat": "electrico", "sub": "contactos", "pack": "pack-01-electrico-basico", "icon": "outlet", "status": "soon", "es": "Contacto doble con tierra", "en": "Duplex grounded outlet", "tags": ["2D+3D", "127 V"] },
-    { "id": "apagador-sencillo", "cat": "electrico", "sub": "apagadores", "pack": "pack-01-electrico-basico", "icon": "switch", "status": "soon", "es": "Apagador sencillo", "en": "Single switch", "tags": ["2D+3D", "127 V"] },
-    { "id": "apagador-escalera", "cat": "electrico", "sub": "apagadores", "pack": "pack-01-electrico-basico", "icon": "switch", "status": "soon", "es": "Apagador de escalera", "en": "Three-way switch", "tags": ["2D+3D", "127 V"] },
-    { "id": "centro-de-carga-8", "cat": "electrico", "sub": "tableros", "pack": "pack-02-electrico-pro", "icon": "panel", "status": "soon", "es": "Centro de carga 8 circuitos", "en": "8-circuit load center", "tags": ["2D+3D", "IFC"] },
-    { "id": "charola-escalera", "cat": "electrico", "sub": "charolas", "pack": "pack-02-electrico-pro", "icon": "tray", "status": "soon", "es": "Charola tipo escalera", "en": "Ladder cable tray", "tags": ["2D+3D", "IFC"] },
-    { "id": "tubo-conduit", "cat": "electrico", "sub": "canalizaciones", "pack": "pack-02-electrico-pro", "icon": "conduit", "status": "soon", "es": "Tubo conduit pared delgada", "en": "EMT conduit", "tags": ["2D+3D", "IFC"] },
-    { "id": "salida-luz-techo", "cat": "iluminacion", "sub": "interior", "pack": "pack-01-electrico-basico", "icon": "light", "status": "soon", "es": "Salida de luz de techo", "en": "Ceiling light outlet", "tags": ["2D+3D", "127 V"] }
+    {
+      "id": "centro-de-carga-qo",
+      "cat": "electrico",
+      "sub": "tableros",
+      "pack": "pack-01-electrico-basico",
+      "icon": "panel",
+      "status": "available",
+      "es": "Centro de carga QO",
+      "en": "QO load center",
+      "tags": [
+        "2 a 42 espacios",
+        "MEP conectable"
+      ],
+      "file": "library-files/centro-de-carga-qo-atl.zip",
+      "fileName": "Centro de Carga QO ATL.gsm",
+      "version": "1.0",
+      "desc_es": "Centro de carga paramétrico para ArchiCAD, con salidas MEP para tubería conduit. Un solo objeto cubre desde 2 hasta 42 espacios: eliges número de espacios, serie, montaje, pastilla de cada circuito, cargas y señal de riesgo.",
+      "desc_en": "Parametric load center for ArchiCAD with MEP outlets for conduit. A single object covers 2 to 42 spaces: choose number of spaces, series, mounting, breaker per circuit, loads and hazard sign.",
+      "specs": [
+        [
+          "Modelo de referencia",
+          "Square D QO / Homeline"
+        ],
+        [
+          "Espacios",
+          "2 a 42 circuitos"
+        ],
+        [
+          "Conexión MEP",
+          "Salidas para tubería conduit (1/2\" a 2 1/2\"), máximo espacios + 2, tope 18"
+        ],
+        [
+          "Requiere",
+          "ArchiCAD 29 o posterior · Biblioteca MEP de ArchiCAD"
+        ],
+        [
+          "Formato",
+          "GSM (objeto GDL)"
+        ],
+        [
+          "Versión",
+          "1.0"
+        ]
+      ]
+    }
   ]
 }

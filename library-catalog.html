@@ -846,6 +846,9 @@
         .chip:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
         .chip.on { color: var(--bg); background: var(--white); border-color: var(--white); }
         .obj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: rgba(255,255,255,0.06); }
+        .obj-link { display: block; text-decoration: none; color: inherit; background: rgba(8,8,8,0.92); transition: background 0.3s; }
+        .obj-link:hover { background: rgba(30,28,34,0.95); }
+        .obj-link .obj-card { height: 100%; background: transparent; }
         .obj-card { background: rgba(8,8,8,0.92); padding: 1.4rem; display: flex; flex-direction: column; gap: 0.8rem; }
         .obj-thumb { aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.05); color: rgba(196,181,212,0.8); }
         .obj-name { font-family: var(--font-title); font-size: 1.05rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.15; }
@@ -1188,11 +1191,12 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
         list.forEach(function(o) {
             var p = packs[o.pack], free = p.price === 0, c = cats[o.cat];
             var sub = c.subs.filter(function(x) { return x.id === o.sub; })[0];
-            h += '<div class="obj-card"><div class="obj-thumb"><svg width="64" height="64" viewBox="0 0 48 48">' + (ICONS[o.icon] || ICONS.panel) + '</svg></div>' +
+            var card = '<div class="obj-card"><div class="obj-thumb"><svg width="64" height="64" viewBox="0 0 48 48">' + (ICONS[o.icon] || ICONS.panel) + '</svg></div>' +
                  '<div class="obj-sub">' + esc(t(c)) + ' · ' + esc(sub ? t(sub) : '') + '</div>' +
                  '<div class="obj-name">' + esc(t(o)) + '</div>' +
                  '<div class="obj-tags">' + o.tags.concat(['ArchiCAD 29']).map(function(x) { return '<span class="obj-tag">' + esc(x) + '</span>'; }).join('') + '</div>' +
-                 '<div class="obj-foot"><span class="obj-price">' + (free ? 'Gratis' : 'Pack Pro · ' + p.price + ' USD') + '</span><span class="obj-status">' + (o.status === 'soon' ? 'En desarrollo' : 'Disponible') + '</span></div></div>';
+                 '<div class="obj-foot"><span class="obj-price">' + (free ? 'Gratis' : 'Pack Pro · ' + p.price + ' USD') + '</span><span class="obj-status">' + (o.status === 'available' ? 'Disponible' : 'En desarrollo') + '</span></div></div>';
+            h += o.status === 'available' ? '<a class="obj-link" href="library-object.html?o=' + o.id + '">' + card + '</a>' : card;
         });
         el.innerHTML = h + '</div>';
     }
@@ -1231,5 +1235,6 @@ nav .nav-links a, nav .nav-logo, nav .nav-social a { text-shadow: 0 1px 8px rgba
 <script src="assets/js/library-bar.js?v=3"></script>
 <script src="assets/js/threejs-bg.js"></script>
 <script src="assets/js/sound-system.js"></script>
+<script src="assets/js/analytics.js?v=1"></script>
 </body>
 </html>

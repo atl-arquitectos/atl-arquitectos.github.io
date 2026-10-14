@@ -207,3 +207,20 @@ levantar uno rápido con `python3 -m http.server 8787` desde la raíz del repo y
 - Altura del header/barra de Library es FIJA (nav sin encogerse; la barra siempre tiene 2 filas: categorías +
   subcategorías o un aviso). Si se agregan filas o se cambia el padding del nav, mantener esa estabilidad.
 - Los archivos library-bar.css/js se enlazan con `?v=N`; subir N al modificarlos (GitHub Pages cachea 10 min).
+
+## ATL Library — primer objeto publicado (2026-10-14)
+- **Centro de carga QO** (2 a 42 espacios, MEP conectable, ArchiCAD 29+), GRATIS "hasta que tenga alcance
+  real". Archivo: `library-files/centro-de-carga-qo-atl.zip` (gsm + instrucciones), copiado de
+  `~/Desktop/Libreria BIM Electrica/publicar/`. Los objetos nuevos siguen el mismo flujo: zip en
+  `library-files/` + entrada en `assets/data/library-catalog.json` (campos: file, fileName, version,
+  desc_es/en, specs, status "available").
+- Ficha: `library-object.html?o=<id>` (generada por script desde el shell del catálogo; si se vuelve a
+  generar, hay que repetirlo). Descarga con correo "blando": el correo llega por Web3Forms al dueño y se
+  guarda un flag en localStorage; el ZIP en sí es un enlace público (no hay protección real).
+  Si algún objeto pasa a PAGO, NO guardarlo en el repo: usar plataforma externa (Lemon Squeezy/Gumroad).
+- Quitados los 7 objetos de ejemplo del catálogo; solo hay objetos reales. Imagen de la ficha = ícono
+  temporal (pendiente captura/render del tablero).
+- Pendiente: versión "Compatible" AC24+ del tablero, imagen real, más objetos del pack 01.
+- **Analítica privada:** `assets/js/analytics.js` (GoatCounter) incluido en TODAS las páginas pero INACTIVO
+  hasta poner el código del sitio en `var CODE = ''`. El panel de GoatCounter solo lo ve el dueño (cuenta
+  con login). Cuenta eventos `registro-<id>` y `descarga-<id>` en las fichas. No cuenta en localhost.
